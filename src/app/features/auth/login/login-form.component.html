@@ -1,0 +1,54 @@
+<div class="container-md">
+  <div class="row">
+    <div class="col">
+      <form (ngSubmit)="handleLogin()">
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input
+            id="username"
+            type="text"
+            class="form-control"
+            name="username"
+            [(ngModel)]="username"
+            placeholder="Username"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            id="password"
+            type="password"
+            class="form-control"
+            name="password"
+            [(ngModel)]="password"
+            placeholder="Password"
+            required
+          />
+        </div>
+
+        <button
+          id="login-submit"
+          type="submit"
+          class="btn btn-primary">
+          Entrar
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <br />
+
+  <div class="row">
+    <div class="col">
+      Si no tienes cuenta haz click en el enlace
+      <button
+        type="button"
+        class="btn btn-link p-0 align-baseline"
+        (click)="handleCrearCuenta()">
+        Crear cuenta
+      </button>
+    </div>
+  </div>
+</div>

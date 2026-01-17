@@ -1,0 +1,55 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/app">Todo Cine</a>
+
+    <div class="collapse navbar-collapse justify-content-end">
+      <ul class="navbar-nav">
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/app">Home</a>
+        </li>
+
+        <!-- Cartelera -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            Cartelera
+          </a>
+          <ul class="dropdown-menu">
+            <li *ngFor="let r of regions">
+              <a class="dropdown-item" (click)="loadCartelera(r[1])">
+                {{ r[2] }}
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Premios -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            Premios
+          </a>
+          <ul class="dropdown-menu">
+            <li *ngFor="let a of awards">
+              <a class="dropdown-item" (click)="showPremio(a[0])">
+                {{ a[1] }}
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Usuario -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+            Signed as {{ user.username }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><a class="dropdown-item" (click)="loadProfile()">Perfil</a></li>
+            <li><a class="dropdown-item" (click)="loadFavoritos()">Favoritos</a></li>
+            <li><a class="dropdown-item" (click)="logout()">Log out</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+</nav>
