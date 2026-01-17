@@ -18,7 +18,7 @@ export class HomeComponent implements OnInit {
   successMessage = '';
   errorMessage = '';
 
-  movies: Paginator<Movie> = null;
+  movies: Paginator<Movie> | null = null;
   paramSearch = '';
 
   usuario!: User;
