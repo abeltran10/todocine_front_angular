@@ -35,7 +35,6 @@
 <app-paginator
   *ngIf="movies"
   [activePage]="movies.page"
-  [pageNumbers]="movies.total_pages"
-  [param]="paramSearch"
+  [totalPages]="movies.total_pages"
   (pageChange)="search(paramSearch, $event)">
 </app-paginator>

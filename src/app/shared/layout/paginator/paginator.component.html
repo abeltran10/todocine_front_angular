@@ -1,0 +1,30 @@
+<div class="container-fluid p-3 mb-2">
+  <div class="row justify-content-md-center">
+    <div class="col">
+      <ul class="pagination justify-content-center">
+        <li class="page-item">
+          <button class="page-link" (click)="goFirst()" [disabled]="activePage === 1">First</button>
+        </li>
+        <li class="page-item">
+          <button class="page-link" (click)="goPrev()" [disabled]="activePage === 1">Prev</button>
+        </li>
+
+        <li class="page-item" *ngFor="let page of paginationNumbers">
+          <button 
+            class="page-link" 
+            [class.active]="page === activePage" 
+            (click)="goToPage(page)">
+            {{ page }}
+          </button>
+        </li>
+
+        <li class="page-item">
+          <button class="page-link" (click)="goNext()" [disabled]="activePage === totalPages">Next</button>
+        </li>
+        <li class="page-item">
+          <button class="page-link" (click)="goLast()" [disabled]="activePage === totalPages">Last</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

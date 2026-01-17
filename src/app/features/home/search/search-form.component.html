@@ -1,0 +1,22 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <form (ngSubmit)="onSearch()">
+        <div class="mb-3">
+          <label for="moviename" class="form-label">Busca película</label>
+          <input
+            id="moviename"
+            type="text"
+            class="form-control"
+            placeholder="Busca película"
+            [(ngModel)]="text"
+            name="moviename"
+          />
+        </div>
+        <button id="search-submit" type="submit" class="btn btn-primary">
+          Busca
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
