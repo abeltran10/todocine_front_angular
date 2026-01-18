@@ -1,7 +1,9 @@
 import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-paginator',
+  imports: [CommonModule],
   templateUrl: './paginator.component.html'
 })
 export class PaginatorComponent implements OnChanges {

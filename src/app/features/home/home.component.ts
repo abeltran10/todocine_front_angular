@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 
 import { MovieService } from '../../core/services/movie.service';
 
@@ -7,8 +8,22 @@ import { Movie } from '../../core/models/movie.model';
 import { Paginator } from '../../core/models/paginator.model';
 import { User } from '../../core/models/user.model';
 
+import { NavigationBarComponent } from '../../shared/layout/navigation-bar/navigation-bar.component';
+import { NotificationComponent } from '../../shared/common/notification/notification.component';
+import { HeaderComponent } from '../../shared/layout/header/header.component';
+import { SearchFormComponent } from './search/search-form.component';
+import { PaginatorComponent } from '../../shared/layout/paginator/paginator.component';
+
 @Component({
   selector: 'app-home',
+  imports: [
+    CommonModule,
+    NavigationBarComponent,
+    NotificationComponent,
+    HeaderComponent,
+    SearchFormComponent,
+    PaginatorComponent
+  ],
   templateUrl: './home.component.html'
 })
 export class HomeComponent implements OnInit {

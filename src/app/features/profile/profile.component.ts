@@ -1,9 +1,23 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+
 import { User } from '../../core/models/user.model';
 import { UserService } from '../../core/services/user.service';
 
+import { NavigationBarComponent } from '../../shared/layout/navigation-bar/navigation-bar.component';
+import { NotificationComponent } from '../../shared/common/notification/notification.component';
+import { HeaderComponent } from '../../shared/layout/header/header.component';
+import { ProfileFormComponent } from './form/profile-form.component';
+
 @Component({
   selector: 'app-profile',
+  imports: [
+    CommonModule,
+    NavigationBarComponent,
+    NotificationComponent,
+    HeaderComponent,
+    ProfileFormComponent
+  ],
   templateUrl: './profile.component.html'
 })
 export class ProfileComponent implements OnInit {

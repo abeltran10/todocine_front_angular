@@ -1,5 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+
 import { LoginService } from '../../../core/services/login.service';
 import { User } from '../../../core/models/user.model';
 import { Regions } from '../../../core/enums/regions';
@@ -7,6 +9,7 @@ import { Awards } from '../../../core/enums/awards';
 
 @Component({
   selector: 'app-navigation-bar',
+  imports: [CommonModule],
   templateUrl: './navigation-bar.component.html'
 })
 export class NavigationBarComponent {
