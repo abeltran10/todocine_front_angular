@@ -11,6 +11,7 @@ import { ProfileFormComponent } from './form/profile-form.component';
 
 @Component({
   selector: 'app-profile',
+  standalone: true,
   imports: [
     CommonModule,
     NavigationBarComponent,

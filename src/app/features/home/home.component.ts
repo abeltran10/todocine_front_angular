@@ -16,6 +16,7 @@ import { PaginatorComponent } from '../../shared/layout/paginator/paginator.comp
 
 @Component({
   selector: 'app-home',
+  standalone: true,
   imports: [
     CommonModule,
     NavigationBarComponent,

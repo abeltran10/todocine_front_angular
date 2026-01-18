@@ -9,6 +9,7 @@ import { Awards } from '../../../core/enums/awards';
 
 @Component({
   selector: 'app-navigation-bar',
+  standalone: true,
   imports: [CommonModule],
   templateUrl: './navigation-bar.component.html'
 })
