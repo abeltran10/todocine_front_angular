@@ -1,0 +1,29 @@
+<div class="card" style="width: 18rem;">
+  <ng-container *ngIf="movie; else emptyCard">
+
+    <img [src]="img" class="card-img-top" />
+
+    <div class="card-body">
+      <h5 class="card-title">
+        {{ movie.title }} {{ releaseDate }}
+      </h5>
+
+      <p class="card-text">
+        {{ movie.overview }}
+      </p>
+
+      <button
+        class="btn btn-primary detalleButton"
+        (click)="goToDetail()">
+        Detalle
+      </button>
+    </div>
+
+  </ng-container>
+
+  <ng-template #emptyCard>
+    <!-- Card vacía para mantener layout -->
+    <div class="card-body">&nbsp;</div>
+  </ng-template>
+</div>
+

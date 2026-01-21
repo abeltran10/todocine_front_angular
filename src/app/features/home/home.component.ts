@@ -74,18 +74,27 @@ export class HomeComponent implements OnInit {
   /**
    * Prepara las filas de 3 películas
    */
-  get movieRows(): Movie[][] {
+  get movieRows(): (Movie | null)[][] {
     if (!this.movies) return [];
 
-    const rows: Movie[][] = [];
+    const rows: (Movie | null)[][] = [];
     const results = this.movies.results;
 
     for (let i = 0; i < results.length; i += 3) {
-      rows.push(results.slice(i, i + 3));
+      const row: (Movie | null)[] = results.slice(i, i + 3);
+
+      // rellenar hasta 3
+      while (row.length < 3) {
+        row.push(null);
+      }
+
+      rows.push(row);
     }
 
     return rows;
   }
+
+
 
   setErrorMessage(message: string) {
     this.errorMessage = message;
