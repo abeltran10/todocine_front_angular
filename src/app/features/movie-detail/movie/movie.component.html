@@ -1,0 +1,107 @@
+<ng-container *ngIf="movieDetail">
+  <div class="container">
+    <div class="row">
+      <div class="col"></div>
+      <div class="col">
+        <h3 class="text-info text-center">
+          {{ movieDetail.title }} {{ releaseDate }}
+        </h3>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <img *ngIf="img" [src]="img" class="img-thumbnail" />
+      </div>
+
+      <div class="col">
+        <div class="row">{{ movieDetail.overview }}</div>
+        <br />
+
+        <div class="row" *ngIf="video">
+          <div class="container">
+            <iframe width="420" height="315" [src]="video"></iframe>
+          </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+          <div class="container">
+            <button
+              *ngIf="!showAddButton"
+              class="btn btn-secondary"
+              (click)="handleFavoritos()">
+              Añadir a favoritos
+            </button>
+
+            <button
+              *ngIf="showAddButton"
+              class="btn btn-secondary"
+              (click)="handleRemoveFav()">
+              Quitar de favoritos
+            </button>
+          </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+          <div class="container">
+            <span class="fw-bold fst-italic">Géneros:</span>
+            {{ movieDetail.genres.map(g => g.name).join(' | ') }}
+          </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+          <div class="container">
+            <span class="fw-bold fst-italic">Valora:</span>
+
+            <ng-container *ngFor="let star of ratingStars()">
+              <i
+                class="fa-star"
+                [ngClass]="{
+                  'fas': star <= movieDetail.voto,
+                  'far': star > movieDetail.voto
+                }"
+                (click)="handleVote(star)">
+              </i>
+            </ng-container>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="container">
+            <span class="fw-bold fst-italic">Total votos Todo Cine:</span>
+            {{ movieDetail.total_votos_TC }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="container">
+            <span class="fw-bold fst-italic">Puntuación TC:</span>
+            {{ movieDetail.votos_media_TC }}
+          </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+          <div class="container">
+            <span class="fw-bold fst-italic">Votos totales:</span>
+            {{ movieDetail.vote_count }}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="container">
+            <span class="fw-bold fst-italic">Puntuación:</span>
+            {{ movieDetail.vote_average }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

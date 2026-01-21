@@ -1,0 +1,17 @@
+<app-navigation-bar
+  [user]="usuario"
+  (error)="errorMessage = $event">
+</app-navigation-bar>
+
+<app-notification
+  [successMessage]="successMessage"
+  [errorMessage]="errorMessage">
+</app-notification>
+
+<app-movie
+  *ngIf="movieDetail"
+  [movieDetail]="movieDetail"
+  (addFavoritos)="addFavoritos($event)"
+  (removeFavoritos)="removeFavoritos($event)"
+  (addVote)="addVote($event.movie, $event.rating)">
+</app-movie>

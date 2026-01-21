@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 import { Movie } from '../models/movie.model';
+import { MovieDetail } from '../models/movieDetail.model';
 import { Paginator } from '../models/paginator.model';
 
 @Injectable({
@@ -24,9 +25,9 @@ export class MovieService {
   }
 
   // Detalle de una película
-  async getDetailMovieById(id: number): Promise<Movie> {
+  async getDetailMovieById(id: string): Promise<MovieDetail> {
     const response = await firstValueFrom(
-      this.http.get<Movie>(`${this.baseUrl}/${id}`)
+      this.http.get<MovieDetail>(`${this.baseUrl}/${id}`)
     );
     return response;
   }
@@ -34,7 +35,7 @@ export class MovieService {
   // Películas en cartelera por región
   async getMoviesPlayingNowByRegion(region: string, page: number): Promise<Paginator<Movie>> {
     const response = await firstValueFrom(
-      this.http.get<Paginator<Movie>>(
+      this.http.get<Paginator<MovieDetail>>(
         `${this.baseUrl}?name=&status=now&region=${region}&page=${page}`
       )
     );
