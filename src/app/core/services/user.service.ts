@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
 import {User} from '../models/user.model';
+import { Paginator } from '../models/paginator.model';
+import { MovieDetail } from '../models/movieDetail.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -46,11 +48,11 @@ export class UserService {
   // Obtener películas del usuario
   async getUserMovies(
     userId: number,
-    vista: boolean,
-    votada: boolean,
+    vista: string,
+    votada: string,
     order: string,
     pagina: number
-  ): Promise<any> {
+  ): Promise<Paginator<MovieDetail>> {
     const url = `${this.baseUrl}/${userId}/movies?vista=${vista}&votada=${votada}&orderBy=${order}&page=${pagina}`;
     const response = await firstValueFrom(
       this.http.get<any>(url)
