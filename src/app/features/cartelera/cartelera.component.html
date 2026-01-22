@@ -1,0 +1,39 @@
+<app-navigation-bar
+  [user]="usuario"
+  (error)="errorMessage = $event">
+</app-navigation-bar>
+
+<app-notification
+  [successMessage]="successMessage"
+  [errorMessage]="errorMessage">
+</app-notification>
+
+<app-header [title]="title"></app-header>
+
+<div class="container-md" *ngIf="movies">
+
+  <div class="row mb-3" *ngFor="let row of movieRows">
+    <div class="card-group">
+
+      <ng-container *ngFor="let movie of row">
+        <app-movie-card
+          *ngIf="movie; else emptyCard"
+          [movie]="movie">
+        </app-movie-card>
+
+        <ng-template #emptyCard>
+          <div class="card"></div>
+        </ng-template>
+      </ng-container>
+
+    </div>
+  </div>
+
+</div>
+
+<app-paginator
+  *ngIf="movies"
+  [activePage]="movies.page"
+  [totalPages]="movies.total_pages"
+  (pageChange)="loadCartelera(region, $event)">
+</app-paginator>
