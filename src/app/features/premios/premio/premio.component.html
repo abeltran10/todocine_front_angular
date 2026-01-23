@@ -1,0 +1,39 @@
+<app-navigation-bar
+  [user]="usuario"
+  (error)="errorMessage = $event">
+</app-navigation-bar>
+
+<app-notification
+  [successMessage]="successMessage"
+  [errorMessage]="errorMessage">
+</app-notification>
+
+<app-header [title]="title"></app-header>
+
+<div class="container-md" *ngIf="ganadores">
+
+  <div class="row mb-3" *ngFor="let row of rows">
+    <div class="card-group">
+
+      <ng-container *ngFor="let ganador of row">
+        <app-ganador
+          *ngIf="ganador; else emptyCard"
+          [ganador]="ganador">
+        </app-ganador>
+
+        <ng-template #emptyCard>
+          <div class="card"></div>
+        </ng-template>
+      </ng-container>
+
+    </div>
+  </div>
+
+</div>
+
+<app-paginator
+  *ngIf="ganadores"
+  [activePage]="ganadores.page"
+  [totalPages]="ganadores.total_pages"
+  (pageChange)="loadPremio($event)">
+</app-paginator>

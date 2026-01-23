@@ -55,7 +55,7 @@ export class UserService {
   ): Promise<Paginator<MovieDetail>> {
     const url = `${this.baseUrl}/${userId}/movies?vista=${vista}&votada=${votada}&orderBy=${order}&page=${pagina}`;
     const response = await firstValueFrom(
-      this.http.get<any>(url)
+      this.http.get<Paginator<MovieDetail>>(url)
     );
     return response;
   }
