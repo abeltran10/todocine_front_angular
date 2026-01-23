@@ -10,11 +10,11 @@ import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/na
 import { NotificationComponent } from '../../../shared/common/notification/notification.component';
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { PaginatorComponent } from '../../../shared/layout/paginator/paginator.component';
-import { GanadorComponent } from '../../shared/premio/premio.component';
+import { GanadorComponent } from '../ganador/ganador.component';
 
-import { User } from '../../core/models/user.model';
-import { Paginator } from '../../core/models/paginator.model';
-import { Ganador } from '../../core/models/ganador.model';
+import { User } from '../../../core/models/user.model';
+import { Paginator } from '../../../core/models/paginator.model';
+import { Ganador } from '../../../core/models/ganador.model';
 
 @Component({
   selector: 'app-premio',
@@ -60,7 +60,7 @@ export class PremioComponent implements OnInit {
       this.premioCod = Number(params.get('premioCod'));
       this.premioAnyo = Number(params.get('premioAnyo'));
 
-      const award = Awards.getAwards(this.premioCod as AwardKey);
+      const award = Awards.getAwards(String(this.premioCod) as AwardKey);
       this.title = `${award.award.toUpperCase()} ${this.premioAnyo}`;
 
       this.loadPremio(1);
@@ -88,7 +88,7 @@ export class PremioComponent implements OnInit {
     const results = this.ganadores.results;
 
     for (let i = 0; i < results.length; i += 3) {
-      const row = results.slice(i, i + 3);
+      const row: (Ganador | null)[] = results.slice(i, i + 3);
       while (row.length < 3) {
         row.push(null);
       }

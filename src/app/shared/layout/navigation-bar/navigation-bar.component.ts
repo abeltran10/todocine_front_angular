@@ -4,9 +4,8 @@ import { Router } from '@angular/router';
 
 import { LoginService } from '../../../core/services/login.service';
 import { User } from '../../../core/models/user.model';
-import { Regions } from '../../../core/enums/regions';
-import { Awards } from '../../../core/enums/awards';
-
+import { Regions } from '../../../core/enum/regions';
+import { Awards } from '../../../core/enum/awards';
 @Component({
   selector: 'app-navigation-bar',
   standalone: true,

@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { UserService } from '../../core/services/user.service';
 import { UsuarioMovieService } from '../../core/services/usuarioMovie.service';
 
-import { Movie } from '../../core/models/movie.model';
 import { Paginator } from '../../core/models/paginator.model';
 import { User } from '../../core/models/user.model';
 
@@ -104,14 +103,14 @@ export class FavoritosComponent implements OnInit {
   }
 
   /** Grid de 3 */
-  get movieRows(): (Movie | null)[][] {
+  get movieRows(): (MovieDetail | null)[][] {
     if (!this.movies) return [];
 
-    const rows: (Movie | null)[][] = [];
+    const rows: (MovieDetail | null)[][] = [];
     const results = this.movies.results;
 
     for (let i = 0; i < results.length; i += 3) {
-      const row: (Movie | null)[] = results.slice(i, i + 3);
+      const row: (MovieDetail | null)[] = results.slice(i, i + 3);
 
       while (row.length < 3) {
         row.push(null);

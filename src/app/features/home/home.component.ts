@@ -13,6 +13,7 @@ import { NotificationComponent } from '../../shared/common/notification/notifica
 import { HeaderComponent } from '../../shared/layout/header/header.component';
 import { SearchFormComponent } from './search/search-form.component';
 import { PaginatorComponent } from '../../shared/layout/paginator/paginator.component';
+import { MovieCardComponent } from '../movie-detail/card/movie-card.component';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,8 @@ import { PaginatorComponent } from '../../shared/layout/paginator/paginator.comp
     NotificationComponent,
     HeaderComponent,
     SearchFormComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    MovieCardComponent
   ],
   templateUrl: './home.component.html'
 })

@@ -16,8 +16,8 @@
           </a>
           <ul class="dropdown-menu">
             <li *ngFor="let r of regions">
-              <a class="dropdown-item" (click)="loadCartelera(r[1])">
-                {{ r[2] }}
+              <a class="dropdown-item" (click)="loadCartelera(r.code)">
+                {{ r.name }}
               </a>
             </li>
           </ul>
@@ -30,8 +30,8 @@
           </a>
           <ul class="dropdown-menu">
             <li *ngFor="let a of awards">
-              <a class="dropdown-item" (click)="showPremio(a[0])">
-                {{ a[1] }}
+              <a class="dropdown-item" (click)="showPremio(a.id)">
+                {{ a.award }}
               </a>
             </li>
           </ul>

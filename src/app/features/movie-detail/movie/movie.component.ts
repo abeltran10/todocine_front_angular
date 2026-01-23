@@ -54,4 +54,8 @@ export class MovieComponent {
   ratingStars(): number[] {
     return [1, 2, 3, 4, 5];
   }
+
+  get genresText(): string {
+  return this.movieDetail?.genres?.map(g => g.name).join(' | ') ?? '';
+}
 }

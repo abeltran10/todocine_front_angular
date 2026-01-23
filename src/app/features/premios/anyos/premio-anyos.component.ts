@@ -3,10 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { Awards, Award, AwardKey } from '../../../core/enum/awards';
+import { User } from '../../../core/models/user.model';
 
 import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
 import { NotificationComponent } from '../../../shared/common/notification/notification.component';
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
+import { AnyosComponent } from './anyos.component';
 
 @Component({
   selector: 'app-premio-anyos',
@@ -16,20 +18,32 @@ import { HeaderComponent } from '../../../shared/layout/header/header.component'
     NavigationBarComponent,
     NotificationComponent,
     HeaderComponent,
+    AnyosComponent
   ],
   templateUrl: './premio-anyos.component.html'
 })
 export class PremioAnyosComponent implements OnInit {
 
+  usuario!: User;
+
   award!: Award;
   title = '';
   rows: number[][] = [];
 
+  successMessage = '';
+  errorMessage = '';
+
   constructor(private route: ActivatedRoute) {}
 
  ngOnInit() {
+    // Usuario logueado
+    const loggedUser = localStorage.getItem('loggedUser');
+    if (loggedUser) {
+      this.usuario = JSON.parse(loggedUser);
+    }
+
     this.route.paramMap.subscribe(params => {
-        const id = Number(params.get('premioId')) as AwardKey;
+        const id = params.get('premioId') as AwardKey;
         this.award = Awards.getAwards(id);
         this.title = this.award.award.toUpperCase();
         this.buildRows(this.award.anyos);
