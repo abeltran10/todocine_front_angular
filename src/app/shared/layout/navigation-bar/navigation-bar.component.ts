@@ -4,8 +4,8 @@ import { Router } from '@angular/router';
 
 import { LoginService } from '../../../core/services/login.service';
 import { User } from '../../../core/models/user.model';
-import { Regions } from '../../../core/enum/regions';
-import { Awards } from '../../../core/enum/awards';
+import { Region, Regions } from '../../../core/enum/regions';
+import { Award, Awards } from '../../../core/enum/awards';
 @Component({
   selector: 'app-navigation-bar',
   standalone: true,
@@ -17,8 +17,9 @@ export class NavigationBarComponent {
   @Input() user!: User;
   @Output() error = new EventEmitter<string>();
 
-  regions = Regions.getValues();
-  awards = Awards.getValues();
+  regions: Region[] = Regions.getValues();
+  awards: Award[] = Awards.getValues();
+
 
   constructor(
     private router: Router,
