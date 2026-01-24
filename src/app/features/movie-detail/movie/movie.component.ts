@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+
 import { MovieDetail } from '../../../core/models/movieDetail.model';
 
 @Component({
@@ -17,21 +19,27 @@ export class MovieComponent {
   @Output() removeFavoritos = new EventEmitter<MovieDetail>();
   @Output() addVote = new EventEmitter<{ movie: MovieDetail; rating: number }>();
 
+  constructor(private sanitizer: DomSanitizer) {}
+
+
   get showAddButton(): boolean {
     return this.movieDetail.favoritos;
   }
 
   get img(): string | null {
-    return this.movieDetail.poster_path
+    return this.movieDetail?.poster_path
       ? `https://image.tmdb.org/t/p/w500/${this.movieDetail.poster_path}`
       : null;
   }
 
-  get video(): string | null {
-    return this.movieDetail.videos?.length
-      ? `https://www.youtube.com/embed/${this.movieDetail.videos[0].key}`
-      : null;
+  get video(): SafeResourceUrl | null {
+  if (!this.movieDetail?.videos?.length) {
+    return null;
   }
+
+  const url = `https://www.youtube.com/embed/${this.movieDetail.videos[0].key}`;
+  return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+}
 
   get releaseDate(): string {
     return this.movieDetail.release_date

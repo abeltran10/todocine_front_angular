@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Observable, catchError, of } from 'rxjs';
 
 import { MovieService } from '../../core/services/movie.service';
 
@@ -36,7 +37,7 @@ export class HomeComponent implements OnInit {
   successMessage = '';
   errorMessage = '';
 
-  movies: Paginator<Movie> | null = null;
+  movies$!: Observable<Paginator<Movie>>;
   paramSearch = '';
 
   usuario!: User;
@@ -63,24 +64,29 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  async search(text: string, pagina: number = 1) {
-    try {
-      this.movies = await this.movieService.getByName(text, pagina);
-      this.paramSearch = text;
-    } catch (error: any) {
-      this.errorMessage = error?.error?.message ?? 'Error al buscar películas';
-      setTimeout(() => (this.errorMessage = ''), 5000);
-    }
+  search(text: string, pagina: number = 1) {
+    this.movies$ = this.movieService.getByName(text, pagina).pipe(
+        catchError(error => {
+              this.setErrorMessage(error?.error?.message ?? 'Error cargando la busqueda');
+              return of({
+                results: [],
+                page: 1,
+                total_pages: 1,
+                total_results: 0
+              }); // emitimos un valor neutro para no romper el stream
+            })
+      );
+    this.paramSearch = text;
   }
 
   /**
    * Prepara las filas de 3 películas
    */
-  get movieRows(): (Movie | null)[][] {
-    if (!this.movies) return [];
+  buildRows(movies: Paginator<Movie>): (Movie | null)[][] {
+    if (!movies) return [];
 
     const rows: (Movie | null)[][] = [];
-    const results = this.movies.results;
+    const results = movies.results;
 
     for (let i = 0; i < results.length; i += 3) {
       const row: (Movie | null)[] = results.slice(i, i + 3);

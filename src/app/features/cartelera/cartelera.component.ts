@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Observable, catchError, of } from 'rxjs';
 
 import { MovieService } from '../../core/services/movie.service';
 import { Movie } from '../../core/models/movie.model';
@@ -13,7 +14,8 @@ import { HeaderComponent } from '../../shared/layout/header/header.component';
 import { MovieCardComponent } from '../movie-detail/card/movie-card.component';
 import { PaginatorComponent } from '../../shared/layout/paginator/paginator.component';
 
-import { Regions, RegionKey } from '../../core/enum/regions';
+import { Regions, RegionKey, Region } from '../../core/enum/regions';
+import { Award } from '../../core/enum/awards';
 
 @Component({
   selector: 'app-cartelera',
@@ -35,7 +37,7 @@ export class CarteleraComponent implements OnInit {
 
   usuario!: User;
 
-  movies: Paginator<Movie> | null = null;
+  movies$!: Observable<Paginator<Movie>>;
 
   successMessage = '';
   errorMessage = '';
@@ -55,8 +57,8 @@ export class CarteleraComponent implements OnInit {
    
 
     this.route.paramMap.subscribe(params => {
-        const region = params.get('region') as RegionKey;
-        const regionData = Regions.getRegion(region);
+        const region = params.get('region');
+        const regionData: Region = Regions.getRegion(region as RegionKey);
 
         this.title = `CARTELERA ${regionData.name.toUpperCase()}`;
 
@@ -67,23 +69,27 @@ export class CarteleraComponent implements OnInit {
     
   }
 
-  async loadCartelera(region: string, page: number) {
-    try {
-      this.movies = await this.movieService.getMoviesPlayingNowByRegion(region, page);
-    } catch (error: any) {
-      this.errorMessage = error?.error?.message ?? 'Error cargando cartelera';
-      setTimeout(() => (this.errorMessage = ''), 5000);
-    }
-  }
+  loadCartelera(region: string, page: number) {
+    this.movies$ = this.movieService.getMoviesPlayingNowByRegion(region, page).pipe(
+      catchError(error => {
+        this.errorMessage = error?.error?.message ?? 'Error cargando cartelera';
+        setTimeout(() => (this.errorMessage = ''), 5000);
+        return of({
+          results: [],
+          page: 1,
+          total_pages: 1,
+          total_results: 0
+        }); // emitimos un valor neutro para no romper el stream
+      })
+  );
+}
 
-  /**
-   * Devuelve filas de 3 películas (rellenando con null)
-   */
-  get movieRows(): (Movie | null)[][] {
-    if (!this.movies) return [];
+  buildRows(movies: Paginator<Movie>): (Movie | null)[][] {
+    if (!movies) return [];
 
     const rows: (Movie | null)[][] = [];
-    const results = this.movies.results;
+    const results = movies.results;
+    console.log(results);
 
     for (let i = 0; i < results.length; i += 3) {
       const row: (Movie | null)[] = results.slice(i, i + 3);

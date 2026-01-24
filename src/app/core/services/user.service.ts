@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 
 import {User} from '../models/user.model';
 import { Paginator } from '../models/paginator.model';
@@ -13,12 +14,13 @@ export class UserService {
 
   constructor(private http: HttpClient) {}
 
-  // Obtener usuario por id
-  async getUser(id: number): Promise<User> {
-    const response = await firstValueFrom(
-      this.http.get<User>(`${this.baseUrl}/${id}`)
+  getUser(id: number): Observable<User> {
+    return this.http.get<User>(`${this.baseUrl}/${id}`).pipe(
+      catchError(err => {
+        // Puedes loguear o transformar el error aquí
+        return throwError(() => err);
+      })
     );
-    return response;
   }
 
   // Obtener usuario por username
@@ -46,17 +48,20 @@ export class UserService {
   }
 
   // Obtener películas del usuario
-  async getUserMovies(
+  getUserMovies(
     userId: number,
     vista: string,
     votada: string,
     order: string,
     pagina: number
-  ): Promise<Paginator<MovieDetail>> {
+  ): Observable<Paginator<MovieDetail>> {
     const url = `${this.baseUrl}/${userId}/movies?vista=${vista}&votada=${votada}&orderBy=${order}&page=${pagina}`;
-    const response = await firstValueFrom(
-      this.http.get<Paginator<MovieDetail>>(url)
+    return this.http.get<Paginator<MovieDetail>>(url).pipe(
+        catchError(err => {
+        // Puedes loguear o transformar el error aquí
+        return throwError(() => err);
+      })
     );
-    return response;
+    
   }
 }

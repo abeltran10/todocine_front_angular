@@ -7,8 +7,8 @@ export interface Region {
 }
 
 const REGIONS: Record<RegionKey, Region> = {
-  ES: { id: 0, code: 'ES', name: 'España' },
-  US: { id: 1, code: 'US', name: 'USA' }
+  'ES': { id: 0, code: 'ES', name: 'España' },
+  'US': { id: 1, code: 'US', name: 'USA' }
 };
 
 export const Regions = {

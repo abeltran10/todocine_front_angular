@@ -10,30 +10,29 @@
 
 <app-header [title]="title"></app-header>
 
-<div class="container-md" *ngIf="movies">
+<ng-container *ngIf="movies$ | async as paginator">
+    <div class="container-md" *ngIf="paginator">
+      <div class="row mb-3" *ngFor="let row of buildRows(paginator)">
+        <div class="card-group">
+          <ng-container *ngFor="let movie of row">
+            <app-movie-card
+              *ngIf="movie; else emptyCard"
+              [movie]="movie">
+            </app-movie-card>
 
-  <div class="row mb-3" *ngFor="let row of movieRows">
-    <div class="card-group">
+            <ng-template #emptyCard>
+              <div class="card"></div>
+            </ng-template>
+          </ng-container>
 
-      <ng-container *ngFor="let movie of row">
-        <app-movie-card
-          *ngIf="movie; else emptyCard"
-          [movie]="movie">
-        </app-movie-card>
-
-        <ng-template #emptyCard>
-          <div class="card"></div>
-        </ng-template>
-      </ng-container>
-
+        </div>
+      </div>
     </div>
-  </div>
 
-</div>
-
-<app-paginator
-  *ngIf="movies"
-  [activePage]="movies.page"
-  [totalPages]="movies.total_pages"
-  (pageChange)="loadCartelera(region, $event)">
-</app-paginator>
+    <app-paginator
+      *ngIf="paginator"
+      [activePage]="paginator.page"
+      [totalPages]="paginator.total_pages"
+      (pageChange)="loadCartelera(region, $event)">
+    </app-paginator>
+</ng-container>

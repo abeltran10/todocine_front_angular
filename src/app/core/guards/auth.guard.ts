@@ -1,21 +1,22 @@
-import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
+import { CanActivateFn, Router } from '@angular/router';
+import { catchError, map, of } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
-export const authGuard: CanActivateFn = async () => {
+export const authGuard: CanActivateFn = () => {
+  const auth = inject(AuthService);
   const router = inject(Router);
-  const authService = inject(AuthService);
 
-  // Validamos el token
-  const valid = await authService.isTokenValid();
-
-  if (!valid) {
-    // Si no es válido, redirigimos al login
-    router.navigate(['/app']);
-    return false;
-  }
-
-  // Si es válido, dejamos pasar
-  return true;
+  return auth.isTokenValid().pipe(
+    map(valid => {
+      if (!valid) router.navigate(['/app']);
+      return valid;
+    }),
+    catchError(() => {
+      router.navigate(['/app']);
+      return of(false);
+    })
+  );
 };
+
 

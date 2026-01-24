@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 
 import { Paginator } from '../models/paginator.model';
 import { Ganador } from '../models/ganador.model';
@@ -14,17 +14,19 @@ export class PremioService {
 
   constructor(private http: HttpClient) {}
 
-  async getPremiosByCodigoAnyo(
+  getPremiosByCodigoAnyo(
     premioCod: number,
     anyo: number,
     pagina: number
-  ): Promise<Paginator<Ganador>> {
+  ): Observable<Paginator<Ganador>> {
 
     const url = `${this.baseUrl}/${premioCod}/anyos/${anyo}?pagina=${pagina}`;
 
-    const response = await firstValueFrom(this.http.get<Paginator<Ganador>>(url));
-
-    return response;
-      
+    return this.http.get<Paginator<Ganador>>(url).pipe(
+      catchError(err => {
+        // Puedes loguear o transformar el error aquí
+        return throwError(() => err);
+      })
+    );
   }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
+import { Observable, catchError, of } from 'rxjs';
 
 import { MovieService } from '../../core/services/movie.service';
 import { UsuarioMovieService } from '../../core/services/usuarioMovie.service';
@@ -45,23 +46,24 @@ export class MovieDetailComponent implements OnInit {
   }
 
   async loadMovieDetail(movieId: string) {
-    try {
-      this.movieDetail = await this.movieService.getDetailMovieById(movieId);
-    } catch (error: any) {
-      this.setErrorMessage(error);
+    try{
+      const movie: MovieDetail = await this.movieService.getDetailMovieById(movieId);
+      this.movieDetail = {...movie};
+    } catch(error: any) {
+        this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
     }
   }
 
   async addFavoritos(movie: MovieDetail) {
-    await this.updateUsuarioMovie(movie, true);
+    this.updateUsuarioMovie(movie, true);
   }
 
   async removeFavoritos(movie: MovieDetail) {
-    await this.updateUsuarioMovie(movie, false);
+    this.updateUsuarioMovie(movie, false);
   }
 
   async addVote(movie: MovieDetail, rating: number) {
-    try {
+    
       const payload = {
         usuarioId: this.usuario.id,
         movieId: movie.id,
@@ -69,22 +71,24 @@ export class MovieDetailComponent implements OnInit {
         favoritos: movie.favoritos,
         voto: rating
       };
+      try {
+        const movieDet = await this.usuarioMovieService.updateUsuarioMovie(
+                this.usuario.id,
+                movie.id,
+                payload
+              );
 
-      this.movieDetail = await this.usuarioMovieService.updateUsuarioMovie(
-        this.usuario.id,
-        movie.id,
-        payload
-      );
-    } catch (error: any) {
-      this.setErrorMessage(error?.error?.message ?? 'Error inesperado');
+      this.movieDetail = {...movieDet};
+      } catch (error: any) {
+          this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
+      }
+      
     }
-  }
 
   private async updateUsuarioMovie(
     movie: MovieDetail,
     favoritos: boolean    
   ) {
-    try {
       const usuarioMovie: UsuarioMovie = {
         usuarioId: this.usuario.id,
         movieId: movie.id,
@@ -93,16 +97,19 @@ export class MovieDetailComponent implements OnInit {
         voto: null
       };
 
-      this.movieDetail = await this.usuarioMovieService.updateUsuarioMovie(
-        this.usuario.id,
-        movie.id,
-        usuarioMovie
+      try {
+          const movieDet: MovieDetail = await this.usuarioMovieService.updateUsuarioMovie(
+            this.usuario.id,
+            movie.id,
+            usuarioMovie
       );
+          this.movieDetail = {...movieDet}
 
-      this.setSuccessMessage("Añadida película a favoritos");
-    } catch (error: any) {
-      this.setErrorMessage(error?.error?.message ?? 'Error inesperado');
-    }
+          this.setSuccessMessage("Añadida película a favoritos");
+      } catch(error: any) {
+          this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
+      }     
+    
   }
 
   private setSuccessMessage(msg: string) {

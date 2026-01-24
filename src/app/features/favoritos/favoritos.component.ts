@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Observable, catchError, of } from 'rxjs';
 
 import { UserService } from '../../core/services/user.service';
 import { UsuarioMovieService } from '../../core/services/usuarioMovie.service';
@@ -37,7 +38,7 @@ export class FavoritosComponent implements OnInit {
   successMessage = '';
   errorMessage = '';
 
-  movies: Paginator<MovieDetail> | null = null;
+  movies$!: Observable<Paginator<MovieDetail>>;
 
   usuario!: User;
 
@@ -58,23 +59,27 @@ export class FavoritosComponent implements OnInit {
     }
   }
 
-  async loadUserFavs(page: number = 1) {
-    try {
-      this.movies = await this.userService.getUserMovies(
+  loadUserFavs(page: number = 1) {
+    this.movies$ = this.userService.getUserMovies(
         this.usuario.id,
         this.vistaFiltro,
         this.votadaFiltro,
         this.order,
         page
-      );
-    } catch (error: any) {
-      this.errorMessage = error?.error?.message ?? 'Error al cargar favoritos';
-      setTimeout(() => (this.errorMessage = ''), 5000);
-    }
+      ).pipe(
+            catchError(error => {
+              this.setErrorMessage(error?.error?.message ?? 'Error cargando los favoritos');
+              return of({
+                results: [],
+                page: 1,
+                total_pages: 1,
+                total_results: 0
+              }); // emitimos un valor neutro para no romper el stream
+            })
+        );
   }
 
   async updateVista(movie: MovieDetail, isVista: boolean, page: number) {
-    try {
       const usuarioMovie = {
         usuarioId: this.usuario.id,
         movieId: movie.id,
@@ -82,32 +87,43 @@ export class FavoritosComponent implements OnInit {
         favoritos: movie.favoritos,
         voto: null
       };
+      try {
+          await this.usuarioMovieService.updateUsuarioMovie(
+                  this.usuario.id,
+                  movie.id,
+                  usuarioMovie
+                );
 
-      await this.usuarioMovieService.updateUsuarioMovie(
-        this.usuario.id,
-        movie.id,
-        usuarioMovie
-      );
-
-      await this.loadUserFavs(page);
-
-      this.successMessage = isVista
-        ? 'Película vista'
-        : 'Película no vista';
-
-      setTimeout(() => (this.successMessage = ''), 5000);
-    } catch (error: any) {
-      this.errorMessage = error?.error?.message ?? 'Error al actualizar';
-      setTimeout(() => (this.errorMessage = ''), 5000);
-    }
+          this.loadUserFavs(page)
+          this.successMessage = isVista ? 'Película vista' : 'Película no vista';
+          setTimeout(() => (this.successMessage = ''), 5000);
+      } catch (error: any) {
+          this.setErrorMessage(error?.error?.message ?? 'Error inesperado');
+      }     
+    
   }
 
+  onFiltersChange(filters: {
+    usuarioId: number;
+    vistaFiltro: string;
+    votadaFiltro: string;
+    order: string;
+  }) {
+    this.vistaFiltro = filters.vistaFiltro;
+    this.votadaFiltro = filters.votadaFiltro;
+    this.order = filters.order;
+
+    // Siempre reiniciamos a la página 1 al cambiar filtros
+    this.loadUserFavs(1);
+}
+
+
   /** Grid de 3 */
-  get movieRows(): (MovieDetail | null)[][] {
-    if (!this.movies) return [];
+  buildRows(movies: Paginator<MovieDetail>): (MovieDetail | null)[][] {
+    if (!movies) return [];
 
     const rows: (MovieDetail | null)[][] = [];
-    const results = this.movies.results;
+    const results = movies.results;
 
     for (let i = 0; i < results.length; i += 3) {
       const row: (MovieDetail | null)[] = results.slice(i, i + 3);

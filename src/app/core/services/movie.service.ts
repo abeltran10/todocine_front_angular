@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Observable, catchError, throwError } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
+
 import { Movie } from '../models/movie.model';
 import { MovieDetail } from '../models/movieDetail.model';
 import { Paginator } from '../models/paginator.model';
@@ -15,30 +17,33 @@ export class MovieService {
   constructor(private http: HttpClient) {}
 
   // Buscar por nombre (paginado)
-  async getByName(name: string, page: number): Promise<Paginator<Movie>> {
-    const response = await firstValueFrom(
-      this.http.get<Paginator<Movie>>(
-        `${this.baseUrl}?name=${name}&status=&region=&page=${page}`
-      )
-    );
-    return response;
+  getByName(name: string, page: number): Observable<Paginator<Movie>> {
+    return this.http.get<Paginator<Movie>>(
+      `${this.baseUrl}?name=${name}&status=&region=&page=${page}`
+      ).pipe( catchError(err => {
+              // Puedes loguear o transformar el error aquí
+              return throwError(() => err);
+            }));
+    
+    
   }
 
   // Detalle de una película
   async getDetailMovieById(id: string): Promise<MovieDetail> {
-    const response = await firstValueFrom(
-      this.http.get<MovieDetail>(`${this.baseUrl}/${id}`)
-    );
-    return response;
+     const response = await firstValueFrom(this.http.get<MovieDetail>(`${this.baseUrl}/${id}`));
+     return response;       
+        
   }
 
   // Películas en cartelera por región
-  async getMoviesPlayingNowByRegion(region: string, page: number): Promise<Paginator<Movie>> {
-    const response = await firstValueFrom(
-      this.http.get<Paginator<MovieDetail>>(
+  getMoviesPlayingNowByRegion(region: string, page: number): Observable<Paginator<Movie>> {
+    return this.http.get<Paginator<Movie>>(
         `${this.baseUrl}?name=&status=now&region=${region}&page=${page}`
-      )
-    );
-    return response;
+      ).pipe(catchError(err => {
+              // Puedes loguear o transformar el error aquí
+              return throwError(() => err);
+            })
+          );
+    
   }
 }

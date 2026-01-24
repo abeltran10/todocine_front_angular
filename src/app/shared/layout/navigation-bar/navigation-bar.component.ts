@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 
 import { LoginService } from '../../../core/services/login.service';
 import { User } from '../../../core/models/user.model';
@@ -9,7 +10,11 @@ import { Award, Awards } from '../../../core/enum/awards';
 @Component({
   selector: 'app-navigation-bar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    RouterModule
+
+  ],
   templateUrl: './navigation-bar.component.html'
 })
 export class NavigationBarComponent {
@@ -39,19 +44,19 @@ export class NavigationBarComponent {
     }
   }
 
-  loadCartelera(region: string) {
-    this.router.navigate(['/app/cartelera', region]);
-  }
+  // loadCartelera(region: string) {
+  //   this.router.navigate(['/app/cartelera', region]);
+  // }
 
-  showPremio(premioId: number) {
-    this.router.navigate(['/app/premio', premioId]);
-  }
+  // showPremio(premioId: number) {
+  //   this.router.navigate(['/app/premio', premioId]);
+  // }
 
-  loadFavoritos() {
-    this.router.navigate(['/app/favoritos']);
-  }
+  // loadFavoritos() {
+  //   this.router.navigate(['/app/favoritos']);
+  // }
 
-  loadProfile() {
-    this.router.navigate(['/app/profile']);
-  }
+  // loadProfile() {
+  //   this.router.navigate(['/app/profile']);
+  // }
 }

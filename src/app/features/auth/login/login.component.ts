@@ -43,7 +43,7 @@ export class LoginComponent {
     private router: Router
   ) {}
 
-  async login(event: { username: string; password: string }) {
+  async login(event: {username: string; password: string} ) {
     const { username, password } = event;
 
     try {

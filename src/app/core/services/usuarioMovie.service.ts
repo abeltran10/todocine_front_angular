@@ -20,11 +20,12 @@ export class UsuarioMovieService {
     usuarioMovie: UsuarioMovie
   ): Promise<MovieDetail> {
 
-    return await firstValueFrom(
-      this.http.put<MovieDetail>(
+    const response = await firstValueFrom(this.http.put<MovieDetail>(
         `${this.baseUrl}/${userId}/movies/${movieId}`,
         usuarioMovie
       )
     );
+
+    return response;
   }
 }

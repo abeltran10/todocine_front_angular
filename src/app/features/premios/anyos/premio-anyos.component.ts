@@ -43,11 +43,19 @@ export class PremioAnyosComponent implements OnInit {
     }
 
     this.route.paramMap.subscribe(params => {
-        const id = params.get('premioId') as AwardKey;
-        this.award = Awards.getAwards(id);
-        this.title = this.award.award.toUpperCase();
-        this.buildRows(this.award.anyos);
-  });
+        const id = Number(params.get('premioId'));
+
+        if (!id) return; 
+
+        const award = Awards.getAwards(id as AwardKey);
+
+        if (!award) return; 
+
+        this.award = award;
+        this.title = award.award.toUpperCase();
+        this.buildRows(award.anyos);
+});
+
 }
 
   private buildRows(anyos: number[]): void {

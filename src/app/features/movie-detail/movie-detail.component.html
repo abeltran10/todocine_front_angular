@@ -9,9 +9,10 @@
 </app-notification>
 
 <app-movie
-  *ngIf="movieDetail"
-  [movieDetail]="movieDetail"
-  (addFavoritos)="addFavoritos($event)"
-  (removeFavoritos)="removeFavoritos($event)"
-  (addVote)="addVote($event.movie, $event.rating)">
+    *ngIf="movieDetail"
+    [movieDetail]="movieDetail"
+    (addFavoritos)="addFavoritos($event)"
+    (removeFavoritos)="removeFavoritos($event)"
+    (addVote)="addVote($event.movie, $event.rating)">
 </app-movie>
+

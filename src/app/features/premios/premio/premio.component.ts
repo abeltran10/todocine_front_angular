@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { Observable, catchError, of } from 'rxjs';
 
 import { PremioService } from '../../../core/services/premio.service';
 
@@ -41,7 +42,7 @@ export class PremioComponent implements OnInit {
 
   title = '';
 
-  ganadores: Paginator<Ganador> | null = null;
+  ganadores$!: Observable<Paginator<Ganador>>;
 
   constructor(
     private route: ActivatedRoute,
@@ -60,32 +61,38 @@ export class PremioComponent implements OnInit {
       this.premioCod = Number(params.get('premioCod'));
       this.premioAnyo = Number(params.get('premioAnyo'));
 
-      const award = Awards.getAwards(String(this.premioCod) as AwardKey);
+      const award = Awards.getAwards(this.premioCod as AwardKey);
       this.title = `${award.award.toUpperCase()} ${this.premioAnyo}`;
 
       this.loadPremio(1);
     });
   }
 
-  async loadPremio(page: number): Promise<void> {
-    try {
-      this.ganadores = await this.premioService.getPremiosByCodigoAnyo(
+  loadPremio(page: number) {
+    this.ganadores$ = this.premioService.getPremiosByCodigoAnyo(
         this.premioCod,
         this.premioAnyo,
         page
+      ).pipe(
+          catchError(error => {
+              this.errorMessage = error?.error?.message ?? 'Error cargando los premios';
+              setTimeout(() => (this.errorMessage = ''), 5000);
+              return of({
+                results: [],
+                page: 1,
+                total_pages: 1,
+                total_results: 0
+              });
+          }) // emiti
       );
-    } catch (error: any) {
-      this.errorMessage = error?.error?.message ?? 'Error al cargar premios';
-      setTimeout(() => (this.errorMessage = ''), 5000);
-    }
   }
 
   /** filas de 3 ganadores */
-  get rows(): (Ganador | null)[][] {
-    if (!this.ganadores) return [];
+  buildRows(ganadores: Paginator<Ganador>): (Ganador | null)[][] {
+    if (!ganadores) return [];
 
     const rows: (Ganador | null)[][] = [];
-    const results = this.ganadores.results;
+    const results = ganadores.results;
 
     for (let i = 0; i < results.length; i += 3) {
       const row: (Ganador | null)[] = results.slice(i, i + 3);
