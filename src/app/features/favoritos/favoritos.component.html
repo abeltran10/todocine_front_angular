@@ -29,10 +29,6 @@
               [page]="paginator.page"
               (updateVista)="updateVista($event.movie, $event.vista, $event.page)">
           </app-favoritos-card>
-
-
-          <!-- Card vacío -->
-          <div class="card" *ngIf="!movie"></div>
         </ng-container>
       </div>
     </div>

@@ -13,6 +13,9 @@
 <app-search-form (search)="search($event.text, $event.page)">
 </app-search-form>
 
+<br/>
+<br/>
+
 <ng-container *ngIf="movies$ | async as paginator">
   <div class="container-md" *ngIf="paginator">
     <div class="row mb-3" *ngFor="let row of buildRows(paginator)">
@@ -34,6 +37,8 @@
   </app-paginator>
 
 </ng-container>
+
+
 
 
 

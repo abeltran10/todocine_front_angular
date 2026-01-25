@@ -16,13 +16,9 @@
         <div class="card-group">
           <ng-container *ngFor="let movie of row">
             <app-movie-card
-              *ngIf="movie; else emptyCard"
+              *ngIf="movie"
               [movie]="movie">
             </app-movie-card>
-
-            <ng-template #emptyCard>
-              <div class="card"></div>
-            </ng-template>
           </ng-container>
 
         </div>
