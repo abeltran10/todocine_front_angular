@@ -26,10 +26,11 @@ export class MovieComponent {
     return this.movieDetail.favoritos;
   }
 
-  get img(): string | null {
-    return this.movieDetail?.poster_path
-      ? `https://image.tmdb.org/t/p/w500/${this.movieDetail.poster_path}`
-      : null;
+  get img(): SafeResourceUrl | null {
+    if (!this.movieDetail?.poster_path) 
+      return null;
+    const url =  `https://image.tmdb.org/t/p/w500/${this.movieDetail.poster_path}`
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
   }
 
   get video(): SafeResourceUrl | null {

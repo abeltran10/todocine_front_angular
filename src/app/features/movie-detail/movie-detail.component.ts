@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, catchError, of } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
 
 import { MovieService } from '../../core/services/movie.service';
 import { UsuarioMovieService } from '../../core/services/usuarioMovie.service';
@@ -26,7 +26,7 @@ import { UsuarioMovie } from '../../core/models/usuarioMovie.model';
 export class MovieDetailComponent implements OnInit {
 
   usuario!: User;
-  movieDetail: MovieDetail | null = null;
+  movieDetail!: MovieDetail;
 
   successMessage = '';
   errorMessage = '';
@@ -34,7 +34,8 @@ export class MovieDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieService,
-    private usuarioMovieService: UsuarioMovieService
+    private usuarioMovieService: UsuarioMovieService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -49,6 +50,7 @@ export class MovieDetailComponent implements OnInit {
     try{
       const movie: MovieDetail = await this.movieService.getDetailMovieById(movieId);
       this.movieDetail = {...movie};
+      this.cdr.detectChanges();
     } catch(error: any) {
         this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
     }
@@ -79,6 +81,7 @@ export class MovieDetailComponent implements OnInit {
               );
 
       this.movieDetail = {...movieDet};
+      this.cdr.detectChanges();
       } catch (error: any) {
           this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
       }
@@ -104,6 +107,7 @@ export class MovieDetailComponent implements OnInit {
             usuarioMovie
       );
           this.movieDetail = {...movieDet}
+          this.cdr.detectChanges();
 
           this.setSuccessMessage("Añadida película a favoritos");
       } catch(error: any) {
