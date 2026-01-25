@@ -109,7 +109,7 @@ export class FavoritosComponent implements OnInit {
     
   }
 
-  onFiltersChange(filters: {
+  async onFiltersChange(filters: {
     usuarioId: number;
     vistaFiltro: string;
     votadaFiltro: string;
@@ -120,7 +120,7 @@ export class FavoritosComponent implements OnInit {
     this.order = filters.order;
 
     // Siempre reiniciamos a la página 1 al cambiar filtros
-    this.loadUserFavs(1);
+    await this.loadUserFavs(1);
 }
 
 
