@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable, catchError, of } from 'rxjs';
+import { lastValueFrom } from 'rxjs';
+import { ChangeDetectorRef } from '@angular/core';
 
 import { UserService } from '../../core/services/user.service';
 import { UsuarioMovieService } from '../../core/services/usuarioMovie.service';
@@ -16,6 +18,7 @@ import { PaginatorComponent } from '../../shared/layout/paginator/paginator.comp
 import { FavoritosCardComponent } from './card/favoritos-card.component';
 import { FavoritosFiltrosComponent } from './filtros/favoritos-filtros.component';
 import { MovieDetail } from '../../core/models/movieDetail.model';
+
 
 @Component({
   selector: 'app-favoritos',
@@ -48,7 +51,8 @@ export class FavoritosComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private usuarioMovieService: UsuarioMovieService
+    private usuarioMovieService: UsuarioMovieService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -59,26 +63,27 @@ export class FavoritosComponent implements OnInit {
     }
   }
 
-  loadUserFavs(page: number = 1) {
-    this.movies$ = this.userService.getUserMovies(
+  // Modificamos loadUserFavs para que devuelva algo que se pueda esperar
+  loadUserFavs(page: number = 1): Promise<any> {
+      const fetch$ = this.userService.getUserMovies(
         this.usuario.id,
         this.vistaFiltro,
         this.votadaFiltro,
         this.order,
         page
       ).pipe(
-            catchError(error => {
-              this.setErrorMessage(error?.error?.message ?? 'Error cargando los favoritos');
-              return of({
-                results: [],
-                page: 1,
-                total_pages: 1,
-                total_results: 0
-              }); // emitimos un valor neutro para no romper el stream
-            })
-        );
-  }
+        catchError(error => {
+          this.setErrorMessage(error?.error?.message ?? 'Error cargando los favoritos');
+          return of({ results: [], page: 1, total_pages: 1, total_results: 0 });
+        })
+      );
 
+      // Asignamos el observable a la variable que usa el HTML
+      this.movies$ = fetch$;
+
+      // RETORNAMOS una promesa que se resuelve cuando los datos llegan
+      return lastValueFrom(fetch$);
+  }
   async updateVista(movie: MovieDetail, isVista: boolean, page: number) {
       const usuarioMovie = {
         usuarioId: this.usuario.id,
@@ -94,7 +99,8 @@ export class FavoritosComponent implements OnInit {
                   usuarioMovie
                 );
 
-          this.loadUserFavs(page)
+          await this.loadUserFavs(page)
+          this.cdr.detectChanges();
           this.successMessage = isVista ? 'Película vista' : 'Película no vista';
           setTimeout(() => (this.successMessage = ''), 5000);
       } catch (error: any) {
