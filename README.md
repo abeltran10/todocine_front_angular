@@ -1,5 +1,9 @@
 # TodocineFrontAngular
 
+<img width="1369" height="920" alt="Captura desde 2026-01-25 21-09-11" src="https://github.com/user-attachments/assets/1336d950-9816-4f40-b5da-83c08fb797a5" />
+
+
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.1.0.
 
 ## Development server
