@@ -57,17 +57,17 @@
 
         <div class="row">
           <div class="container">
-            <span class="fw-bold fst-italic">Valora:</span>
+            <span class="fw-bold fst-italic">Valora:  </span>
 
             <ng-container *ngFor="let star of ratingStars()">
-              <i
-                class="fa-star"
-                [ngClass]="{
-                  'fas': star <= movieDetail.voto,
-                  'far': star > movieDetail.voto
-                }"
-                (click)="handleVote(star)">
-              </i>
+               <i
+                  class="fa"
+                  [ngClass]="{
+                    'fa-star': star <= (movieDetail.voto ?? 0),
+                    'fa-star-o': star > (movieDetail.voto ?? 0)
+                  }"
+                  (click)="handleVote(star)">
+                </i>  
             </ng-container>
           </div>
         </div>
