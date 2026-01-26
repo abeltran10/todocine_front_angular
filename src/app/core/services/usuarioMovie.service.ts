@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { catchError, throwError, Observable } from 'rxjs';
 
 import { UsuarioMovie } from '../models/usuarioMovie.model';
 import { MovieDetail } from '../models/movieDetail.model';
@@ -14,18 +14,19 @@ export class UsuarioMovieService {
 
   constructor(private http: HttpClient) {}
 
-  async updateUsuarioMovie(
+  updateUsuarioMovie(
     userId: number,
     movieId: string,
     usuarioMovie: UsuarioMovie
-  ): Promise<MovieDetail> {
+  ): Observable<MovieDetail> {
 
-    const response = await firstValueFrom(this.http.put<MovieDetail>(
+    return this.http.put<MovieDetail>(
         `${this.baseUrl}/${userId}/movies/${movieId}`,
         usuarioMovie
-      )
-    );
-
-    return response;
+      ).pipe(
+        catchError(err => {
+          return throwError(() => err);
+      }))
+   
   }
 }

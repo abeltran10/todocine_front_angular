@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { ChangeDetectorRef } from '@angular/core';
+import { catchError, Observable, tap, of } from 'rxjs';
 
 import { MovieService } from '../../core/services/movie.service';
 import { UsuarioMovieService } from '../../core/services/usuarioMovie.service';
@@ -26,7 +26,7 @@ import { UsuarioMovie } from '../../core/models/usuarioMovie.model';
 export class MovieDetailComponent implements OnInit {
 
   usuario!: User;
-  movieDetail!: MovieDetail;
+  movieDetail$!: Observable<MovieDetail | null>;
 
   successMessage = '';
   errorMessage = '';
@@ -35,7 +35,6 @@ export class MovieDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private movieService: MovieService,
     private usuarioMovieService: UsuarioMovieService,
-    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -46,25 +45,26 @@ export class MovieDetailComponent implements OnInit {
     this.loadMovieDetail(movieId);
   }
 
-  async loadMovieDetail(movieId: string) {
-    try{
-      const movie: MovieDetail = await this.movieService.getDetailMovieById(movieId);
-      this.movieDetail = {...movie};
-      this.cdr.detectChanges();
-    } catch(error: any) {
-        this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
-    }
+  loadMovieDetail(movieId: string) {
+      this.movieDetail$ = this.movieService.getDetailMovieById(movieId)
+          .pipe(
+            catchError(error => {
+              this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
+              return of(null); 
+            })
+          );
+      
   }
 
-  async addFavoritos(movie: MovieDetail) {
+  addFavoritos(movie: MovieDetail) {
     this.updateUsuarioMovie(movie, true);
   }
 
-  async removeFavoritos(movie: MovieDetail) {
+  removeFavoritos(movie: MovieDetail) {
     this.updateUsuarioMovie(movie, false);
   }
 
-  async addVote(movie: MovieDetail, rating: number) {
+  addVote(movie: MovieDetail, rating: number) {
     
       const payload = {
         usuarioId: this.usuario.id,
@@ -73,22 +73,20 @@ export class MovieDetailComponent implements OnInit {
         favoritos: movie.favoritos,
         voto: rating
       };
-      try {
-        const movieDet = await this.usuarioMovieService.updateUsuarioMovie(
+      
+      this.movieDetail$ = this.usuarioMovieService.updateUsuarioMovie(
                 this.usuario.id,
                 movie.id,
                 payload
-              );
-
-      this.movieDetail = {...movieDet};
-      this.cdr.detectChanges();
-      } catch (error: any) {
-          this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
-      }
-      
+              ).pipe(
+                catchError(error => {
+                     this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
+                     return of(null);
+                })
+              );      
     }
 
-  private async updateUsuarioMovie(
+  private updateUsuarioMovie(
     movie: MovieDetail,
     favoritos: boolean    
   ) {
@@ -100,20 +98,19 @@ export class MovieDetailComponent implements OnInit {
         voto: null
       };
 
-      try {
-          const movieDet: MovieDetail = await this.usuarioMovieService.updateUsuarioMovie(
+     
+      this.movieDetail$ = this.usuarioMovieService.updateUsuarioMovie(
             this.usuario.id,
             movie.id,
             usuarioMovie
-      );
-          this.movieDetail = {...movieDet}
-          this.cdr.detectChanges();
-
-          this.setSuccessMessage("Añadida película a favoritos");
-      } catch(error: any) {
-          this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
-      }     
-    
+      ).pipe(
+        catchError(error => {
+            this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
+            return of(null)
+        })
+      ); 
+      
+      this.setSuccessMessage("Añadida película a favoritos")
   }
 
   private setSuccessMessage(msg: string) {

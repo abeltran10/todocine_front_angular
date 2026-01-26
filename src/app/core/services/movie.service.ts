@@ -29,9 +29,11 @@ export class MovieService {
   }
 
   // Detalle de una película
-  async getDetailMovieById(id: string): Promise<MovieDetail> {
-     const response = await firstValueFrom(this.http.get<MovieDetail>(`${this.baseUrl}/${id}`));
-     return response;       
+  getDetailMovieById(id: string): Observable<MovieDetail> {
+     return this.http.get<MovieDetail>(`${this.baseUrl}/${id}`)
+        .pipe(catchError(err => {
+          return throwError(() => err)
+        }));       
         
   }
 

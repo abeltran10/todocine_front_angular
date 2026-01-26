@@ -57,8 +57,8 @@ export class CarteleraComponent implements OnInit {
    
 
     this.route.paramMap.subscribe(params => {
-        const region = params.get('region');
-        const regionData: Region = Regions.getRegion(region as RegionKey);
+        this.region = String(params.get('region'));
+        const regionData: Region = Regions.getRegion(this.region as RegionKey);
 
         this.title = `CARTELERA ${regionData.name.toUpperCase()}`;
 

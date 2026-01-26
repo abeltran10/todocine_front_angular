@@ -16,13 +16,9 @@
       <div class="card-group">
         <ng-container *ngFor="let ganador of row">
           <app-ganador
-            *ngIf="ganador; else emptyCard"
+            *ngIf="ganador"
             [ganador]="ganador">
           </app-ganador>
-
-          <ng-template #emptyCard>
-            <div class="card"></div>
-          </ng-template>
         </ng-container>
       </div>
     </div>

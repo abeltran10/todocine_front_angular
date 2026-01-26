@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable, catchError, of } from 'rxjs';
-import { lastValueFrom } from 'rxjs';
-import { ChangeDetectorRef } from '@angular/core';
+import { Observable, catchError, of, ReplaySubject, switchMap, shareReplay } from 'rxjs';
 
 import { UserService } from '../../core/services/user.service';
 import { UsuarioMovieService } from '../../core/services/usuarioMovie.service';
@@ -41,50 +39,55 @@ export class FavoritosComponent implements OnInit {
   successMessage = '';
   errorMessage = '';
 
-  movies$!: Observable<Paginator<MovieDetail>>;
+  movies$: Observable<Paginator<MovieDetail>>;
 
   usuario!: User;
 
   vistaFiltro = '';
   votadaFiltro = '';
   order = '';
+  
+  private refreshUserFavs = new ReplaySubject<number>(1);
 
   constructor(
     private userService: UserService,
     private usuarioMovieService: UsuarioMovieService,
-    private cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    
+    this.movies$ = this.refreshUserFavs.pipe(
+            switchMap(page => this.userService.getUserMovies(
+              this.usuario.id,
+              this.vistaFiltro,
+              this.votadaFiltro,
+              this.order,
+              page
+            )),
+            shareReplay(1),
+            catchError(error => {
+              this.setErrorMessage(error?.error?.message ?? 'Error cargando favoritos');
+              return of({ results: [], page: 1, total_pages: 1, total_results: 0 });
+            })
+    );
+
+  }
 
   ngOnInit(): void {
     const loggedUser = localStorage.getItem('loggedUser');
     if (loggedUser) {
       this.usuario = JSON.parse(loggedUser);
+
       this.loadUserFavs(1);
     }
+
+    
   }
 
-  // Modificamos loadUserFavs para que devuelva algo que se pueda esperar
-  loadUserFavs(page: number = 1): Promise<any> {
-      const fetch$ = this.userService.getUserMovies(
-        this.usuario.id,
-        this.vistaFiltro,
-        this.votadaFiltro,
-        this.order,
-        page
-      ).pipe(
-        catchError(error => {
-          this.setErrorMessage(error?.error?.message ?? 'Error cargando los favoritos');
-          return of({ results: [], page: 1, total_pages: 1, total_results: 0 });
-        })
-      );
-
-      // Asignamos el observable a la variable que usa el HTML
-      this.movies$ = fetch$;
-
-      // RETORNAMOS una promesa que se resuelve cuando los datos llegan
-      return lastValueFrom(fetch$);
+  
+  loadUserFavs(page: number = 1) {
+    this.refreshUserFavs.next(page);
   }
-  async updateVista(movie: MovieDetail, isVista: boolean, page: number) {
+  
+  updateVista(movie: MovieDetail, isVista: boolean, page: number) {
       const usuarioMovie = {
         usuarioId: this.usuario.id,
         movieId: movie.id,
@@ -92,24 +95,29 @@ export class FavoritosComponent implements OnInit {
         favoritos: movie.favoritos,
         voto: null
       };
-      try {
-          await this.usuarioMovieService.updateUsuarioMovie(
+      
+      this.usuarioMovieService.updateUsuarioMovie(
                   this.usuario.id,
                   movie.id,
                   usuarioMovie
+                ).pipe(
+                    catchError(error =>  {
+                      this.setErrorMessage(error?.error?.message ?? 'Error actualizando el estado de los favoritos');
+                      return of(null);
+                  })
+                ).subscribe({
+                  next: () => {
+                      this.loadUserFavs(page);
+                    }
+                  }
                 );
 
-          await this.loadUserFavs(page)
-          this.cdr.detectChanges();
-          this.successMessage = isVista ? 'Película vista' : 'Película no vista';
-          setTimeout(() => (this.successMessage = ''), 5000);
-      } catch (error: any) {
-          this.setErrorMessage(error?.error?.message ?? 'Error inesperado');
-      }     
+      this.successMessage = isVista ? 'Película vista' : 'Película no vista';
+      setTimeout(() => (this.successMessage = ''), 5000);      
     
   }
 
-  async onFiltersChange(filters: {
+  onFiltersChange(filters: {
     usuarioId: number;
     vistaFiltro: string;
     votadaFiltro: string;
@@ -119,9 +127,8 @@ export class FavoritosComponent implements OnInit {
     this.votadaFiltro = filters.votadaFiltro;
     this.order = filters.order;
 
-    // Siempre reiniciamos a la página 1 al cambiar filtros
-    await this.loadUserFavs(1);
-}
+    this.loadUserFavs(1);
+  }
 
 
   /** Grid de 3 */

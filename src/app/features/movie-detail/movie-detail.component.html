@@ -8,11 +8,14 @@
   [errorMessage]="errorMessage">
 </app-notification>
 
-<app-movie
-    *ngIf="movieDetail"
-    [movieDetail]="movieDetail"
-    (addFavoritos)="addFavoritos($event)"
-    (removeFavoritos)="removeFavoritos($event)"
-    (addVote)="addVote($event.movie, $event.rating)">
-</app-movie>
+<ng-container *ngIf="movieDetail$ | async as movie">
+  <app-movie
+      *ngIf="movie"
+      [movieDetail]="movie"
+      (addFavoritos)="addFavoritos($event)"
+      (removeFavoritos)="removeFavoritos($event)"
+      (addVote)="addVote($event.movie, $event.rating)">
+  </app-movie>
+</ng-container>
+
 
