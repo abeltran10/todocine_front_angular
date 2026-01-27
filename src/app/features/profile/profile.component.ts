@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BehaviorSubject, timer } from 'rxjs';
 
 import { User } from '../../core/models/user.model';
 import { UserService } from '../../core/services/user.service';
@@ -27,8 +28,10 @@ export class ProfileComponent implements OnInit {
 
   usuario!: User;
 
-  successMessage = '';
-  errorMessage = '';
+   messageSuccessSubject = new BehaviorSubject<string>('');
+    messageErrorSubject = new BehaviorSubject<string>('');
+    successMessage$ = this.messageSuccessSubject.asObservable();
+    errorMessage$ = this.messageErrorSubject.asObservable();
 
   constructor(private userService: UserService) {}
 
@@ -66,12 +69,16 @@ export class ProfileComponent implements OnInit {
   }
 
   setErrorMessage(message: string) {
-    this.errorMessage = message;
-    setTimeout(() => this.errorMessage = '', 5000);
+        this.messageErrorSubject.next(message);
+    
+        // Usamos un timer de RxJS que es más compatible con Angular
+        timer(5000).subscribe(() => this.messageErrorSubject.next(''));
   }
-
+    
   setSuccessMessage(message: string) {
-    this.successMessage = message;
-    setTimeout(() => this.successMessage = '', 5000);
-  }
+        this.messageSuccessSubject.next(message);
+    
+        // Usamos un timer de RxJS que es más compatible con Angular
+        timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
+  } 
 }

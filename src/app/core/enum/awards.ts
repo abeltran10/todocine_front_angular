@@ -16,7 +16,7 @@ export const Awards = {
     return Object.values(AWARDS);
   },
 
-  getAwards(key: AwardKey): Award {
+  getAward(key: AwardKey): Award {
     return AWARDS[key];
   }
  

@@ -1,6 +1,6 @@
 <app-notification
-  [successMessage]="successMessage"
-  [errorMessage]="errorMessage">
+  [successMessage]="(successMessage$ | async) ?? ''"
+  [errorMessage]="(errorMessage$ | async) ?? ''">
 </app-notification>
 
 <app-header [title]="title"></app-header>

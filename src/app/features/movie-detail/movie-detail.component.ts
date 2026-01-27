@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, Observable, tap, of } from 'rxjs';
+import { catchError, Observable, BehaviorSubject, of, timer } from 'rxjs';
 
 import { MovieService } from '../../core/services/movie.service';
 import { UsuarioMovieService } from '../../core/services/usuarioMovie.service';
@@ -28,8 +28,10 @@ export class MovieDetailComponent implements OnInit {
   usuario!: User;
   movieDetail$!: Observable<MovieDetail | null>;
 
-  successMessage = '';
-  errorMessage = '';
+  messageSuccessSubject = new BehaviorSubject<string>('');
+  messageErrorSubject = new BehaviorSubject<string>('');
+  successMessage$ = this.messageSuccessSubject.asObservable();
+  errorMessage$ = this.messageErrorSubject.asObservable();
 
   constructor(
     private route: ActivatedRoute,
@@ -86,7 +88,7 @@ export class MovieDetailComponent implements OnInit {
               );      
     }
 
-  private updateUsuarioMovie(
+  updateUsuarioMovie(
     movie: MovieDetail,
     favoritos: boolean    
   ) {
@@ -113,13 +115,17 @@ export class MovieDetailComponent implements OnInit {
       this.setSuccessMessage("Añadida película a favoritos")
   }
 
-  private setSuccessMessage(msg: string) {
-    this.successMessage = msg;
-    setTimeout(() => (this.successMessage = ''), 5000);
+  setErrorMessage(message: string) {
+      this.messageErrorSubject.next(message);
+  
+      // Usamos un timer de RxJS que es más compatible con Angular
+      timer(5000).subscribe(() => this.messageErrorSubject.next(''));
   }
-
-  private setErrorMessage(error: string) {
-    this.errorMessage = error;
-    setTimeout(() => (this.errorMessage = ''), 5000);
+  
+  setSuccessMessage(message: string) {
+      this.messageSuccessSubject.next(message);
+  
+      // Usamos un timer de RxJS que es más compatible con Angular
+      timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
   }
 }

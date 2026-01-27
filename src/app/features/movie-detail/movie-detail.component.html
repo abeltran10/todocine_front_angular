@@ -1,11 +1,11 @@
 <app-navigation-bar
   [user]="usuario"
-  (error)="errorMessage = $event">
+  (error)="setErrorMessage($event)">
 </app-navigation-bar>
 
 <app-notification
-  [successMessage]="successMessage"
-  [errorMessage]="errorMessage">
+  [successMessage]="(successMessage$ | async) ?? ''"
+  [errorMessage]="(errorMessage$ | async) ?? ''">
 </app-notification>
 
 <ng-container *ngIf="movieDetail$ | async as movie">

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
-import { firstValueFrom } from 'rxjs';
 
 import { Movie } from '../models/movie.model';
 import { MovieDetail } from '../models/movieDetail.model';

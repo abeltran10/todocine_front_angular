@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BehaviorSubject, timer } from 'rxjs';
 
 import { UserService } from '../../core/services/user.service';
 
@@ -22,8 +23,10 @@ export class CreateAccountComponent {
 
   title = 'CREAR CUENTA';
 
-  successMessage = '';
-  errorMessage = '';
+  messageSuccessSubject = new BehaviorSubject<string>('');
+  messageErrorSubject = new BehaviorSubject<string>('');
+  errorMessage$ = this.messageErrorSubject.asObservable();
+  successMessage$ = this.messageSuccessSubject.asObservable();
 
   constructor(private userService: UserService) {}
 
@@ -31,12 +34,24 @@ export class CreateAccountComponent {
     try {
       await this.userService.createUser({ username, password });
 
-      this.successMessage = 'Cuenta creada con éxito';
-      setTimeout(() => (this.successMessage = ''), 5000);
+      this.setSuccessMessage('Cuenta creada con éxito');
 
     } catch (error: any) {
-      this.errorMessage = error?.error?.message ?? 'Error al crear la cuenta';
-      setTimeout(() => (this.errorMessage = ''), 5000);
+      this.setErrorMessage(error?.error?.message ?? 'Error al crear la cuenta');
     }
+  }
+
+  setErrorMessage(message: string) {
+    this.messageErrorSubject.next(message);
+
+    // Usamos un timer de RxJS que es más compatible con Angular
+    timer(5000).subscribe(() => this.messageErrorSubject.next(''));
+  }
+
+  setSuccessMessage(message: string) {
+    this.messageSuccessSubject.next(message);
+
+    // Usamos un timer de RxJS que es más compatible con Angular
+    timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
   }
 }

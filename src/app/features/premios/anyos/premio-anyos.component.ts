@@ -6,7 +6,6 @@ import { Awards, Award, AwardKey } from '../../../core/enum/awards';
 import { User } from '../../../core/models/user.model';
 
 import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
-import { NotificationComponent } from '../../../shared/common/notification/notification.component';
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { AnyosComponent } from './anyos.component';
 
@@ -16,7 +15,6 @@ import { AnyosComponent } from './anyos.component';
   imports: [
     CommonModule,
     NavigationBarComponent,
-    NotificationComponent,
     HeaderComponent,
     AnyosComponent
   ],
@@ -26,12 +24,11 @@ export class PremioAnyosComponent implements OnInit {
 
   usuario!: User;
 
+  errorMessage = ''
+
   award!: Award;
   title = '';
   rows: number[][] = [];
-
-  successMessage = '';
-  errorMessage = '';
 
   constructor(private route: ActivatedRoute) {}
 
@@ -47,7 +44,7 @@ export class PremioAnyosComponent implements OnInit {
 
         if (!id) return; 
 
-        const award = Awards.getAwards(id as AwardKey);
+        const award = Awards.getAward(id as AwardKey);
 
         if (!award) return; 
 

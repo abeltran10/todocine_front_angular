@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, of, BehaviorSubject, timer } from 'rxjs';
 
 import { PremioService } from '../../../core/services/premio.service';
 
@@ -34,8 +34,8 @@ export class PremioComponent implements OnInit {
 
   usuario!: User;
 
-  successMessage = '';
-  errorMessage = '';
+  messageErrorSubject = new BehaviorSubject<string>('');
+  errorMessage$ = this.messageErrorSubject.asObservable();
 
   premioCod!: number;
   premioAnyo!: number;
@@ -61,7 +61,7 @@ export class PremioComponent implements OnInit {
       this.premioCod = Number(params.get('premioCod'));
       this.premioAnyo = Number(params.get('premioAnyo'));
 
-      const award = Awards.getAwards(this.premioCod as AwardKey);
+      const award = Awards.getAward(this.premioCod as AwardKey);
       this.title = `${award.award.toUpperCase()} ${this.premioAnyo}`;
 
       this.loadPremio(1);
@@ -75,8 +75,7 @@ export class PremioComponent implements OnInit {
         page
       ).pipe(
           catchError(error => {
-              this.errorMessage = error?.error?.message ?? 'Error cargando los premios';
-              setTimeout(() => (this.errorMessage = ''), 5000);
+             this.setErrorMessage(error?.error?.message ?? 'Error cargando los premios');
               return of({
                 results: [],
                 page: 1,
@@ -103,5 +102,12 @@ export class PremioComponent implements OnInit {
     }
 
     return rows;
+  }
+
+  setErrorMessage(message: string) {
+      this.messageErrorSubject.next(message);
+  
+      // Usamos un timer de RxJS que es más compatible con Angular
+      timer(5000).subscribe(() => this.messageErrorSubject.next(''));
   }
 }

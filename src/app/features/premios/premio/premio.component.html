@@ -1,11 +1,11 @@
 <app-navigation-bar
   [user]="usuario"
-  (error)="errorMessage = $event">
+  (error)="setErrorMessage($event)">
 </app-navigation-bar>
 
 <app-notification
-  [successMessage]="successMessage"
-  [errorMessage]="errorMessage">
+  [successMessage]="''"
+  [errorMessage]="(errorMessage$ | async) ?? ''">
 </app-notification>
 
 <app-header [title]="title"></app-header>

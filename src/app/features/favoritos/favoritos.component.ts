@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable, catchError, of, ReplaySubject, switchMap, shareReplay } from 'rxjs';
+import { Observable, catchError, of, ReplaySubject, switchMap, shareReplay, BehaviorSubject, timer } from 'rxjs';
 
 import { UserService } from '../../core/services/user.service';
 import { UsuarioMovieService } from '../../core/services/usuarioMovie.service';
@@ -36,8 +36,10 @@ export class FavoritosComponent implements OnInit {
 
   title = 'FAVORITOS';
 
-  successMessage = '';
-  errorMessage = '';
+  messageSuccessSubject = new BehaviorSubject<string>('');
+  messageErrorSubject = new BehaviorSubject<string>('');
+  successMessage$ = this.messageSuccessSubject.asObservable();
+  errorMessage$ = this.messageErrorSubject.asObservable();
 
   movies$: Observable<Paginator<MovieDetail>>;
 
@@ -112,8 +114,8 @@ export class FavoritosComponent implements OnInit {
                   }
                 );
 
-      this.successMessage = isVista ? 'Película vista' : 'Película no vista';
-      setTimeout(() => (this.successMessage = ''), 5000);      
+      this.setSuccessMessage(isVista ? 'Película vista' : 'Película no vista');
+            
     
   }
 
@@ -152,7 +154,16 @@ export class FavoritosComponent implements OnInit {
   }
 
   setErrorMessage(message: string) {
-    this.errorMessage = message;
-    setTimeout(() => (this.errorMessage = ''), 5000);
+    this.messageErrorSubject.next(message);
+
+    // Usamos un timer de RxJS que es más compatible con Angular
+    timer(5000).subscribe(() => this.messageErrorSubject.next(''));
+  }
+
+  setSuccessMessage(message: string) {
+    this.messageSuccessSubject.next(message);
+
+    // Usamos un timer de RxJS que es más compatible con Angular
+    timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
   }
 }

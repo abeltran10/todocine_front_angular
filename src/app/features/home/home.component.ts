@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, of, BehaviorSubject, timer } from 'rxjs';
+
+import { ActivatedRoute } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 import { MovieService } from '../../core/services/movie.service';
 
@@ -34,8 +37,10 @@ export class HomeComponent implements OnInit {
 
   title = 'TODO CINE';
 
-  successMessage = '';
-  errorMessage = '';
+  messageSuccessSubject = new BehaviorSubject<string>('');
+  messageErrorSubject = new BehaviorSubject<string>('');
+  successMessage$ = this.messageSuccessSubject.asObservable();;
+  errorMessage$ = this.messageErrorSubject.asObservable();;
 
   movies$!: Observable<Paginator<Movie>>;
   paramSearch = '';
@@ -44,7 +49,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private movieService: MovieService,
-    private router: Router
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -54,14 +59,13 @@ export class HomeComponent implements OnInit {
       this.usuario = JSON.parse(loggedUser);
     }
 
-    // Equivalente a useLocation().state
-    const navigation = this.router.currentNavigation();
-    this.successMessage =
-      navigation?.extras.state?.['successMessage'] ?? '';
-
-    if (this.successMessage) {
-      setTimeout(() => (this.successMessage = ''), 5000);
-    }
+    this.activatedRoute.paramMap
+    .pipe(map(() => window.history.state))
+    .subscribe(state => {
+      if (state && state.successMessage) {
+        this.setSuccessMessage(state.successMessage);
+      }
+    });
   }
 
   search(text: string, pagina: number = 1) {
@@ -105,11 +109,17 @@ export class HomeComponent implements OnInit {
 
 
   setErrorMessage(message: string) {
-    this.errorMessage = message;
+    this.messageErrorSubject.next(message);
 
-    setTimeout(() => {
-    this.errorMessage = '';
-  }, 5000);
+    // Usamos un timer de RxJS que es más compatible con Angular
+    timer(5000).subscribe(() => this.messageErrorSubject.next(''));
+  }
+
+  setSuccessMessage(message: string) {
+    this.messageSuccessSubject.next(message);
+
+    // Usamos un timer de RxJS que es más compatible con Angular
+    timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
   }
 
 }
