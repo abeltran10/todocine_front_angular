@@ -112,7 +112,7 @@ export class MovieDetailComponent implements OnInit {
         })
       ); 
       
-      this.setSuccessMessage("Añadida película a favoritos")
+      this.setSuccessMessage(favoritos ? "Añadida película a favoritos" : "Eliminada película de favoritos")
   }
 
   setErrorMessage(message: string) {
