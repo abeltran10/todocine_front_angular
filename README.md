@@ -1,6 +1,12 @@
 # TodocineFrontAngular
 
-<img width="1369" height="920" alt="Captura desde 2026-01-25 21-09-11" src="https://github.com/user-attachments/assets/1336d950-9816-4f40-b5da-83c08fb797a5" />
+<img width="1315" height="548" alt="Captura desde 2026-01-27 16-23-45" src="https://github.com/user-attachments/assets/493c9a5a-7916-4991-aa8c-af0bb090174f" />
+<img width="1315" height="548" alt="Captura desde 2026-01-27 16-23-59" src="https://github.com/user-attachments/assets/a8b7b51d-28c0-48a3-b63c-fb4515aaae79" />
+<img width="1356" height="927" alt="Captura desde 2026-01-27 16-24-42" src="https://github.com/user-attachments/assets/313754b7-85ad-430c-aec8-cc45d202cba3" />
+<img width="1356" height="927" alt="Captura desde 2026-01-27 16-24-54" src="https://github.com/user-attachments/assets/6d2ce765-67d9-4f92-999d-1c4b2d529c37" />
+<img width="1356" height="927" alt="Captura desde 2026-01-27 16-25-22" src="https://github.com/user-attachments/assets/6d7a6772-c00b-4f01-9ba8-2e8c86e3259e" />
+<img width="1356" height="927" alt="Captura desde 2026-01-27 16-25-37" src="https://github.com/user-attachments/assets/df1eb23e-37b1-4b10-9dac-0bcbad0599e1" />
+
 
 
 
