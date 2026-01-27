@@ -1,0 +1,25 @@
+<div class="card" style="width: 27rem">
+  <img
+    class="card-img-top"
+    [src]="imageUrl"
+    alt="Poster"
+  />
+
+  <div class="card-body">
+    <h5 class="card-title">{{ ganador.categoria }}</h5>
+
+    <h6 class="card-subtitle mb-2 text-muted">
+      {{ ganador.original_title }} {{ releaseYear }}
+    </h6>
+
+    <p class="card-text">
+      {{ ganador.overview }}
+    </p>
+
+    <button
+      class="btn btn-primary detalleButton"
+      (click)="goToMovieDetail()">
+      Detalle
+    </button>
+  </div>
+</div>

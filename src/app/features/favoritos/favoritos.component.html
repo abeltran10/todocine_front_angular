@@ -1,0 +1,46 @@
+<app-navigation-bar
+  [user]="usuario"
+  (error)="setErrorMessage($event)">
+</app-navigation-bar>
+
+<app-notification
+  [successMessage]="(successMessage$ | async) ?? ''"
+  [errorMessage]="(errorMessage$ | async) ?? ''">
+</app-notification>
+
+<app-header [title]="title"></app-header>
+
+<ng-container *ngIf="movies$ | async as paginator">
+  <app-favoritos-filtros
+    [usuarioId]="usuario.id"
+    [vistaFiltro]="vistaFiltro"
+    [votadaFiltro]="votadaFiltro"
+    [order]="order"
+    (filtersChange)="onFiltersChange($event)">
+  </app-favoritos-filtros>
+
+<ng-container *ngIf="movies$ | async as paginator">
+  <div class="container-md" *ngIf="paginator">
+      <div class="row mb" *ngFor="let row of buildRows(paginator)">
+        <div class="card-group">
+          <ng-container *ngFor="let movie of row">
+            <app-favoritos-card
+                *ngIf="movie"
+                [movie]="movie"
+                [page]="paginator.page"
+                (updateVista)="updateVista($event.movie, $event.vista, $event.page)">
+            </app-favoritos-card>
+          </ng-container>
+        </div>
+      </div>
+  </div>
+
+  <app-paginator
+    *ngIf="paginator"
+    [activePage]="paginator.page"
+    [totalPages]="paginator.total_pages"
+    (pageChange)="loadUserFavs($event)">
+  </app-paginator>
+</ng-container>
+
+

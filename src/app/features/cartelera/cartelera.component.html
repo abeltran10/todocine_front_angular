@@ -1,0 +1,34 @@
+<app-navigation-bar
+  [user]="usuario"
+  (error)="errorMessage = $event">
+</app-navigation-bar>
+
+<app-notification
+  [successMessage]="successMessage"
+  [errorMessage]="errorMessage">
+</app-notification>
+
+<app-header [title]="title"></app-header>
+
+<ng-container *ngIf="movies$ | async as paginator">
+    <div class="container-md" *ngIf="paginator">
+      <div class="row mb-3" *ngFor="let row of buildRows(paginator)">
+        <div class="card-group">
+          <ng-container *ngFor="let movie of row">
+            <app-movie-card
+              *ngIf="movie"
+              [movie]="movie">
+            </app-movie-card>
+          </ng-container>
+
+        </div>
+      </div>
+    </div>
+
+    <app-paginator
+      *ngIf="paginator"
+      [activePage]="paginator.page"
+      [totalPages]="paginator.total_pages"
+      (pageChange)="loadCartelera(region, $event)">
+    </app-paginator>
+</ng-container>

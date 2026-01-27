@@ -1,0 +1,18 @@
+<app-navigation-bar
+  [user]="usuario"
+  (error)="errorMessage = $event">
+</app-navigation-bar>
+
+<app-header [title]="title"></app-header>
+
+<div class="container-md">
+  <div class="row mb-3" *ngFor="let row of rows">
+    <div class="card-group">
+      <app-anyos
+        *ngFor="let anyo of row"
+        [premioCod]="award.id"
+        [premioAnyo]="anyo">
+      </app-anyos>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+<app-navigation-bar
+  [user]="usuario"
+  (error)="setErrorMessage($event)">
+</app-navigation-bar>
+
+<app-notification
+  [successMessage]="(successMessage$ | async) ?? ''"
+  [errorMessage]="(errorMessage$ | async) ?? ''">
+</app-notification>
+
+<app-header [title]="title"></app-header>
+
+<app-profile-form
+  [usuario]="usuario"
+  (updateUser)="updateUser($event.username, $event.password, $event.passConfirm)">
+</app-profile-form>

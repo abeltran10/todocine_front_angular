@@ -1,0 +1,11 @@
+<app-notification
+      [successMessage]="successMessage"
+      [errorMessage]="(errorMessage$ | async) ?? ''">
+</app-notification>
+
+<app-header [title]="title"></app-header>
+
+<app-login-form
+   (login)="login($event)"
+   (crearCuenta)="crearCuenta()">
+</app-login-form>

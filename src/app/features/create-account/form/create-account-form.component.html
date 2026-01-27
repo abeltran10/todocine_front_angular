@@ -1,0 +1,60 @@
+<div class="container-md">
+  <div class="row">
+    <div class="col">
+      <form (ngSubmit)="submit()">
+
+        <div class="mb-3">
+          <label class="form-label">Username</label>
+          <input
+            type="text"
+            class="form-control"
+            name="username"
+            [(ngModel)]="username"
+            placeholder="Username"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            name="password"
+            [(ngModel)]="password"
+            placeholder="Password"
+            required
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Confirm Password</label>
+          <input
+            type="password"
+            class="form-control"
+            name="passConfirm"
+            [(ngModel)]="passConfirm"
+            placeholder="Confirm Password"
+            required
+          />
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+          Crear cuenta
+        </button>
+
+      </form>
+    </div>
+  </div>
+
+  <br />
+  <br />
+
+  <div class="row" *ngIf="passwordsDontMatch">
+    <div class="col">
+      <div class="card bg-warning p-2">
+        Las contraseñas no coinciden
+      </div>
+    </div>
+  </div>
+</div>

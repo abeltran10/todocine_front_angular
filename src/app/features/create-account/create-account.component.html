@@ -1,0 +1,10 @@
+<app-notification
+  [successMessage]="(successMessage$ | async) ?? ''"
+  [errorMessage]="(errorMessage$ | async) ?? ''">
+</app-notification>
+
+<app-header [title]="title"></app-header>
+
+<app-create-account-form
+  (createUser)="createUser($event.username, $event.password)">
+</app-create-account-form>

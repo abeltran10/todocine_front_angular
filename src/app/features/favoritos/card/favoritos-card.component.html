@@ -1,0 +1,36 @@
+<div class="card" style="width: 27rem">
+  <img
+    class="card-img-top"
+    [src]="img"
+    alt="poster"
+  />
+
+  <div class="card-body">
+    <h5 class="card-title">
+      {{ movie.title }} {{ releaseDate }}
+    </h5>
+
+    <p class="card-text">
+      {{ movie.overview }}
+    </p>
+
+    <div class="form-check form-switch mb-3">
+      <input
+        class="form-check-input"
+        type="checkbox"
+        role="switch"
+        [checked]="isVista"
+        (change)="handleVista()"
+      />
+      <label class="form-check-label">
+        Vista
+      </label>
+    </div>
+
+    <button
+      class="btn btn-primary detalleButton"
+      (click)="handleLoadMovieDetail()">
+      Detalle
+    </button>
+  </div>
+</div>
