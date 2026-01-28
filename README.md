@@ -7,6 +7,9 @@
 <img width="1356" height="927" alt="Captura desde 2026-01-27 16-25-22" src="https://github.com/user-attachments/assets/6d7a6772-c00b-4f01-9ba8-2e8c86e3259e" />
 <img width="1356" height="927" alt="Captura desde 2026-01-27 16-25-37" src="https://github.com/user-attachments/assets/df1eb23e-37b1-4b10-9dac-0bcbad0599e1" />
 
+## Last release
+
+- [v1.0.0](https://github.com/abeltran10/todocine_front_angular/releases/tag/v1.0.0)
 
 
 
