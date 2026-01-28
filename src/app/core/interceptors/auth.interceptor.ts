@@ -27,7 +27,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         localStorage.removeItem('loggedUserToken');
         localStorage.removeItem('loggedUser');
         
-        router.navigate(['/app']);
+        router.createUrlTree(['/app']);
       }
       return throwError(() => error);
     })
