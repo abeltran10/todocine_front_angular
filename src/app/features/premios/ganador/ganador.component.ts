@@ -8,7 +8,8 @@ import { Ganador } from '../../../core/models/ganador.model';
   selector: 'app-ganador',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './ganador.component.html'
+  templateUrl: './ganador.component.html',
+  styleUrl: '/ganador.component.css'
 })
 export class GanadorComponent {
 
