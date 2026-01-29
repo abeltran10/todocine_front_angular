@@ -9,7 +9,8 @@ import { Cine } from '../../../core/enum/cines';
   selector: 'app-cartelera-card',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './cartelera-card.component.html'
+  templateUrl: './cartelera-card.component.html',
+  styleUrl: '/cartelera-card.component.css'
 })
 export class CarteleraCardComponent {
 

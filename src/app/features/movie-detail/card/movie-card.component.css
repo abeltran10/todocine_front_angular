@@ -1,0 +1,12 @@
+.line-clamp {
+  /* Propiedad estándar (para el futuro) */
+  line-clamp: 4; 
+
+  /* Propiedades necesarias para compatibilidad actual */
+  display: -webkit-box;
+  -webkit-line-clamp: 4; 
+  -webkit-box-orient: vertical;  
+  
+  /* Corte de seguridad */
+  overflow: hidden;
+}
