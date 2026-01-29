@@ -10,7 +10,7 @@ export interface LoginCredentials {
 @Injectable({ providedIn: 'root' })
 export class LoginService {
 
-  private baseUrl = '/app/login';
+  private baseUrl = '/api/login';
 
   constructor(private http: HttpClient) {}
 

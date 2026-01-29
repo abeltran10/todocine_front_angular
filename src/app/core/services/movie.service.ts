@@ -11,7 +11,7 @@ import { Paginator } from '../models/paginator.model';
 })
 export class MovieService {
 
-  private baseUrl = '/app/movies';
+  private baseUrl = '/api/movies';
 
   constructor(private http: HttpClient) {}
 
