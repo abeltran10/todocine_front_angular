@@ -3,18 +3,19 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { Movie } from '../../../core/models/movie.model';
-
+import { Cine } from '../../../core/enum/cines';
 
 @Component({
-  selector: 'app-movie-card',
+  selector: 'app-cartelera-card',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './movie-card.component.html',
-  styleUrl: '/movie-card.component.css'
+  templateUrl: './cartelera-card.component.html',
+  styleUrl: '/cartelera-card.component.css'
 })
-export class MovieCardComponent {
+export class CarteleraCardComponent {
 
   @Input() movie: Movie | null = null;
+  @Input() cines: Cine[] | null = null;
 
 
   constructor(private router: Router) {}
@@ -32,4 +33,6 @@ export class MovieCardComponent {
   goToDetail() {
     this.router.navigate(['/app/moviedetail', this.movie?.id]);
   }
+    
+
 }

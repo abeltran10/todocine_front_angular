@@ -15,10 +15,11 @@
       <div class="row mb-3" *ngFor="let row of buildRows(paginator)">
         <div class="card-group">
           <ng-container *ngFor="let movie of row">
-            <app-movie-card
+            <app-cartelera-card
               *ngIf="movie"
-              [movie]="movie">
-            </app-movie-card>
+              [movie]="movie"
+              [cines]="cines">
+            </app-cartelera-card>
           </ng-container>
 
         </div>
@@ -32,3 +33,38 @@
       (pageChange)="loadCartelera(region, $event)">
     </app-paginator>
 </ng-container>
+
+
+<div class="modal fade" id="cineModal" tabindex="-1" aria-labelledby="cineModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="cineModalLabel">Ver en cines</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Selecciona una cadena de cine para ver horarios:</p>
+        
+        <select class="form-select" [(ngModel)]="selectedCineUrl">
+          <option value="" disabled selected>Selecciona un cine...</option>
+          <option *ngFor="let cine of cines" [value]="cine.url">
+            {{ cine.name }}
+          </option>
+        </select>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="selectedCineUrl=''">Cerrar</button>
+        
+        <button 
+          type="button" 
+          class="btn"
+          style="background-color: #6f42c1; border-color: #6f42c1;" 
+          (click)="goToCine()" 
+          [disabled]="!selectedCineUrl">
+          Ir al cine
+          <i class="bi bi-box-arrow-up-right"></i>
+        </button>
+      </div>
+  </div>
+</div>

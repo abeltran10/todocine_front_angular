@@ -10,7 +10,7 @@ import { MovieDetail } from '../models/movieDetail.model';
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
-  private baseUrl = '/app/usuarios';
+  private baseUrl = '/api/usuarios';
 
   constructor(private http: HttpClient) {}
 

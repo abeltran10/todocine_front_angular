@@ -10,7 +10,7 @@ import { Ganador } from '../models/ganador.model';
 })
 export class PremioService {
 
-  private readonly baseUrl = '/app/premios';
+  private readonly baseUrl = '/api/premios';
 
   constructor(private http: HttpClient) {}
 

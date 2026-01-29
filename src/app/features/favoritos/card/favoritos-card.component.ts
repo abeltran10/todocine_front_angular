@@ -8,8 +8,9 @@ import { MovieDetail } from '../../../core/models/movieDetail.model';
   selector: 'app-favoritos-card',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './favoritos-card.component.html'
-})
+  templateUrl: './favoritos-card.component.html',
+  styleUrl: '/favoritos-card.component.css'
+ })
 export class FavoritosCardComponent {
 
   @Input() movie!: MovieDetail;

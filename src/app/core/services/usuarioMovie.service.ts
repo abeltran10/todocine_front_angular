@@ -10,7 +10,7 @@ import { MovieDetail } from '../models/movieDetail.model';
 })
 export class UsuarioMovieService {
 
-  private readonly baseUrl = '/app/usuarios';
+  private readonly baseUrl = '/api/usuarios';
 
   constructor(private http: HttpClient) {}
 

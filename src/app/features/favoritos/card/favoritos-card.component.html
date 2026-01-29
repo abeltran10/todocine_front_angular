@@ -1,16 +1,16 @@
-<div class="card" style="width: 27rem">
+<div class="card" style="width: 27rem; height: 60rem;">
   <img
     class="card-img-top"
     [src]="img"
     alt="poster"
   />
 
-  <div class="card-body">
+  <div class="card-body d-flex flex-column">
     <h5 class="card-title">
       {{ movie.title }} {{ releaseDate }}
     </h5>
 
-    <p class="card-text">
+    <p class="card-text line-clamp">
       {{ movie.overview }}
     </p>
 
@@ -22,15 +22,18 @@
         [checked]="isVista"
         (change)="handleVista()"
       />
+
       <label class="form-check-label">
         Vista
       </label>
     </div>
 
-    <button
-      class="btn btn-primary detalleButton"
-      (click)="handleLoadMovieDetail()">
-      Detalle
-    </button>
+    <div class="mt-auto d-flex justify-content-start">
+      <button
+        class="btn btn-primary detalleButton"
+        (click)="handleLoadMovieDetail()">
+        Detalle
+      </button>
+    </div>  
   </div>
 </div>

@@ -10,7 +10,7 @@ export interface LoginCredentials {
 @Injectable({ providedIn: 'root' })
 export class LoginService {
 
-  private baseUrl = '/app/login';
+  private baseUrl = '/api/login';
 
   constructor(private http: HttpClient) {}
 
@@ -31,7 +31,7 @@ export class LoginService {
   // Logout
   async logout() {
     await firstValueFrom(
-      this.http.post('/app/logout', null) // token se añade automáticamente desde el interceptor
+      this.http.post('/api/logout', null) // token se añade automáticamente desde el interceptor
     );
   }
 }

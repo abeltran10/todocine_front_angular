@@ -7,6 +7,6 @@ export const publicGuard: CanActivateFn = () => {
   
   const token = localStorage.getItem('loggedUserToken');
   
-  return token ? router.createUrlTree(['/app/home']) : true;
+  return token ? router.navigate(['/app/home']) : true;
       
 };
