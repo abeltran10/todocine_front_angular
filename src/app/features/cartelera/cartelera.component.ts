@@ -16,7 +16,7 @@ import { CarteleraCardComponent } from './card/cartelera-card.component';
 import { PaginatorComponent } from '../../shared/layout/paginator/paginator.component';
 
 import { Regions, RegionKey, Region } from '../../core/enum/regions';
-import { Cines } from '../../core/enum/cines';
+import { Cine, Cines } from '../../core/enum/cines';
 
 @Component({
   selector: 'app-cartelera',
@@ -93,8 +93,7 @@ export class CarteleraComponent implements OnInit {
 
     const rows: (Movie | null)[][] = [];
     const results = movies.results;
-    console.log(results);
-
+    
     for (let i = 0; i < results.length; i += 3) {
       const row: (Movie | null)[] = results.slice(i, i + 3);
 
@@ -109,7 +108,7 @@ export class CarteleraComponent implements OnInit {
   }
 
   get cines() {
-    return Cines.getValues();
+    return Cines.getCinesByRegion(this.region);
   }
 
   goToCine(): void {

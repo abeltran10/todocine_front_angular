@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { Movie } from '../../../core/models/movie.model';
+import { Cine } from '../../../core/enum/cines';
 
 @Component({
   selector: 'app-cartelera-card',
@@ -13,7 +14,7 @@ import { Movie } from '../../../core/models/movie.model';
 export class CarteleraCardComponent {
 
   @Input() movie: Movie | null = null;
-  @Input() region: string | null = null;
+  @Input() cines: Cine[] | null = null;
 
 
   constructor(private router: Router) {}
@@ -30,10 +31,6 @@ export class CarteleraCardComponent {
 
   goToDetail() {
     this.router.navigate(['/app/moviedetail', this.movie?.id]);
-  }
-
-  get isRegionES() {
-    return this.region === 'ES';
   }
     
 
