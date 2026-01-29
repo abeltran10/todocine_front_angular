@@ -11,7 +11,7 @@
 
 - [v1.0.1](https://github.com/abeltran10/todocine_front_angular/releases/tag/v1.0.1)
 
-# COMMANDS
+# Commands
 
 ## Development server
 
