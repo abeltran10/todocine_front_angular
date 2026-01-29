@@ -44,19 +44,4 @@ export class NavigationBarComponent {
     }
   }
 
-  // loadCartelera(region: string) {
-  //   this.router.navigate(['/app/cartelera', region]);
-  // }
-
-  // showPremio(premioId: number) {
-  //   this.router.navigate(['/app/premio', premioId]);
-  // }
-
-  // loadFavoritos() {
-  //   this.router.navigate(['/app/favoritos']);
-  // }
-
-  // loadProfile() {
-  //   this.router.navigate(['/app/profile']);
-  // }
 }
