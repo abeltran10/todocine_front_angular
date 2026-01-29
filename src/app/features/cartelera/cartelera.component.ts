@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Observable, catchError, of } from 'rxjs';
+import { FormsModule } from '@angular/forms';
 
 import { MovieService } from '../../core/services/movie.service';
 import { Movie } from '../../core/models/movie.model';
@@ -11,21 +12,22 @@ import { User } from '../../core/models/user.model';
 import { NavigationBarComponent } from '../../shared/layout/navigation-bar/navigation-bar.component';
 import { NotificationComponent } from '../../shared/common/notification/notification.component';
 import { HeaderComponent } from '../../shared/layout/header/header.component';
-import { MovieCardComponent } from '../movie-detail/card/movie-card.component';
+import { CarteleraCardComponent } from './card/cartelera-card.component';
 import { PaginatorComponent } from '../../shared/layout/paginator/paginator.component';
 
 import { Regions, RegionKey, Region } from '../../core/enum/regions';
-import { Award } from '../../core/enum/awards';
+import { Cines } from '../../core/enum/cines';
 
 @Component({
   selector: 'app-cartelera',
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     NavigationBarComponent,
     NotificationComponent,
     HeaderComponent,
-    MovieCardComponent,
+    CarteleraCardComponent,
     PaginatorComponent
   ],
   templateUrl: './cartelera.component.html'
@@ -41,6 +43,8 @@ export class CarteleraComponent implements OnInit {
 
   successMessage = '';
   errorMessage = '';
+
+  selectedCineUrl: string = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -102,5 +106,18 @@ export class CarteleraComponent implements OnInit {
     }
 
     return rows;
+  }
+
+  get cines() {
+    return Cines.getValues();
+  }
+
+  goToCine(): void {
+    if (this.selectedCineUrl) {
+      window.open(this.selectedCineUrl, '_blank');
+      this.selectedCineUrl = ''
+    } else {
+      alert('Por favor, selecciona un cine primero');
+    }
   }
 }

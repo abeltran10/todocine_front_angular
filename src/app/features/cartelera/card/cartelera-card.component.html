@@ -1,0 +1,33 @@
+<div class="card" style="width: 27rem;">
+  <ng-container *ngIf="movie">
+
+    <img [src]="img" class="card-img-top" />
+
+    <div class="card-body">
+      <h5 class="card-title">
+        {{ movie.title }} {{ releaseDate }}
+      </h5>
+
+      <p class="card-text">
+        {{ movie.overview }}
+      </p>
+
+      <div class="d-flex justify-content-start">
+        <button
+          class="btn btn-primary detalleButton"
+          (click)="goToDetail()">
+          Detalle
+        </button>
+
+        <button
+          *ngIf="isRegionES"
+          class="btn btn-warning ms-2"
+          data-bs-toggle="modal" 
+          data-bs-target="#cineModal">
+          Ver Cines
+        </button>
+      </div>
+    </div>
+
+  </ng-container>
+</div>

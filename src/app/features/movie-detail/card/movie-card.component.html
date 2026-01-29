@@ -1,5 +1,5 @@
 <div class="card" style="width: 27rem;">
-  <ng-container *ngIf="movie; else emptyCard">
+  <ng-container *ngIf="movie">
 
     <img [src]="img" class="card-img-top" />
 
@@ -20,10 +20,5 @@
     </div>
 
   </ng-container>
-
-  <ng-template #emptyCard>
-    <!-- Card vacía para mantener layout -->
-    <div class="card-body">&nbsp;</div>
-  </ng-template>
 </div>
 
