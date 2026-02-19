@@ -1,6 +1,6 @@
 export interface UsuarioMovie {
   usuarioId: number;
-  movieId: string;
+  movieId: number;
   vista: boolean;
   favoritos: boolean;
   voto: number | null;

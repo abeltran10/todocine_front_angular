@@ -26,7 +26,9 @@ import { UsuarioMovie } from '../../core/models/usuarioMovie.model';
 export class MovieDetailComponent implements OnInit {
 
   usuario!: User;
-  movieDetail$!: Observable<MovieDetail | null>;
+
+  private movieDetailSubject = new BehaviorSubject<MovieDetail | null>(null);
+  movieDetail$ = this.movieDetailSubject.asObservable();
 
   messageSuccessSubject = new BehaviorSubject<string>('');
   messageErrorSubject = new BehaviorSubject<string>('');
@@ -43,24 +45,47 @@ export class MovieDetailComponent implements OnInit {
     const loggedUser = localStorage.getItem('loggedUser');
     this.usuario = JSON.parse(loggedUser!);
 
-    const movieId = String(this.route.snapshot.paramMap.get('movieId'));
+    const movieId = Number(this.route.snapshot.paramMap.get('movieId'));
     this.loadMovieDetail(movieId);
   }
 
-  loadMovieDetail(movieId: string) {
-      this.movieDetail$ = this.movieService.getDetailMovieById(movieId)
-          .pipe(
-            catchError(error => {
-              this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
-              return of(null); 
-            })
-          );
+  loadMovieDetail(movieId: number) {
+      this.movieService.getDetailMovieById(movieId)
+        .pipe(
+          catchError(error => {
+            this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
+            return of(null);
+          })
+        )
+        .subscribe(movie => {
+            this.movieDetailSubject.next(movie);
+        });
       
   }
 
   addFavoritos(movie: MovieDetail) {
     this.updateUsuarioMovie(movie, true);
   }
+
+  //removeFavoritos(movie: MovieDetail) {
+    // this.usuarioMovieService.deleteUsuarioMovie(this.usuario.id, movie.id)
+    //     .pipe(
+    //       catchError(error => {
+    //         this.setErrorMessage(error?.error?.message ?? 'Error quitando la película de favoritos');
+    //         return of(null);
+    //       })
+    //     ).subscribe({
+    //       next: () => {
+    //           const currentMovie = this.movieDetailSubject.value;
+    //           if (currentMovie) {
+    //             const movieDetail = { ...currentMovie, favoritos: false }; 
+    //             this.movieDetailSubject.next(movieDetail);
+    //           }
+    //       }
+    //     });
+
+    //     this.setSuccessMessage("Eliminada película de favoritos");
+  //}
 
   removeFavoritos(movie: MovieDetail) {
     this.updateUsuarioMovie(movie, false);
@@ -76,7 +101,7 @@ export class MovieDetailComponent implements OnInit {
         voto: rating
       };
       
-      this.movieDetail$ = this.usuarioMovieService.updateUsuarioMovie(
+      this.usuarioMovieService.updateUsuarioMovie(
                 this.usuario.id,
                 movie.id,
                 payload
@@ -85,7 +110,9 @@ export class MovieDetailComponent implements OnInit {
                      this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
                      return of(null);
                 })
-              );      
+              ).subscribe(movie => {
+                  this.movieDetailSubject.next(movie);
+              });      
     }
 
   updateUsuarioMovie(
@@ -101,18 +128,20 @@ export class MovieDetailComponent implements OnInit {
       };
 
      
-      this.movieDetail$ = this.usuarioMovieService.updateUsuarioMovie(
+      this.usuarioMovieService.updateUsuarioMovie(
             this.usuario.id,
             movie.id,
             usuarioMovie
       ).pipe(
-        catchError(error => {
-            this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
-            return of(null)
-        })
-      ); 
+            catchError(error => {
+                     this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
+                     return of(null);
+                })
+      ).subscribe(movie => {
+                  this.movieDetailSubject.next(movie);
+        });   
       
-      this.setSuccessMessage(favoritos ? "Añadida película a favoritos" : "Eliminada película de favoritos")
+      this.setSuccessMessage(favoritos ? "Añadida película a favoritos" : "Eliminada película de favoritos");
   }
 
   setErrorMessage(message: string) {

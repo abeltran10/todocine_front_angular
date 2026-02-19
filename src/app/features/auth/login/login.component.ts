@@ -52,7 +52,7 @@ export class LoginComponent {
       );
 
       this.router.navigate(['/app/home'], {
-        state: { successMessage: 'Inicio de sesión exitoso' }
+        state: { successMessage: 'Sesión iniciada con exito' }
       });
 
     } catch (error) {

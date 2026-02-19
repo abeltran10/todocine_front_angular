@@ -28,7 +28,7 @@ export class MovieService {
   }
 
   // Detalle de una película
-  getDetailMovieById(id: string): Observable<MovieDetail> {
+  getDetailMovieById(id: number): Observable<MovieDetail> {
      return this.http.get<MovieDetail>(`${this.baseUrl}/${id}`)
         .pipe(catchError(err => {
           return throwError(() => err)
