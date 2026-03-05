@@ -29,10 +29,9 @@ export class MovieDetailComponent implements OnInit {
 
   usuario!: User;
 
+  //Se hace así para evitar un parpadeo en la pantalla trás modificar la movie
   private movieDetailSubject = new BehaviorSubject<MovieDetail | null>(null);
   movieDetail$ = this.movieDetailSubject.asObservable();
-
-  //movieDetail$!: Observable<MovieDetail | null>;
 
   messageSuccessSubject = new BehaviorSubject<string>('');
   messageErrorSubject = new BehaviorSubject<string>('');
