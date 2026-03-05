@@ -45,6 +45,9 @@
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" [routerLink]="['/app/profile']">Perfil</a></li>
             <li><a class="dropdown-item" [routerLink]="['/app/favoritos']">Favoritos</a></li>
+            <ng-container *ngIf="user.rol === 'ADMIN'">
+                <li><a class="dropdown-item" [routerLink]="['/app/ganador']">Ganador</a></li>
+            </ng-container>            
             <li><a class="dropdown-item" role="button" (click)="logout()">Log out</a></li>
           </ul>
         </li>

@@ -7,7 +7,7 @@ export interface Award {
 }
 
 const AWARDS: Record<AwardKey, Award> = {
-   1: {id: 1, award: 'Goya', anyos: [2024, 2025]},
+   1: {id: 1, award: 'Goya', anyos: [2024, 2025, 2026]},
    2: {id: 2, award: 'Globos de oro', anyos: [2026]}
 };
 

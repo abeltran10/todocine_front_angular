@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { MovieDetail } from '../../../core/models/movieDetail.model';
+import { User } from '../../../core/models/user.model';
 
 @Component({
   selector: 'app-movie',
@@ -14,11 +15,11 @@ import { MovieDetail } from '../../../core/models/movieDetail.model';
 export class MovieComponent {
 
   @Input() movieDetail!: MovieDetail;
-
+ 
   @Output() addFavoritos = new EventEmitter<MovieDetail>();
   @Output() removeFavoritos = new EventEmitter<MovieDetail>();
   @Output() addVote = new EventEmitter<{ movie: MovieDetail; rating: number }>();
-
+  
   constructor(private sanitizer: DomSanitizer) {}
 
 

@@ -16,7 +16,7 @@ export class UsuarioMovieService {
 
   updateUsuarioMovie(
     userId: number,
-    movieId: string,
+    movieId: number,
     usuarioMovie: UsuarioMovie
   ): Observable<MovieDetail> {
 
@@ -26,7 +26,16 @@ export class UsuarioMovieService {
       ).pipe(
         catchError(err => {
           return throwError(() => err);
-      }))
+      }));
    
   }
+
+  // deleteUsuarioMovie(userId: number, movieId: number): Observable<any> {
+  //   return this.http.delete<any>(`${this.baseUrl}/${userId}/movies/${movieId}`)
+  //                                   .pipe(
+  //                                     catchError(err => {
+  //                                       return throwError(() => err);
+  //                                     })
+  //                                   );
+  // }
 }

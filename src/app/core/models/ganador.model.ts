@@ -10,7 +10,7 @@ export interface Ganador {
 
    anyo: number;
 
-   movieId: string;
+   movieId: number;
 
    original_title: string;
 

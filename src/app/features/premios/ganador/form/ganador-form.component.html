@@ -1,0 +1,143 @@
+<app-navigation-bar
+  [user]="usuario"
+  (error)="setErrorMessage($event)">
+</app-navigation-bar>
+
+<app-notification
+  [successMessage]="(successMessage$ | async) ?? ''"
+  [errorMessage]="(errorMessage$ | async) ?? ''">
+</app-notification>
+
+<app-header [title]="title"></app-header>
+
+<div class="container mt-4">
+  <form #ganadorForm="ngForm" (ngSubmit)="onSubmit()">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label">Premio</label>
+        <select class="form-select" name="awardId" [(ngModel)]="ganador.premioId" required>
+          <option value="" selected disabled>Selecciona un premio...</option>
+          <option *ngFor="let premio of awards" [value]="premio.id">
+            {{ premio.award }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Año</label>
+        <select class="form-select" name="anyo" [(ngModel)]="ganador.anyo" required>
+          <option value="" selected disabled>Selecciona un año...</option>
+          <option *ngFor="let anyo of anyos" [value]="anyo">
+            {{ anyo }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Categoría</label>
+        <select class="form-select" name="categoriaId" [(ngModel)]="ganador.categoriaId" required>
+          <option value="" selected disabled>Selecciona categoría...</option>
+          <option *ngFor="let cat of categorias$ | async" [value]="cat.id">
+            {{ cat.nombre }}
+          </option>
+        </select>
+      </div>
+
+      <div class="col-md-4">
+        <label class="form-label">Película seleccionada</label>
+        <div class="input-group">
+          <input type="text" class="form-control" readonly 
+                 [value]="selectedMovieText" 
+                 placeholder="Ninguna película seleccionada">
+
+          <input type="hidden" name="movieId" [(ngModel)]="ganador.movieId" required>
+
+          <button class="btn btn-outline-primary" type="button" 
+                  data-bs-toggle="modal" data-bs-target="#movieModal">
+            <i class="bi bi-search"></i> Buscar
+          </button>
+        </div>
+      </div>
+      <div class="col-12 text-end">
+        <button type="submit" class="btn btn-primary" [disabled]="ganadorForm.invalid">
+          Guardar Ganador
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true" #movieModal>
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content"> <div class="modal-header">
+        <h5 class="modal-title">Buscador de Películas</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" [(ngModel)]="searchText"
+                 placeholder="Escribe el nombre de la película..."
+                 (keyup.enter)="searchMovies(searchText)">
+          <button class="btn btn-primary" (click)="searchMovies(searchText)">
+            Buscar
+          </button>
+        </div>
+
+        <ng-container *ngIf="movies$ | async as paginator">
+          <div class="table-responsive" style="max-height: 350px;">
+            <table class="table table-hover border">
+              <thead class="table-light">
+                <tr>
+                  <th>ID</th>
+                  <th>Título</th>
+                  <th>Fecha Lanzamiento</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let movie of paginator.results" 
+                    (click)="selectMovie(movie)" 
+                    data-bs-dismiss="modal" 
+                    style="cursor: pointer;">
+                  <td>{{ movie.id }}</td>
+                  <td><strong>{{ movie.title }}</strong></td>
+                  <td>{{ movie.release_date }}</td>
+                </tr>
+                <tr *ngIf="paginator.results.length === 0">
+                  <td colspan="3" class="text-center text-muted py-3">No se encontraron películas.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="d-flex justify-content-between align-items-center mt-3">
+            <small class="text-muted">
+              Página <strong>{{ paginator.page }}</strong> de {{ paginator.total_pages }}
+            </small>
+            
+            <nav>
+              <ul class="pagination pagination-sm mb-0">
+                <li class="page-item" [class.disabled]="paginator.page === 1">
+                  <button class="btn btn-sm btn-outline-secondary me-1" 
+                          (click)="searchMovies(paramSearch, paginator.page - 1)">
+                    Anterior
+                  </button>
+                </li>
+                <li class="page-item" [class.disabled]="paginator.page === paginator.total_pages">
+                  <button class="btn btn-sm btn-outline-secondary" 
+                          (click)="searchMovies(paramSearch, paginator.page + 1)">
+                    Siguiente
+                  </button>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </ng-container>
+
+        <div *ngIf="!(movies$ | async)" class="text-center text-muted py-4">
+          <i class="bi bi-info-circle"></i> Realiza una búsqueda para ver resultados.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

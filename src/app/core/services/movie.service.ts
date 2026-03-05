@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 import { Movie } from '../models/movie.model';
 import { MovieDetail } from '../models/movieDetail.model';
@@ -28,7 +29,7 @@ export class MovieService {
   }
 
   // Detalle de una película
-  getDetailMovieById(id: string): Observable<MovieDetail> {
+  getDetailMovieById(id: number): Observable<MovieDetail> {
      return this.http.get<MovieDetail>(`${this.baseUrl}/${id}`)
         .pipe(catchError(err => {
           return throwError(() => err)
@@ -47,4 +48,12 @@ export class MovieService {
           );
     
   }
+
+  //Insertar película
+  async insertMovie(movie: Movie): Promise<Movie> {
+    const response = await firstValueFrom(
+         this.http.post<Movie>(this.baseUrl, movie)
+       );
+       return response;
+    }
 }

@@ -7,12 +7,20 @@ import {User} from '../models/user.model';
 import { Paginator } from '../models/paginator.model';
 import { MovieDetail } from '../models/movieDetail.model';
 
+interface Credentials {
+    username: string;
+    password: string;
+  
+}
+
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
   private baseUrl = '/api/usuarios';
 
   constructor(private http: HttpClient) {}
+
+  
 
   getUser(id: number): Observable<User> {
     return this.http.get<User>(`${this.baseUrl}/${id}`).pipe(
@@ -32,7 +40,7 @@ export class UserService {
   }
 
   // Crear usuario
-  async createUser(credentials: Partial<User>): Promise<User> {
+  async createUser(credentials: Credentials): Promise<User> {
     const response = await firstValueFrom(
       this.http.post<User>(this.baseUrl, credentials)
     );
