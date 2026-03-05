@@ -32,6 +32,8 @@ export class MovieDetailComponent implements OnInit {
   private movieDetailSubject = new BehaviorSubject<MovieDetail | null>(null);
   movieDetail$ = this.movieDetailSubject.asObservable();
 
+  //movieDetail$!: Observable<MovieDetail | null>;
+
   messageSuccessSubject = new BehaviorSubject<string>('');
   messageErrorSubject = new BehaviorSubject<string>('');
   successMessage$ = this.messageSuccessSubject.asObservable();
@@ -51,19 +53,19 @@ export class MovieDetailComponent implements OnInit {
     this.loadMovieDetail(movieId);
   }
 
-  loadMovieDetail(movieId: number) {
-      this.movieService.getDetailMovieById(movieId)
-        .pipe(
-          catchError(error => {
-            this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
-            return of(null);
-          })
-        )
-        .subscribe(movie => {
-            this.movieDetailSubject.next(movie);
-        });
+   loadMovieDetail(movieId: number) {
+       this.movieService.getDetailMovieById(movieId)
+         .pipe(
+           catchError(error => {
+             this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
+             return of(null);
+           })
+         )
+         .subscribe(movie => {
+             this.movieDetailSubject.next(movie);
+          });
       
-  }
+    }
 
   addFavoritos(movie: MovieDetail) {
     this.updateUsuarioMovie(movie, true);
@@ -113,8 +115,8 @@ export class MovieDetailComponent implements OnInit {
                      return of(null);
                 })
               ).subscribe(movie => {
-                  this.movieDetailSubject.next(movie);
-              });      
+                    this.movieDetailSubject.next(movie);
+              });
     }
 
   updateUsuarioMovie(
@@ -140,39 +142,10 @@ export class MovieDetailComponent implements OnInit {
                      return of(null);
                 })
       ).subscribe(movie => {
-                  this.movieDetailSubject.next(movie);
-        });   
+                    this.movieDetailSubject.next(movie);
+              });   
       
       this.setSuccessMessage(favoritos ? "Añadida película a favoritos" : "Eliminada película de favoritos");
-  }
-
-  async insertMovie(movieDetail: MovieDetail) {
-    const movie: Movie = {
-            id: movieDetail.id,
-            original_title: movieDetail.original_title,
-            title: movieDetail.title,
-            poster_path: movieDetail.poster_path,
-            overview: movieDetail.overview,
-            release_date: movieDetail.release_date,
-            popularity: movieDetail.popularity,
-            vote_count: movieDetail.vote_count,
-            vote_average: movieDetail.vote_average,
-            genres: movieDetail.genres,
-            original_language: movieDetail.original_language,
-            videos: movieDetail.videos, 
-            total_votos_TC: movieDetail.total_votos_TC,
-            votos_media_TC: movieDetail.votos_media_TC
-    }
-
-    try {
-        const response: Movie = await this.movieService.insertMovie(movie);
-        
-        this.setSuccessMessage("Película insertada correctamente");
-    } catch (error: any) {
-        this.setErrorMessage(error?.error?.message ?? 'Error al insertar la película');
-    }
-      
-    
   }
 
   setErrorMessage(message: string) {

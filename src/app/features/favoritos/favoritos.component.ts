@@ -41,7 +41,7 @@ export class FavoritosComponent implements OnInit {
   successMessage$ = this.messageSuccessSubject.asObservable();
   errorMessage$ = this.messageErrorSubject.asObservable();
 
-  movies$: Observable<Paginator<MovieDetail>>;
+  movies$!: Observable<Paginator<MovieDetail>>;
 
   usuario!: User;
 
@@ -55,21 +55,21 @@ export class FavoritosComponent implements OnInit {
     private userService: UserService,
     private usuarioMovieService: UsuarioMovieService,
   ) {
-    
-    this.movies$ = this.refreshUserFavs.pipe(
-            switchMap(page => this.userService.getUserMovies(
-              this.usuario.id,
-              this.vistaFiltro,
-              this.votadaFiltro,
-              this.order,
-              page
-            )),
-            shareReplay(1),
-            catchError(error => {
-              this.setErrorMessage(error?.error?.message ?? 'Error cargando favoritos');
-              return of({ results: [], page: 1, total_pages: 1, total_results: 0 });
-            })
-    );
+    // Se hace así porque trás actualizar Vista tarda mucho en hacer la llamada a loadUserFavs
+     this.movies$ = this.refreshUserFavs.pipe(
+             switchMap(page => this.userService.getUserMovies(
+               this.usuario.id,
+               this.vistaFiltro,
+               this.votadaFiltro,
+               this.order,
+               page
+             )),
+             shareReplay(1),
+             catchError(error => {
+               this.setErrorMessage(error?.error?.message ?? 'Error cargando favoritos');
+               return of({ results: [], page: 1, total_pages: 1, total_results: 0 });
+             })
+     );
 
   }
 
@@ -86,7 +86,7 @@ export class FavoritosComponent implements OnInit {
 
   
   loadUserFavs(page: number = 1) {
-    this.refreshUserFavs.next(page);
+     this.refreshUserFavs.next(page);
   }
   
   updateVista(movie: MovieDetail, isVista: boolean, page: number) {
@@ -107,11 +107,9 @@ export class FavoritosComponent implements OnInit {
                       this.setErrorMessage(error?.error?.message ?? 'Error actualizando el estado de los favoritos');
                       return of(null);
                   })
-                ).subscribe({
-                  next: () => {
+                ).subscribe(() => {
                       this.loadUserFavs(page);
                     }
-                  }
                 );
 
       this.setSuccessMessage(isVista ? 'Película vista' : 'Película no vista');
