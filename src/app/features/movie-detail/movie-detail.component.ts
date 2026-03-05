@@ -12,6 +12,8 @@ import { MovieComponent } from './movie/movie.component';
 import { MovieDetail } from '../../core/models/movieDetail.model';
 import { User } from '../../core/models/user.model';
 import { UsuarioMovie } from '../../core/models/usuarioMovie.model';
+import { Movie } from '../../core/models/movie.model';
+
 @Component({
   selector: 'app-movie-detail',
   standalone: true,
@@ -142,6 +144,35 @@ export class MovieDetailComponent implements OnInit {
         });   
       
       this.setSuccessMessage(favoritos ? "Añadida película a favoritos" : "Eliminada película de favoritos");
+  }
+
+  async insertMovie(movieDetail: MovieDetail) {
+    const movie: Movie = {
+            id: movieDetail.id,
+            original_title: movieDetail.original_title,
+            title: movieDetail.title,
+            poster_path: movieDetail.poster_path,
+            overview: movieDetail.overview,
+            release_date: movieDetail.release_date,
+            popularity: movieDetail.popularity,
+            vote_count: movieDetail.vote_count,
+            vote_average: movieDetail.vote_average,
+            genres: movieDetail.genres,
+            original_language: movieDetail.original_language,
+            videos: movieDetail.videos, 
+            total_votos_TC: movieDetail.total_votos_TC,
+            votos_media_TC: movieDetail.votos_media_TC
+    }
+
+    try {
+        const response: Movie = await this.movieService.insertMovie(movie);
+        
+        this.setSuccessMessage("Película insertada correctamente");
+    } catch (error: any) {
+        this.setErrorMessage(error?.error?.message ?? 'Error al insertar la película');
+    }
+      
+    
   }
 
   setErrorMessage(message: string) {
