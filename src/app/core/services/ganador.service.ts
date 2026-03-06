@@ -4,8 +4,8 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
 
 import { Paginator } from '../models/paginator.model';
-import { GanadorDetail } from '../models/ganadorDetail.model';
 import { Ganador } from '../models/ganador.model';
+import { GanadorPK } from '../models/ganadorPK.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +20,11 @@ export class GanadorService {
     premioCod: number,
     anyo: number,
     pagina: number
-  ): Observable<Paginator<GanadorDetail>> {
+  ): Observable<Paginator<Ganador>> {
 
     const url = `${this.baseUrl}/${premioCod}/anyos/${anyo}?pagina=${pagina}`;
 
-    return this.http.get<Paginator<GanadorDetail>>(url).pipe(
+    return this.http.get<Paginator<Ganador>>(url).pipe(
       catchError(err => {
         // Puedes loguear o transformar el error aquí
         return throwError(() => err);
@@ -33,7 +33,7 @@ export class GanadorService {
   }
 
     // Crear ganador
-    async createGanador(ganador: Ganador): Promise<Ganador> {
+    async createGanador(ganador: GanadorPK): Promise<Ganador> {
       const response = await firstValueFrom(
         this.http.post<Ganador>(this.baseUrl, ganador)
       );

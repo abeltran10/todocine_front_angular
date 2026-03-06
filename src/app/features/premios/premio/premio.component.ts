@@ -15,7 +15,7 @@ import { GanadorComponent } from '../ganador/ganador.component';
 
 import { User } from '../../../core/models/user.model';
 import { Paginator } from '../../../core/models/paginator.model';
-import { GanadorDetail } from '../../../core/models/ganadorDetail.model';
+import { Ganador } from '../../../core/models/ganador.model';
 
 @Component({
   selector: 'app-premio',
@@ -42,7 +42,7 @@ export class PremioComponent implements OnInit {
 
   title = '';
 
-  ganadores$!: Observable<Paginator<GanadorDetail>>;
+  ganadores$!: Observable<Paginator<Ganador>>;
 
   constructor(
     private route: ActivatedRoute,
@@ -87,14 +87,14 @@ export class PremioComponent implements OnInit {
   }
 
   /** filas de 3 ganadores */
-  buildRows(ganadores: Paginator<GanadorDetail>): (GanadorDetail | null)[][] {
+  buildRows(ganadores: Paginator<Ganador>): (Ganador | null)[][] {
     if (!ganadores) return [];
 
-    const rows: (GanadorDetail | null)[][] = [];
+    const rows: (Ganador | null)[][] = [];
     const results = ganadores.results;
 
     for (let i = 0; i < results.length; i += 3) {
-      const row: (GanadorDetail | null)[] = results.slice(i, i + 3);
+      const row: (Ganador | null)[] = results.slice(i, i + 3);
       while (row.length < 3) {
         row.push(null);
       }

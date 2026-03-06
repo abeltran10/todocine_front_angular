@@ -121,11 +121,11 @@
               </ul>
             </nav>
           </div>
+        
+          <div *ngIf="!(paginator)" class="text-center text-muted py-4">
+            <i class="bi bi-info-circle"></i> Realiza una búsqueda para ver resultados.
+          </div>
         </ng-container>
-
-        <div *ngIf="!(movies$ | async)" class="text-center text-muted py-4">
-          <i class="bi bi-info-circle"></i> Realiza una búsqueda para ver resultados.
-        </div>
       </div>
     </div>
   </div>

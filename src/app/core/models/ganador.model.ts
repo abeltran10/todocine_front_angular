@@ -1,7 +1,47 @@
+import { Genre } from './genre.model';
+import { Video } from './video.model'; 
+   
 export interface Ganador {
-    premioId: number | null;
-    categoriaId: number | null;
-    anyo: number | null;
-    movieId: number | null;
-}
+   premioId: number;
 
+   premio: string;
+
+   categoriaId: number;
+
+   categoria: string;
+
+   anyo: number;
+
+   movieId: number;
+
+   original_title: string;
+
+   title: string;
+
+   poster_path: string;
+
+   overview: string;
+
+   release_date: string;
+
+   popularity: number;
+
+   vote_count: number;
+
+   vote_average: number;
+
+   genres: Genre[];
+
+   original_language: string;
+
+   videos: Video[];
+
+   total_votos_TC: number;
+
+   votos_media_TC: number;
+
+
+
+}   
+   
+   

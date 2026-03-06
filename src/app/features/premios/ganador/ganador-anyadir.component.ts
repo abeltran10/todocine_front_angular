@@ -11,7 +11,7 @@ import { User } from '../../../core/models/user.model';
 
 import { GanadorService } from '../../../core/services/ganador.service';
 
-import { Ganador } from '../../../core/models/ganador.model';
+import { GanadorPK } from '../../../core/models/ganadorPK.model';
 import { GanadorFormComponent } from './form/ganador-form.component';
 
 
@@ -40,7 +40,7 @@ export class GanadorAnyadirComponent implements OnInit{
   messageSuccessSubject = new BehaviorSubject<string>('');
   successMessage$ = this.messageSuccessSubject.asObservable();
 
-  ganador: Ganador = {
+  ganador: GanadorPK = {
     premioId: null,
     categoriaId: null,
     anyo: null,
