@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -7,10 +7,10 @@ import { Observable, catchError, of } from 'rxjs';
 import { Categoria } from '../../../../core/models/categoria.model';
 import { Movie } from '../../../../core/models/movie.model';
 import { Paginator } from '../../../../core/models/paginator.model';
+import { Awards, Award, AwardKey } from '../../../../core/enum/awards';
 
 import { MovieService } from '../../../../core/services/movie.service';
-
-import { Award } from '../../../../core/enum/awards';
+import { CategoriaService } from '../../../../core/services/categoria.service';
 
 
 
@@ -23,11 +23,11 @@ import { Award } from '../../../../core/enum/awards';
   templateUrl: './ganador-form.component.html',
 })
 
-export class GanadorFormComponent {
+export class GanadorFormComponent implements OnInit {
 
-  @Input() awards!: Award[];
-  @Input() categorias!: Categoria[] | null;
-
+  categorias$!: Observable<Categoria[]>;
+  awards!: Award[];
+  
   @Output() enviar = new EventEmitter<{
     premioId: number | null;
     categoriaId: number | null;
@@ -50,9 +50,27 @@ export class GanadorFormComponent {
   paramSearch: string = '';
   selectedMovieText: string = '';
 
-  constructor(private movieService: MovieService) {}
+  constructor(private movieService: MovieService,
+              private categoriaService:CategoriaService
+  ) {}
 
- 
+  ngOnInit(): void {
+     this.loadCategorias();
+
+     this.awards = Awards.getValues();
+  }
+
+  loadCategorias() {
+    this.categorias$ = this.categoriaService
+    .getCategorias()
+    .pipe(
+          catchError(error => {
+             this.error.emit(error?.error?.message ?? 'Error cargando las categorias');
+              return of([]);
+          }) // emiti
+      );
+  }
+
   searchMovies(text: string, pagina: number = 1) {
     this.movies$ = this.movieService.getByName(text, pagina).pipe(
         catchError(error => {
@@ -75,7 +93,7 @@ export class GanadorFormComponent {
 
   handleAward(value: number) {
     this.premioId = value;
-    this.anyos = this.awards[value - 1].anyos;
+    this.anyos = Awards.getAward(this.premioId as AwardKey).anyos;
   }
 
   

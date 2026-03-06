@@ -4,15 +4,13 @@ import { NotificationComponent } from '../../../shared/common/notification/notif
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { CommonModule } from '@angular/common';
 
-import { Observable, catchError, of, BehaviorSubject, timer } from 'rxjs';
+import { BehaviorSubject, timer } from 'rxjs';
 
-import { Categoria } from '../../../core/models/categoria.model';
+
 import { User } from '../../../core/models/user.model';
 
 import { GanadorService } from '../../../core/services/ganador.service';
-import { CategoriaService } from '../../../core/services/categoria.service';
 
-import { Awards, Award } from '../../../core/enum/awards';
 import { Ganador } from '../../../core/models/ganador.model';
 import { GanadorFormComponent } from './form/ganador-form.component';
 
@@ -42,10 +40,6 @@ export class GanadorAnyadirComponent implements OnInit{
   messageSuccessSubject = new BehaviorSubject<string>('');
   successMessage$ = this.messageSuccessSubject.asObservable();
 
-  categorias$!: Observable<Categoria[]>;
-
-  awards!: Award[];
-
   ganador: Ganador = {
     premioId: null,
     categoriaId: null,
@@ -53,8 +47,7 @@ export class GanadorAnyadirComponent implements OnInit{
     movieId: null
   };
 
-  constructor(private ganadorService: GanadorService,
-              private categoriaService: CategoriaService) {}
+  constructor(private ganadorService: GanadorService) {}
 
   ngOnInit(): void {
       // usuario logueado
@@ -63,23 +56,7 @@ export class GanadorAnyadirComponent implements OnInit{
         this.usuario = JSON.parse(loggedUser);
       }
 
-      this.loadCategorias();
-
-      this.awards = Awards.getValues();
-
   }
-
-  loadCategorias() {
-    this.categorias$ = this.categoriaService
-    .getCategorias()
-    .pipe(
-          catchError(error => {
-             this.setErrorMessage(error?.error?.message ?? 'Error cargando las categorias');
-              return of([]);
-          }) // emiti
-      );
-  }
-
   
   async onSubmit(ganador: {
         premioId: number | null;
