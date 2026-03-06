@@ -11,7 +11,6 @@ import { User } from '../../../core/models/user.model';
 
 import { GanadorService } from '../../../core/services/ganador.service';
 
-import { GanadorPK } from '../../../core/models/ganadorPK.model';
 import { GanadorFormComponent } from './form/ganador-form.component';
 
 
@@ -40,13 +39,6 @@ export class GanadorAnyadirComponent implements OnInit{
   messageSuccessSubject = new BehaviorSubject<string>('');
   successMessage$ = this.messageSuccessSubject.asObservable();
 
-  ganador: GanadorPK = {
-    premioId: null,
-    categoriaId: null,
-    anyo: null,
-    movieId: null
-  };
-
   constructor(private ganadorService: GanadorService) {}
 
   ngOnInit(): void {
@@ -64,22 +56,17 @@ export class GanadorAnyadirComponent implements OnInit{
         anyo: number | null;
         movieId: number | null;
   } ) {
-    this.ganador = ganador;
+    
+    if (ganador.premioId && ganador.anyo && ganador.categoriaId && ganador.movieId) {
 
-    if (this.ganador.premioId && this.ganador.anyo && this.ganador.categoriaId && this.ganador.movieId) {
        try {
-          await this.ganadorService.createGanador(this.ganador);
+          await this.ganadorService.createGanador(ganador);
           this.setSuccessMessage("Ganador creado correctamente");
-          
-          this.ganador = {
-            premioId: null,
-            categoriaId: null,
-            anyo: null,
-            movieId: null
-          };
+
        } catch (error: any) {
           this.setErrorMessage(error?.error?.message ?? 'Error guardando el ganador');
        }
+       
     } else {
       alert('Por favor, rellena todos los campos');
     }

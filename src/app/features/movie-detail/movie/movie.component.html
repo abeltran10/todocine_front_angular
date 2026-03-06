@@ -63,8 +63,8 @@
                <i
                   class="fa"
                   [ngClass]="{
-                    'fa-star': star <= (movieDetail.voto ?? 0),
-                    'fa-star-o': star > (movieDetail.voto ?? 0)
+                    'fa-star': star <= (movieDetail.voto),
+                    'fa-star-o': star > (movieDetail.voto)
                   }"
                   (click)="handleVote(star)">
                 </i>  

@@ -5,7 +5,13 @@ import { firstValueFrom } from 'rxjs';
 
 import { Paginator } from '../models/paginator.model';
 import { Ganador } from '../models/ganador.model';
-import { GanadorPK } from '../models/ganadorPK.model';
+
+interface GanadorPK {
+    premioId: number | null;
+    categoriaId: number | null;
+    anyo: number | null;
+    movieId: number | null;
+}
 
 @Injectable({
   providedIn: 'root'
