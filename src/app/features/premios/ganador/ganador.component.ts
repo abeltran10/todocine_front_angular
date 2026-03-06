@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { Ganador } from '../../../core/models/ganador.model';
+import { GanadorDetail } from '../../../core/models/ganadorDetail.model';
 
 @Component({
   selector: 'app-ganador',
@@ -13,7 +13,7 @@ import { Ganador } from '../../../core/models/ganador.model';
 })
 export class GanadorComponent {
 
-  @Input({ required: true }) ganador!: Ganador;
+  @Input({ required: true }) ganador!: GanadorDetail;
 
   constructor(private router: Router) {}
 
