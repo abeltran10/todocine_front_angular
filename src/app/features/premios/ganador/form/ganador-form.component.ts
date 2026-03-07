@@ -10,7 +10,7 @@ import { Paginator } from '../../../../core/models/paginator.model';
 import { Awards, Award, AwardKey } from '../../../../core/enum/awards';
 
 import { MovieService } from '../../../../core/services/movie.service';
-import { CategoriaService } from '../../../../core/services/categoria.service';
+import { PremioService } from '../../../../core/services/premio.service';
 
 
 
@@ -25,7 +25,7 @@ import { CategoriaService } from '../../../../core/services/categoria.service';
 
 export class GanadorFormComponent implements OnInit {
 
-  categorias$!: Observable<Categoria[]>;
+  categorias$!: Observable<Categoria[] | null>;
   awards!: Award[];
   
   @Output() enviar = new EventEmitter<{
@@ -51,18 +51,17 @@ export class GanadorFormComponent implements OnInit {
   selectedMovieText: string = '';
 
   constructor(private movieService: MovieService,
-              private categoriaService:CategoriaService
+              private premioService:PremioService
   ) {}
 
   ngOnInit(): void {
-     this.loadCategorias();
-
      this.awards = Awards.getValues();
+    
   }
 
-  loadCategorias() {
-    this.categorias$ = this.categoriaService
-    .getCategorias()
+  loadCategorias(premioCod: number) {
+    this.categorias$ = this.premioService
+    .getCategorias(premioCod)
     .pipe(
           catchError(error => {
              this.error.emit(error?.error?.message ?? 'Error cargando las categorias');
@@ -94,6 +93,7 @@ export class GanadorFormComponent implements OnInit {
   handleAward(value: number) {
     this.premioId = value;
     this.anyos = Awards.getAward(this.premioId as AwardKey).anyos;
+    this.loadCategorias(this.premioId);
   }
 
   
