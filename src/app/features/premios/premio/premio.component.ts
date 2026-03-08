@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Observable, catchError, of, BehaviorSubject, timer } from 'rxjs';
 
-import { PremioService } from '../../../core/services/premio.service';
+import { GanadorService } from '../../../core/services/ganador.service';
 
 import { Awards, AwardKey } from '../../../core/enum/awards'; 
 
@@ -46,7 +46,7 @@ export class PremioComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private premioService: PremioService
+    private ganadorService: GanadorService
   ) {}
 
   ngOnInit(): void {
@@ -69,7 +69,7 @@ export class PremioComponent implements OnInit {
   }
 
   loadPremio(page: number) {
-    this.ganadores$ = this.premioService.getGanadoresByPremioIdAnyo(
+    this.ganadores$ = this.ganadorService.getGanadoresByPremioIdAnyo(
         this.premioCod,
         this.premioAnyo,
         page
