@@ -6,6 +6,8 @@ export interface Ganador {
 
    premio: string;
 
+   categoriaId: number;
+
    categoria: string;
 
    anyo: number;
@@ -21,24 +23,6 @@ export interface Ganador {
    overview: string;
 
    release_date: string;
-
-   popularity: number;
-
-   vote_count: number;
-
-   vote_average: number;
-
-   genres: Genre[];
-
-   original_language: string;
-
-   videos: Video[];
-
-   total_votos_TC: number;
-
-   votos_media_TC: number;
-
-
 
 }   
    

@@ -16,7 +16,7 @@ import { NavigationBarComponent } from '../../shared/layout/navigation-bar/navig
 import { NotificationComponent } from '../../shared/common/notification/notification.component';
 import { HeaderComponent } from '../../shared/layout/header/header.component';
 import { SearchFormComponent } from './search/search-form.component';
-import { PaginatorComponent } from '../../shared/layout/paginator/paginator.component';
+import { PaginatorComponent } from '../../shared/common/paginator/paginator.component';
 import { MovieCardComponent } from '../movie-detail/card/movie-card.component';
 
 @Component({

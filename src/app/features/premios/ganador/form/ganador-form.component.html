@@ -1,21 +1,9 @@
-<app-navigation-bar
-  [user]="usuario"
-  (error)="setErrorMessage($event)">
-</app-navigation-bar>
-
-<app-notification
-  [successMessage]="(successMessage$ | async) ?? ''"
-  [errorMessage]="(errorMessage$ | async) ?? ''">
-</app-notification>
-
-<app-header [title]="title"></app-header>
-
 <div class="container mt-4">
-  <form #ganadorForm="ngForm" (ngSubmit)="onSubmit()">
+  <form #ganadorForm="ngForm" (ngSubmit)="handleSubmit()">
     <div class="row g-3">
       <div class="col-md-4">
         <label class="form-label">Premio</label>
-        <select class="form-select" name="awardId" [(ngModel)]="ganador.premioId" required>
+        <select class="form-select" name="awardId" [(ngModel)]="premioId" (ngModelChange)="handleAward($event)" required>
           <option value="" selected disabled>Selecciona un premio...</option>
           <option *ngFor="let premio of awards" [value]="premio.id">
             {{ premio.award }}
@@ -25,7 +13,7 @@
 
       <div class="col-md-4">
         <label class="form-label">Año</label>
-        <select class="form-select" name="anyo" [(ngModel)]="ganador.anyo" required>
+        <select class="form-select" name="anyo" [(ngModel)]="anyo" required>
           <option value="" selected disabled>Selecciona un año...</option>
           <option *ngFor="let anyo of anyos" [value]="anyo">
             {{ anyo }}
@@ -35,7 +23,7 @@
 
       <div class="col-md-4">
         <label class="form-label">Categoría</label>
-        <select class="form-select" name="categoriaId" [(ngModel)]="ganador.categoriaId" required>
+        <select class="form-select" name="categoriaId" [(ngModel)]="categoriaId" required>
           <option value="" selected disabled>Selecciona categoría...</option>
           <option *ngFor="let cat of categorias$ | async" [value]="cat.id">
             {{ cat.nombre }}
@@ -50,7 +38,7 @@
                  [value]="selectedMovieText" 
                  placeholder="Ninguna película seleccionada">
 
-          <input type="hidden" name="movieId" [(ngModel)]="ganador.movieId" required>
+          <input type="hidden" name="movieId" [(ngModel)]="movieId" required>
 
           <button class="btn btn-outline-primary" type="button" 
                   data-bs-toggle="modal" data-bs-target="#movieModal">
@@ -119,24 +107,25 @@
               <ul class="pagination pagination-sm mb-0">
                 <li class="page-item" [class.disabled]="paginator.page === 1">
                   <button class="btn btn-sm btn-outline-secondary me-1" 
-                          (click)="searchMovies(paramSearch, paginator.page - 1)">
-                    Anterior
+                          (click)="searchMovies(paramSearch, paginator.page - 1)"
+                          [disabled]="paginator.page === 1"> Anterior
                   </button>
                 </li>
+
                 <li class="page-item" [class.disabled]="paginator.page === paginator.total_pages">
                   <button class="btn btn-sm btn-outline-secondary" 
-                          (click)="searchMovies(paramSearch, paginator.page + 1)">
-                    Siguiente
+                          (click)="searchMovies(paramSearch, paginator.page + 1)"
+                          [disabled]="paginator.page === paginator.total_pages"> Siguiente
                   </button>
                 </li>
               </ul>
             </nav>
           </div>
+        
+          <div *ngIf="!(paginator)" class="text-center text-muted py-4">
+            <i class="bi bi-info-circle"></i> Realiza una búsqueda para ver resultados.
+          </div>
         </ng-container>
-
-        <div *ngIf="!(movies$ | async)" class="text-center text-muted py-4">
-          <i class="bi bi-info-circle"></i> Realiza una búsqueda para ver resultados.
-        </div>
       </div>
     </div>
   </div>

@@ -9,7 +9,7 @@ import { MovieDetailComponent } from './features/movie-detail/movie-detail.compo
 import { FavoritosComponent } from './features/favoritos/favoritos.component';
 import { CreateAccountComponent } from './features/create-account/create-account.component';
 import { CarteleraComponent } from './features/cartelera/cartelera.component';
-import { GanadorFormComponent } from './features/premios/ganador/form/ganador-form.component';
+import { GanadorAnyadirComponent } from './features/premios/ganador/ganador-anyadir.component';
 
 import { authGuard } from './core/guards/auth.guard';
 import { publicGuard } from './core/guards/public.guard';
@@ -24,6 +24,6 @@ export const routes: Routes = [
   { path: 'app/favoritos', component: FavoritosComponent, canActivate: [authGuard] },
   { path: 'app/createaccount', component: CreateAccountComponent, canActivate: [publicGuard] },
   { path: 'app/cartelera/:region', component: CarteleraComponent, canActivate: [authGuard] },
-  { path: 'app/ganador', component: GanadorFormComponent, canActivate: [authGuard], data: {expectedRole: ['ADMIN']} },
+  { path: 'app/ganador', component: GanadorAnyadirComponent, canActivate: [authGuard], data: {expectedRole: ['ADMIN']} },
   { path: '**', redirectTo: 'app' }
 ];

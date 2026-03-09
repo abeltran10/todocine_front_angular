@@ -1,11 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, throwError } from 'rxjs';
 import { firstValueFrom } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 
-import { Paginator } from '../models/paginator.model';
 import { Ganador } from '../models/ganador.model';
-import { GanadorPK } from '../models/ganadorPK.model';
+import { Paginator } from '../models/paginator.model';
+
+interface GanadorPK {
+    premioId: number | null;
+    categoriaId: number | null;
+    anyo: number | null;
+    movieId: number | null;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +28,7 @@ export class GanadorService {
     pagina: number
   ): Observable<Paginator<Ganador>> {
 
-    const url = `${this.baseUrl}/${premioCod}/anyos/${anyo}?pagina=${pagina}`;
+    const url = `${this.baseUrl}?premioId=${premioCod}&anyo=${anyo}&pagina=${pagina}`;
 
     return this.http.get<Paginator<Ganador>>(url).pipe(
       catchError(err => {
@@ -32,11 +38,12 @@ export class GanadorService {
     );
   }
 
-    // Crear ganador
-    async createGanador(ganador: GanadorPK): Promise<Ganador> {
-      const response = await firstValueFrom(
-        this.http.post<Ganador>(this.baseUrl, ganador)
-      );
-      return response;
-    }
+
+  // Crear ganador
+  async createGanador(ganador: GanadorPK): Promise<Ganador> {
+    const response = await firstValueFrom(
+      this.http.post<Ganador>(this.baseUrl, ganador)
+    );
+    return response;
+  }
 }

@@ -49,11 +49,4 @@ export class MovieService {
     
   }
 
-  //Insertar película
-  async insertMovie(movie: Movie): Promise<Movie> {
-    const response = await firstValueFrom(
-         this.http.post<Movie>(this.baseUrl, movie)
-       );
-       return response;
-    }
 }

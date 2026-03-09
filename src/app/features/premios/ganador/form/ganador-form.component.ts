@@ -1,23 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { NavigationBarComponent } from '../../../../shared/layout/navigation-bar/navigation-bar.component';
-import { NotificationComponent } from '../../../../shared/common/notification/notification.component';
-import { HeaderComponent } from '../../../../shared/layout/header/header.component';
 import { CommonModule } from '@angular/common';
 
-import { Observable, map, catchError, of, BehaviorSubject, timer } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 
 import { Categoria } from '../../../../core/models/categoria.model';
-import { User } from '../../../../core/models/user.model';
 import { Movie } from '../../../../core/models/movie.model';
 import { Paginator } from '../../../../core/models/paginator.model';
-
-import { GanadorService } from '../../../../core/services/ganador.service';
-import { CategoriaService } from '../../../../core/services/categoria.service';
-import { MovieService } from '../../../../core/services/movie.service';
-
 import { Awards, Award, AwardKey } from '../../../../core/enum/awards';
-import { GanadorPK } from '../../../../core/models/ganadorPK.model';
+
+import { MovieService } from '../../../../core/services/movie.service';
+import { PremioService } from '../../../../core/services/premio.service';
 
 
 
@@ -25,71 +18,53 @@ import { GanadorPK } from '../../../../core/models/ganadorPK.model';
   selector: 'app-ganador-form',
   standalone: true,
   imports: [FormsModule,
-            CommonModule,
-            NavigationBarComponent,
-            NotificationComponent,
-            HeaderComponent,
+            CommonModule
   ],
   templateUrl: './ganador-form.component.html',
 })
 
-export class GanadorFormComponent implements OnInit{
+export class GanadorFormComponent implements OnInit {
 
-  title = 'AÑADIR GANADOR';
-
-  usuario!: User;
-
-  messageErrorSubject = new BehaviorSubject<string>('');
-  errorMessage$ = this.messageErrorSubject.asObservable();
-
-  messageSuccessSubject = new BehaviorSubject<string>('');
-  successMessage$ = this.messageSuccessSubject.asObservable();
-
-  categorias$!: Observable<Categoria[]>;
-  movies$!: Observable<Paginator<Movie> | null> ;
-
-  paramSearch: string = '';
-  selectedMovieText: string = '';
-  selectedMovieId!: number;
-
+  categorias$!: Observable<Categoria[] | null>;
   awards!: Award[];
+  
+  @Output() enviar = new EventEmitter<{
+    premioId: number | null;
+    categoriaId: number | null;
+    anyo: number | null;
+    movieId: number | null;
+  }>();
 
-  ganador: GanadorPK = {
-    premioId: null,
-    categoriaId: null,
-    anyo: null,
-    movieId: null
-  };
+  @Output() error = new EventEmitter<string>();
 
-  anyos: number[] = [2026];
+  premioId: number | null = null;
+  categoriaId: number | null = null;
+  anyo: number | null = null;
+  movieId: number | null = null;
+
+  movies$!: Observable<Paginator<Movie> | null>;
+
+  anyos!: number[];
 
   searchText: string = '';
+  paramSearch: string = '';
+  selectedMovieText: string = '';
 
-  constructor(private ganadorService: GanadorService,
-              private categoriaService: CategoriaService,
-              private movieService: MovieService,
-
+  constructor(private movieService: MovieService,
+              private premioService:PremioService
   ) {}
 
   ngOnInit(): void {
-      // usuario logueado
-      const loggedUser = localStorage.getItem('loggedUser');
-      if (loggedUser) {
-        this.usuario = JSON.parse(loggedUser);
-      }
-
-      this.loadCategorias();
-
-      this.awards = Awards.getValues();
-
+     this.awards = Awards.getValues();
+    
   }
 
-  loadCategorias() {
-    this.categorias$ = this.categoriaService
-    .getCategorias()
+  loadCategorias(premioCod: number) {
+    this.categorias$ = this.premioService
+    .getCategorias(premioCod)
     .pipe(
           catchError(error => {
-             this.setErrorMessage(error?.error?.message ?? 'Error cargando las categorias');
+             this.error.emit(error?.error?.message ?? 'Error cargando las categorias');
               return of([]);
           }) // emiti
       );
@@ -98,7 +73,7 @@ export class GanadorFormComponent implements OnInit{
   searchMovies(text: string, pagina: number = 1) {
     this.movies$ = this.movieService.getByName(text, pagina).pipe(
         catchError(error => {
-              this.setErrorMessage(error?.error?.message ?? 'Error cargando la busqueda');
+              this.error.emit(error?.error?.message ?? 'Error al cargar las películas');
               return of(null); // emitimos un valor neutro para no romper el stream
             })
       );
@@ -107,7 +82,7 @@ export class GanadorFormComponent implements OnInit{
 
   selectMovie(movie: Movie) {
     this.selectedMovieText = `${movie.title} (${movie.release_date.split('-')[0]})`;
-    this.ganador.movieId = movie.id;
+    this.movieId = movie.id;
 
     this.movies$ = of(null);
 
@@ -115,43 +90,26 @@ export class GanadorFormComponent implements OnInit{
 
   }
 
+  handleAward(value: number) {
+    this.premioId = value;
+    this.anyos = Awards.getAward(this.premioId as AwardKey).anyos;
+    this.loadCategorias(this.premioId);
+  }
+
   
-  async onSubmit() {
-    // Aquí ya tienes todos los datos en this.ganador
-    if (this.ganador.premioId && this.ganador.anyo && this.ganador.categoriaId && this.ganador.movieId) {
-       try {
-          await this.ganadorService.createGanador(this.ganador);
-          this.setSuccessMessage("Ganador creado correctamente");
-          
-          this.ganador = {
-            premioId: null,
-            categoriaId: null,
-            anyo: null,
-            movieId: null
-          };
+  handleSubmit() {
+          this.enviar.emit({
+            premioId: this.premioId,
+            categoriaId: this.categoriaId,
+            anyo: this.anyo,
+            movieId: this.movieId
+          });
 
           this.selectedMovieText = '';
-       } catch (error: any) {
-          this.setErrorMessage(error?.error?.message ?? 'Error guardando el ganador');
-       }
-    } else {
-      alert('Por favor, rellena todos los campos');
-    }
+          this.premioId = null;
+          this.categoriaId = null;
+          this.anyo = null;
+          this.movieId = null;
   }
 
-
-
-  setSuccessMessage(message: string) {
-    this.messageSuccessSubject.next(message);
-
-    // Usamos un timer de RxJS que es más compatible con Angular
-    timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
-  }
-
-  setErrorMessage(message: string) {
-      this.messageErrorSubject.next(message);
-  
-      // Usamos un timer de RxJS que es más compatible con Angular
-      timer(5000).subscribe(() => this.messageErrorSubject.next(''));
-  }
 }

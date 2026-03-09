@@ -13,7 +13,7 @@ import { NavigationBarComponent } from '../../shared/layout/navigation-bar/navig
 import { NotificationComponent } from '../../shared/common/notification/notification.component';
 import { HeaderComponent } from '../../shared/layout/header/header.component';
 import { CarteleraCardComponent } from './card/cartelera-card.component';
-import { PaginatorComponent } from '../../shared/layout/paginator/paginator.component';
+import { PaginatorComponent } from '../../shared/common/paginator/paginator.component';
 
 import { Regions, RegionKey, Region } from '../../core/enum/regions';
 import { Cine, Cines } from '../../core/enum/cines';

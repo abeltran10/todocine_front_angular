@@ -8,20 +8,21 @@ import { Categoria } from '../models/categoria.model';
 @Injectable({
   providedIn: 'root'
 })
-export class CategoriaService {
+export class PremioService {
 
-  private baseUrl = '/api/categorias';
+  private baseUrl = '/api/premios';
 
   constructor(private http: HttpClient) {}
 
   
-  getCategorias(): Observable<Categoria[]> {
+  getCategorias(premioId: number): Observable<Categoria[]> {
     return this.http.get<Categoria[]>(
-      `${this.baseUrl}`
+      `${this.baseUrl}/${premioId}/categorias`
       ).pipe( catchError(err => {
               // Puedes loguear o transformar el error aquí
               return throwError(() => err);
             }));
   }
-    
+
+      
 }
