@@ -4,19 +4,20 @@ This is the web client for the [Todo Cine API](https://github.com/abeltran10/tod
 
 ## Requirements
 
-    Framework: Angular CLI 21.1.0
+Framework: Angular CLI 21.1.0
 
-    Environment: Node.js 24.13.0
+Environment: Node.js 24.13.0
 
-    Styling: Bootstrap 5 & Font Awesome 6 (Icons)
+Styling: Bootstrap 5 & Font Awesome 6 (Icons)
 
-    State Management: Service-based (BehaviorSubjects & Observables)
+State Management: Service-based (BehaviorSubjects & Observables)
 
-    Authentication: JWT (JSON Web Tokens) with automated interceptors
+Authentication: JWT (JSON Web Tokens) with automated interceptors
 
 ## Architecture Pattern
 
 The project follows a Modular Clean Architecture to ensure scalability and separation of concerns:
+
 ### Core Layer (/app/core)
 
 The "brain" of the application. Contains singleton services and universal configurations.
@@ -67,8 +68,9 @@ To build the project run:
 
 ```bash
 npm run build
-
+```
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
 
 ## UI
 
