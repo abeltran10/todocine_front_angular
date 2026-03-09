@@ -10,7 +10,7 @@ import { Awards, AwardKey } from '../../../core/enum/awards';
 import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
 import { NotificationComponent } from '../../../shared/common/notification/notification.component';
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
-import { PaginatorComponent } from '../../../shared/layout/paginator/paginator.component';
+import { PaginatorComponent } from '../../../shared/common/paginator/paginator.component';
 import { GanadorComponent } from '../ganador/ganador.component';
 
 import { User } from '../../../core/models/user.model';
