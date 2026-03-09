@@ -28,7 +28,7 @@ export class GanadorService {
     pagina: number
   ): Observable<Paginator<Ganador>> {
 
-    const url = `${this.baseUrl}?premioId=${premioCod}&anyos=${anyo}&pagina=${pagina}`;
+    const url = `${this.baseUrl}?premioId=${premioCod}&anyo=${anyo}&pagina=${pagina}`;
 
     return this.http.get<Paginator<Ganador>>(url).pipe(
       catchError(err => {
