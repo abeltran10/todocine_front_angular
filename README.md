@@ -22,15 +22,15 @@ The project follows a Modular Clean Architecture to ensure scalability and separ
 
 The "brain" of the application. Contains singleton services and universal configurations.
 
-    /enum: Strongly typed constants for Awards, Cines, and Regions.
+- /enum: Strongly typed constants for Awards, Cines, and Regions.
 
-    /guards: Security layer with AuthGuard (protected routes) and PublicGuard (login/register).
+- /guards: Security layer with AuthGuard (protected routes) and PublicGuard (login/register).
 
-    /interceptors: Automatically injects the JWT Bearer Token into every HTTP request.
+- /interceptors: Automatically injects the JWT Bearer Token into every HTTP request.
 
-    /services: Centralized API communication logic.
+- /services: Centralized API communication logic.
 
-    /models: TypeScript interfaces matching the Backend DTOs.
+- /models: TypeScript interfaces matching the Backend DTOs.
 
 ### Features Layer (/app/features)
 
@@ -40,9 +40,9 @@ Contains the functional modules of the app (e.g., Home, User Profile, Favoritos)
 
 Reusable resources used across multiple features.
 
-    /common: Generic components like notification.
+- /common: Generic components like Notification, Paginator.
 
-    /layout: Global structure components like Navbar, Paginator.
+- /layout: Global structure components like Navbar.
 
 
 ## Last release
