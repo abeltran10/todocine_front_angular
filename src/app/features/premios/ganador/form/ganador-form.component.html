@@ -5,20 +5,15 @@
         <label class="form-label">Premio</label>
         <select class="form-select" name="awardId" [(ngModel)]="premioId" (ngModelChange)="handleAward($event)" required>
           <option value="" selected disabled>Selecciona un premio...</option>
-          <option *ngFor="let premio of awards" [value]="premio.id">
-            {{ premio.award }}
+          <option *ngFor="let premio of (awards$ | async)" [value]="premio.id">
+            {{ premio.titulo }}
           </option>
         </select>
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Año</label>
-        <select class="form-select" name="anyo" [(ngModel)]="anyo" required>
-          <option value="" selected disabled>Selecciona un año...</option>
-          <option *ngFor="let anyo of anyos" [value]="anyo">
-            {{ anyo }}
-          </option>
-        </select>
+        <input type="text" class="form-control" name="anyo" [(ngModel)]="anyo" required>
       </div>
 
       <div class="col-md-4">

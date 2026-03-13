@@ -12,6 +12,7 @@ export class AnyosComponent {
 
   @Input() premioCod!: number;
   @Input() premioAnyo!: number;
+  @Input() premioTitulo!: string;
 
   constructor(private router: Router) {}
 
@@ -20,7 +21,9 @@ export class AnyosComponent {
       '/app/premio',
       this.premioCod,
       'anyo',
-      this.premioAnyo
+      this.premioAnyo,
+      'titulo',
+      this.premioTitulo
     ]);
   }
 }

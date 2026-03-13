@@ -29,9 +29,9 @@
             Premios
           </a>
           <ul class="dropdown-menu">
-            <li *ngFor="let a of awards">
+            <li *ngFor="let a of (awards$ | async)">
               <a class="dropdown-item" [routerLink]="['/app/premio', a.id]">
-                {{ a.award }}
+                {{ a.titulo }}
               </a>
             </li>
           </ul>

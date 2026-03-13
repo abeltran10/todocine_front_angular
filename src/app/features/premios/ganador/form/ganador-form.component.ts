@@ -7,10 +7,10 @@ import { Observable, catchError, of } from 'rxjs';
 import { Categoria } from '../../../../core/models/categoria.model';
 import { Movie } from '../../../../core/models/movie.model';
 import { Paginator } from '../../../../core/models/paginator.model';
-import { Awards, Award, AwardKey } from '../../../../core/enum/awards';
 
 import { MovieService } from '../../../../core/services/movie.service';
 import { PremioService } from '../../../../core/services/premio.service';
+import { Premio } from '../../../../core/models/premio.model';
 
 
 
@@ -26,7 +26,7 @@ import { PremioService } from '../../../../core/services/premio.service';
 export class GanadorFormComponent implements OnInit {
 
   categorias$!: Observable<Categoria[] | null>;
-  awards!: Award[];
+  awards$!: Observable<Premio[]>;
   
   @Output() enviar = new EventEmitter<{
     premioId: number | null;
@@ -44,8 +44,6 @@ export class GanadorFormComponent implements OnInit {
 
   movies$!: Observable<Paginator<Movie> | null>;
 
-  anyos!: number[];
-
   searchText: string = '';
   paramSearch: string = '';
   selectedMovieText: string = '';
@@ -55,7 +53,12 @@ export class GanadorFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-     this.awards = Awards.getValues();
+     this.awards$ = this.premioService.getPremios().pipe(
+          catchError(error => {
+             this.error.emit(error?.error?.message ?? 'Error cargando los premios');
+              return of([]);
+          }) // emiti
+     );
     
   }
 
@@ -92,7 +95,6 @@ export class GanadorFormComponent implements OnInit {
 
   handleAward(value: number) {
     this.premioId = value;
-    this.anyos = Awards.getAward(this.premioId as AwardKey).anyos;
     this.loadCategorias(this.premioId);
   }
 

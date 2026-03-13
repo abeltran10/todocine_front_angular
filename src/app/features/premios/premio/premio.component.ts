@@ -5,8 +5,6 @@ import { Observable, catchError, of, BehaviorSubject, timer } from 'rxjs';
 
 import { GanadorService } from '../../../core/services/ganador.service';
 
-import { Awards, AwardKey } from '../../../core/enum/awards'; 
-
 import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
 import { NotificationComponent } from '../../../shared/common/notification/notification.component';
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
@@ -60,9 +58,7 @@ export class PremioComponent implements OnInit {
     this.route.paramMap.subscribe(params => {
       this.premioCod = Number(params.get('premioCod'));
       this.premioAnyo = Number(params.get('premioAnyo'));
-
-      const award = Awards.getAward(this.premioCod as AwardKey);
-      this.title = `${award.award.toUpperCase()} ${this.premioAnyo}`;
+      this.title = `${String(params.get('premioTitulo')).toUpperCase()} ${this.premioAnyo}`;
 
       this.loadPremio(1);
     });
