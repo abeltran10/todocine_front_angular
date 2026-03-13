@@ -1,18 +1,29 @@
 <app-navigation-bar
   [user]="usuario"
-  (error)="errorMessage = $event">
+  (error)="setErrorMessage($event)">
 </app-navigation-bar>
 
-<app-header [title]="title"></app-header>
+<app-notification
+  [successMessage]="''"
+  [errorMessage]="(errorMessage$ | async) ?? ''">
+</app-notification>
 
-<div class="container-md">
-  <div class="row mb-3" *ngFor="let row of rows">
-    <div class="card-group">
-      <app-anyos
-        *ngFor="let anyo of row"
-        [premioCod]="award.id"
-        [premioAnyo]="anyo">
-      </app-anyos>
+<ng-container *ngIf="award$ | async as award">
+  <app-header [title]="award.titulo | uppercase"></app-header>
+
+  <div class="container-md">
+    <div class="row mb-3" *ngFor="let row of rows">
+      <div class="card-group">
+        <app-anyos
+          *ngFor="let anyo of row"
+          [premioCod]="award.id"
+          [premioAnyo]="anyo"
+          [premioTitulo]="award.titulo">
+        </app-anyos>
+      </div>
     </div>
   </div>
-</div>
+  
+</ng-container>
+
+
