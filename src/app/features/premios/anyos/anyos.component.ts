@@ -21,9 +21,7 @@ export class AnyosComponent {
       '/app/premio',
       this.premioCod,
       'anyo',
-      this.premioAnyo,
-      'titulo',
-      this.premioTitulo
+      this.premioAnyo
     ]);
   }
 }

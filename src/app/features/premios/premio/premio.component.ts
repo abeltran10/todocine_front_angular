@@ -14,6 +14,7 @@ import { GanadorComponent } from '../ganador/ganador.component';
 import { User } from '../../../core/models/user.model';
 import { Paginator } from '../../../core/models/paginator.model';
 import { Ganador } from '../../../core/models/ganador.model';
+import { PremioService } from '../../../core/services/premio.service';
 
 @Component({
   selector: 'app-premio',
@@ -44,7 +45,8 @@ export class PremioComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private ganadorService: GanadorService
+    private ganadorService: GanadorService,
+    private premioService: PremioService
   ) {}
 
   ngOnInit(): void {
@@ -56,12 +58,26 @@ export class PremioComponent implements OnInit {
 
     // params
     this.route.paramMap.subscribe(params => {
+      // 1. Extraemos los datos de la URL
       this.premioCod = Number(params.get('premioCod'));
-      this.premioAnyo = Number(params.get('premioAnyo'));
-      this.title = `${String(params.get('premioTitulo')).toUpperCase()} ${this.premioAnyo}`;
+      this.premioAnyo = Number(params.get('premioAnyo'));      
 
-      this.loadPremio(1);
-    });
+      // 2. Solo si tenemos el código, disparamos la petición
+      if (this.premioCod && this.premioAnyo) {
+        this.premioService.getPremioById(this.premioCod).pipe(
+          catchError(error => {
+              this.setErrorMessage(error?.error?.message ?? 'Error cargando el premio');
+              return of(null);
+          })
+        ).subscribe(premio => {
+            if (premio) {
+              this.title = `${premio.titulo.toUpperCase()} ${this.premioAnyo}`;
+            }
+        });
+      
+        this.loadPremio(1);
+      }
+    }); 
   }
 
   loadPremio(page: number) {
