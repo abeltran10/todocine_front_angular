@@ -22,7 +22,7 @@ The project follows a Modular Clean Architecture to ensure scalability and separ
 
 The "brain" of the application. Contains singleton services and universal configurations.
 
-- /enum: Strongly typed constants for Awards, Cines, and Regions.
+- /enum: Strongly typed constants for Cines, and Regions.
 
 - /guards: Security layer with AuthGuard (protected routes) and PublicGuard (login/register).
 
@@ -47,7 +47,7 @@ Reusable resources used across multiple features.
 
 ## Last release
 
-- [v1.1.0](https://github.com/abeltran10/todocine_front_angular/releases/tag/v1.1.0)
+- [v2.0.1](https://github.com/abeltran10/todocine_front_angular/releases/tag/v2.0.1)
 
 ## Commands
 
