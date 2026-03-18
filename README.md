@@ -22,7 +22,7 @@ The project follows a Modular Clean Architecture to ensure scalability and separ
 
 The "brain" of the application. Contains singleton services and universal configurations.
 
-- /enum: Strongly typed constants for Awards, Cines, and Regions.
+- /enum: Strongly typed constants for Cines, and Regions.
 
 - /guards: Security layer with AuthGuard (protected routes) and PublicGuard (login/register).
 
