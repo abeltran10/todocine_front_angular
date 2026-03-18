@@ -19,7 +19,7 @@ export const routes: Routes = [
   { path: 'app/home', component: HomeComponent, canActivate: [authGuard] },
   { path: 'app/profile', component: ProfileComponent, canActivate: [authGuard] },
   { path: 'app/premio/:premioId', component: PremioAnyosComponent, canActivate: [authGuard] },
-  { path: 'app/premio/:premioCod/anyo/:premioAnyo/titulo/:premioTitulo', component: PremioComponent, canActivate: [authGuard] },
+  { path: 'app/premio/:premioCod/anyo/:premioAnyo', component: PremioComponent, canActivate: [authGuard] },
   { path: 'app/moviedetail/:movieId', component: MovieDetailComponent, canActivate: [authGuard] },
   { path: 'app/favoritos', component: FavoritosComponent, canActivate: [authGuard] },
   { path: 'app/createaccount', component: CreateAccountComponent, canActivate: [publicGuard] },

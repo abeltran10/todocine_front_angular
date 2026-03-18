@@ -25,11 +25,24 @@ export class PremioService {
             }));
   }
 
+ // 1. Creamos la variable que guardará el "tubo" con los datos
+  private premiosCache$?: Observable<Premio[]>;
+
   getPremios(): Observable<Premio[]> {
-    return this.http.get<Premio[]>(`${this.baseUrl}`).pipe(
-      catchError(err => { return throwError(() => err) }),
-      shareReplay(1) // Guarda el último valor y lo comparte con todos;
-    );
+    // 2. Si la variable está vacía, configuramos la petición por primera (y única) vez
+    if (!this.premiosCache$) {
+      this.premiosCache$ = this.http.get<Premio[]>(`${this.baseUrl}`).pipe(
+        shareReplay(1), // Hace que el último valor se quede "grabado" en el tubo
+        catchError(err => {
+          // 3. Importante: si hay error, limpiamos la caché para permitir reintentar
+          this.premiosCache$ = undefined;
+          return throwError(() => err);
+        })
+      );
+    }
+
+    // 4. Devolvemos siempre la misma instancia (la que tiene los datos o está en camino)
+    return this.premiosCache$;
   }
 
   getPremioById(premioId: number): Observable<Premio> {
