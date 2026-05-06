@@ -13,6 +13,8 @@ import { GanadorAnyadirComponent } from './features/premios/ganador/ganador-anya
 
 import { authGuard } from './core/guards/auth.guard';
 import { publicGuard } from './core/guards/public.guard';
+import { MisListasComponent } from './features/listas/lista.component';
+import { ListaDetailComponent } from './features/listas/lista-detail/lista-detail.component';
 
 export const routes: Routes = [
   { path: 'app', component: LoginComponent, canActivate: [publicGuard] },
@@ -25,5 +27,7 @@ export const routes: Routes = [
   { path: 'app/createaccount', component: CreateAccountComponent, canActivate: [publicGuard] },
   { path: 'app/cartelera/:region', component: CarteleraComponent, canActivate: [authGuard] },
   { path: 'app/ganador', component: GanadorAnyadirComponent, canActivate: [authGuard], data: {expectedRole: ['ADMIN']} },
+  { path: 'app/listas', component: MisListasComponent, canActivate: [authGuard] },
+  { path: 'app/listas/:listaId', component: ListaDetailComponent, canActivate: [authGuard] },
   { path: '**', redirectTo: 'app' }
 ];
