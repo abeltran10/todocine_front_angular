@@ -1,0 +1,112 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ListaService } from '../../core/services/lista.service';
+import { Observable, BehaviorSubject, of, timer, ReplaySubject } from 'rxjs';
+import { catchError, shareReplay, switchMap, tap } from 'rxjs/operators';
+
+import { NavigationBarComponent } from '../../shared/layout/navigation-bar/navigation-bar.component';
+import { NotificationComponent } from '../../shared/common/notification/notification.component';
+import { HeaderComponent } from '../../shared/layout/header/header.component';
+import { CardListaComponent } from './card/lista-card.component';
+import { PaginatorComponent } from '../../shared/common/paginator/paginator.component';
+import { User } from '../../core/models/user.model';
+import { Paginator } from '../../core/models/paginator.model';
+import { Lista } from '../../core/models/lista.model';
+
+import { FormsModule } from '@angular/forms';
+
+@Component({
+  selector: 'app-lista',
+  standalone: true,
+  imports: [CommonModule, NavigationBarComponent, NotificationComponent, HeaderComponent, CardListaComponent, PaginatorComponent, FormsModule],
+  templateUrl: './lista.component.html'
+})
+export class MisListasComponent implements OnInit {
+  usuario!: User;
+  title: string = 'Mis Listas de Películas';
+  listas$!: Observable<Paginator<Lista>>;
+  
+  private messageErrorSubject = new BehaviorSubject<string>('');
+  errorMessage$ = this.messageErrorSubject.asObservable();
+  
+  private messageSuccessSubject = new BehaviorSubject<string>('');
+  successMessage$ = this.messageSuccessSubject.asObservable();
+
+  private refreshListas = new ReplaySubject<number>(1);
+
+  nuevaLista = {
+    nombre: '',
+    descripcion: '',
+    username: ''
+  };
+
+  constructor(private listaService: ListaService) {
+      this.listas$ = this.refreshListas.pipe(
+        switchMap(pagina => this.listaService.getListas(this.usuario.id, pagina)),
+        shareReplay(1),
+        catchError(error => {
+               this.setErrorMessage(error?.error?.message ?? 'Error cargando las listas');
+               return of({ results: [], page: 1, total_pages: 1, total_results: 0 });
+             }
+        )
+      )
+
+  }
+
+  ngOnInit(): void {
+    const loggedUser = localStorage.getItem('loggedUser');
+    if (loggedUser) {
+      this.usuario = JSON.parse(loggedUser);
+    } 
+
+    this.loadListas(1); // Carga inicial página 1
+  }
+
+  loadListas(pagina: number = 1): void {
+    if (!this.usuario?.id) return;
+
+    this.refreshListas.next(pagina); 
+  }
+
+  onSubmitCrear(): void {
+    if (this.nuevaLista.nombre && this.nuevaLista.descripcion && this.usuario) {
+      
+      this.listaService.crearLista({ ... this.nuevaLista, username: this.usuario.username }, this.usuario.id).subscribe({
+        next: () => {
+          this.setSuccessMessage('Lista creada con éxito');
+          
+          // Limpiamos el objeto para la próxima vez
+          this.nuevaLista = { nombre: '', descripcion: '', username:'' };
+          
+          // Recargamos la primera página
+          this.loadListas(1);
+        },
+        error: (err) => this.setErrorMessage( err?.error?.message ?? 'No se pudo crear la lista')
+      });
+    }
+  }
+
+  onDeleteLista(listaId: number) {
+     this.listaService.borrarLista(this.usuario.id, listaId).subscribe({
+        next: () => {
+          this.loadListas(1);
+        },
+        error: (err) => this.setErrorMessage( err?.error?.message ?? 'Error eliminando la lista')
+     }); 
+  }
+
+  setErrorMessage(message: string) {
+        this.messageErrorSubject.next(message);
+    
+        // Usamos un timer de RxJS que es más compatible con Angular
+        timer(5000).subscribe(() => this.messageErrorSubject.next(''));
+  }
+    
+  setSuccessMessage(message: string) {
+        this.messageSuccessSubject.next(message);
+    
+        // Usamos un timer de RxJS que es más compatible con Angular
+        timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
+  }
+
+}

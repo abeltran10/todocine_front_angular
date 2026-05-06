@@ -100,6 +100,14 @@ This will compile your project and store the build artifacts in the `dist/` dire
 ### Winner insert form (ADMIN)
 <img width="1155" height="824" alt="Captura desde 2026-03-13 20-39-51" src="https://github.com/user-attachments/assets/05783da2-d9b2-4611-83d1-50edf760f01f" />
 
+### Custom Lists
+<img width="1298" height="532" alt="Captura desde 2026-05-06 23-05-15" src="https://github.com/user-attachments/assets/40c58518-9cab-431f-a518-d3c3f272b036" />
+
+### Edit List
+<img width="1298" height="752" alt="Captura desde 2026-05-06 23-06-05" src="https://github.com/user-attachments/assets/2680c48b-924f-4b90-8154-0e1eaa6af191" />
+
+
+
 
 
 

@@ -1,0 +1,107 @@
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ListaService } from '../../../core/services/lista.service';
+import { MovieService } from '../../../core/services/movie.service';
+import { Observable, BehaviorSubject, of, timer } from 'rxjs';
+import { catchError, switchMap, tap } from 'rxjs/operators';
+import { User } from '../../../core/models/user.model';
+import { Lista } from '../../../core/models/lista.model';
+import { Movie } from '../../../core/models/movie.model';
+import { Paginator } from '../../../core/models/paginator.model';
+import { FormsModule } from '@angular/forms';
+
+import { HeaderComponent } from '../../../shared/layout/header/header.component';
+import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
+import { NotificationComponent } from '../../../shared/common/notification/notification.component';
+
+@Component({
+  selector: 'app-lista-detail',
+  standalone: true,
+  imports: [CommonModule, RouterModule, FormsModule, HeaderComponent, NavigationBarComponent, NotificationComponent],
+  templateUrl: './lista-detail.component.html',
+})
+export class ListaDetailComponent implements OnInit {
+  usuario!: User;
+  lista$!: Observable<Lista | null>;
+  movies$!: Observable<Paginator<Movie> | null>;
+  paramSearch: string = '';
+  searchText: string = '';
+  listaId!: number;
+  
+  private errorMessageSubject = new BehaviorSubject<string>('');
+  errorMessage$ = this.errorMessageSubject.asObservable();
+
+  private refreshLista$ = new BehaviorSubject<void>(undefined);
+
+  constructor(
+    private route: ActivatedRoute,
+    private listaService: ListaService,
+    private movieService: MovieService
+  ) {}
+
+  ngOnInit(): void {
+    const loggedUser = localStorage.getItem('loggedUser');
+    if (loggedUser) {
+      this.usuario = JSON.parse(loggedUser);
+    }
+
+    // Obtenemos los IDs del path y cargamos la lista
+    this.lista$ = this.refreshLista$.pipe(
+      switchMap(() => this.route.paramMap.pipe(
+        switchMap(params => {
+          this.listaId = Number(params.get('listaId'));
+          if (this.usuario?.id && this.listaId) {
+            return this.listaService.getListaById(this.usuario.id, this.listaId).pipe(
+              catchError(error => {
+                this.setErrorMessage(error?.error?.message ?? 'Error al recuperar el detalle de la lista');
+                return of(null);
+              })
+            );
+          }
+          return of(null);
+        })
+      ))  
+    );
+  }
+
+  eliminarPelicula(movieId: number) {
+    this.listaService.deleteMovieFromList(movieId, this.listaId, this.usuario.id).pipe(
+        catchError(error => {
+                  this.setErrorMessage(error?.error?.message ?? 'Error al eliminar la película de la lista');
+                  return of(null);
+                })
+    ).subscribe(() => {
+      this.refreshLista$.next(); 
+    });
+  }
+
+   searchMovies(text: string, pagina: number = 1) {
+      this.movies$ = this.movieService.getByName(text, pagina).pipe(
+          catchError(error => {
+                this.setErrorMessage(error?.error?.message ?? 'Error al cargar las películas');
+                return of(null); // emitimos un valor neutro para no romper el stream
+              })
+        );
+        this.paramSearch = text;
+    }
+  
+    selectMovie(movie: Movie) {
+      this.listaService.addMovieToList(this.usuario.id, this.listaId, movie.id).pipe(
+        catchError(error => {
+                this.setErrorMessage(error?.error?.message ?? 'Error al añadir la película a la lista');
+                return of(null); // emitimos un valor neutro para no romper el stream
+              })
+        ).subscribe(() => {
+          this.searchText = '';
+          this.refreshLista$.next();
+        });
+  
+    }
+
+    setErrorMessage(msg: string) {
+      this.errorMessageSubject.next(msg);
+      // Usamos un timer de RxJS que es más compatible con Angular
+      timer(5000).subscribe(() => this.errorMessageSubject.next(''));
+    }
+}
