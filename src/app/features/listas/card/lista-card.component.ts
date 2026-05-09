@@ -11,6 +11,8 @@ export class CardListaComponent {
   @Input() lista: Lista | null = null;
 
   @Output() onDeleteLista = new EventEmitter<number>();
+
+  @Output() onEditLista = new EventEmitter<Lista>();
   
   constructor(private router: Router) {}
 
@@ -19,6 +21,14 @@ export class CardListaComponent {
   }
 
   borrarLista() {
-    this.onDeleteLista.emit(this.lista?.id);
+    if (this.lista?.id) 
+      this.onDeleteLista.emit(this.lista.id);
   }
+
+  editarLista() {
+    if (this.lista)
+      this.onEditLista.emit(this.lista);
+      
+  }
+  
 }

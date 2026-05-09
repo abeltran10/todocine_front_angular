@@ -67,4 +67,13 @@ export class ListaService {
                   return throwError(() => err);
                 }));
   }
+
+  editarLista(userId: number, listaId: number, lista: Lista): Observable<Lista> {
+    return this.http.put<Lista>(
+      `${this.baseUrl}/${userId}/listas/${listaId}`, lista
+    ).pipe(catchError(err => {
+                  // Puedes loguear o transformar el error aquí
+                  return throwError(() => err);
+                }));
+  }
 }
