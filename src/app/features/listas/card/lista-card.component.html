@@ -4,11 +4,18 @@
         <p class="card-text text-muted">{{ lista?.descripcion }}</p>
         <div class="mt-auto d-flex gap-2">
           <button class="btn btn-outline-primary btn-sm" (click)="goToDetail()">
+            <i class="bi bi-pencil"></i> Ver
+          </button>
+          <button class="btn btn-outline-success btn-sm" 
+                  (click)="editarLista()" 
+                  data-bs-toggle="modal" 
+                  data-bs-target="#modalEditarLista">
             <i class="bi bi-pencil"></i> Editar
           </button>
           <button class="btn btn-outline-danger btn-sm" (click)="borrarLista()">
             <i class="bi bi-pencil"></i> Eliminar
           </button>
+          
         </div>
       </div>
 </div>

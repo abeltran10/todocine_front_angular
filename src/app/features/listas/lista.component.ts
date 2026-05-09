@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ListaService } from '../../core/services/lista.service';
 import { Observable, BehaviorSubject, of, timer, ReplaySubject } from 'rxjs';
-import { catchError, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { catchError, shareReplay, switchMap, map } from 'rxjs/operators';
 
 import { NavigationBarComponent } from '../../shared/layout/navigation-bar/navigation-bar.component';
 import { NotificationComponent } from '../../shared/common/notification/notification.component';
@@ -34,11 +34,15 @@ export class MisListasComponent implements OnInit {
 
   private refreshListas = new ReplaySubject<number>(1);
 
-  nuevaLista = {
+  nuevaLista = { nombre: '', descripcion: '' };
+
+  editLista: Lista = {
+    id: undefined,
     nombre: '',
     descripcion: '',
+    movies: undefined,
     username: ''
-  };
+  }; 
 
   constructor(private listaService: ListaService) {
       this.listas$ = this.refreshListas.pipe(
@@ -50,7 +54,6 @@ export class MisListasComponent implements OnInit {
              }
         )
       )
-
   }
 
   ngOnInit(): void {
@@ -63,8 +66,6 @@ export class MisListasComponent implements OnInit {
   }
 
   loadListas(pagina: number = 1): void {
-    if (!this.usuario?.id) return;
-
     this.refreshListas.next(pagina); 
   }
 
@@ -76,7 +77,7 @@ export class MisListasComponent implements OnInit {
           this.setSuccessMessage('Lista creada con éxito');
           
           // Limpiamos el objeto para la próxima vez
-          this.nuevaLista = { nombre: '', descripcion: '', username:'' };
+          this.nuevaLista = { nombre: '', descripcion: '' };
           
           // Recargamos la primera página
           this.loadListas(1);
@@ -86,11 +87,37 @@ export class MisListasComponent implements OnInit {
     }
   }
 
+  prepareLista(lista: Lista) {
+    this.editLista = { ... lista }
+  }
+
+  onSubmitEditar(): void {
+    if (this.editLista.id && this.editLista.nombre && this.editLista.descripcion && this.editLista.username) {
+      
+      this.listaService.editarLista(this.usuario.id, this.editLista.id, this.editLista).subscribe({
+        next: () => {
+          this.setSuccessMessage('Lista editada con éxito');
+        
+           // Limpiamos el objeto para la próxima vez
+          this.editLista = { id: undefined, nombre: '', descripcion: '', movies: undefined, username: '' };
+          
+          // Recargamos la primera página
+          this.loadListas(1);
+        },
+        error: (err) => this.setErrorMessage( err?.error?.message ?? 'No se pudo editar la lista')
+      });
+    }
+  }
+
   onDeleteLista(listaId: number) {
      this.listaService.borrarLista(this.usuario.id, listaId).subscribe({
         next: () => {
+          this.setSuccessMessage('Lista eliminada con exito')  
+
+          // Recargamos la primera página
           this.loadListas(1);
         },
+        
         error: (err) => this.setErrorMessage( err?.error?.message ?? 'Error eliminando la lista')
      }); 
   }

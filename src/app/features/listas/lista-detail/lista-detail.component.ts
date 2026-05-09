@@ -65,6 +65,10 @@ export class ListaDetailComponent implements OnInit {
     );
   }
 
+  loadLista() {
+    this.refreshLista$.next();
+  }
+
   eliminarPelicula(movieId: number) {
     this.listaService.deleteMovieFromList(movieId, this.listaId, this.usuario.id).pipe(
         catchError(error => {
@@ -72,7 +76,7 @@ export class ListaDetailComponent implements OnInit {
                   return of(null);
                 })
     ).subscribe(() => {
-      this.refreshLista$.next(); 
+       this.loadLista();
     });
   }
 
@@ -94,7 +98,7 @@ export class ListaDetailComponent implements OnInit {
               })
         ).subscribe(() => {
           this.searchText = '';
-          this.refreshLista$.next();
+          this.loadLista();
         });
   
     }
