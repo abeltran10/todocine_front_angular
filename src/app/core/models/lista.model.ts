@@ -6,4 +6,5 @@ export interface Lista {
   descripcion: string;
   movies?: Movie[];
   username: string;
+  publica?: boolean;
 }

@@ -36,9 +36,10 @@ export class FavoritosComponent implements OnInit {
 
   title = 'FAVORITOS';
 
-  messageSuccessSubject = new BehaviorSubject<string>('');
-  messageErrorSubject = new BehaviorSubject<string>('');
+  messageSuccessSubject = new BehaviorSubject<string>('');  
   successMessage$ = this.messageSuccessSubject.asObservable();
+  
+  messageErrorSubject = new BehaviorSubject<string>('');
   errorMessage$ = this.messageErrorSubject.asObservable();
 
   movies$!: Observable<Paginator<MovieDetail>>;

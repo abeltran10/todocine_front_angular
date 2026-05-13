@@ -1,139 +1,67 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListaService } from '../../core/services/lista.service';
-import { Observable, BehaviorSubject, of, timer, ReplaySubject } from 'rxjs';
-import { catchError, shareReplay, switchMap, map } from 'rxjs/operators';
-
+import { FormsModule } from '@angular/forms';
+import { PublicListasComponent } from './publicas/lista-publica.component';
+import { UserListasComponent } from './usuario/lista-usuario.component';
 import { NavigationBarComponent } from '../../shared/layout/navigation-bar/navigation-bar.component';
 import { NotificationComponent } from '../../shared/common/notification/notification.component';
 import { HeaderComponent } from '../../shared/layout/header/header.component';
-import { CardListaComponent } from './card/lista-card.component';
-import { PaginatorComponent } from '../../shared/common/paginator/paginator.component';
 import { User } from '../../core/models/user.model';
-import { Paginator } from '../../core/models/paginator.model';
-import { Lista } from '../../core/models/lista.model';
-
-import { FormsModule } from '@angular/forms';
+import { BehaviorSubject, timer } from 'rxjs';
 
 @Component({
   selector: 'app-lista',
   standalone: true,
-  imports: [CommonModule, NavigationBarComponent, NotificationComponent, HeaderComponent, CardListaComponent, PaginatorComponent, FormsModule],
+  imports: [
+    CommonModule, 
+    FormsModule, 
+    NavigationBarComponent, 
+    NotificationComponent, 
+    HeaderComponent,
+    PublicListasComponent,
+    UserListasComponent
+  ],
   templateUrl: './lista.component.html'
 })
-export class MisListasComponent implements OnInit {
+export class ListaComponent implements OnInit {
   usuario!: User;
-  title: string = 'Mis Listas de Películas';
-  listas$!: Observable<Paginator<Lista>>;
-  
-  private messageErrorSubject = new BehaviorSubject<string>('');
-  errorMessage$ = this.messageErrorSubject.asObservable();
-  
-  private messageSuccessSubject = new BehaviorSubject<string>('');
+  publica: boolean = true;
+  title: string = 'Listas Públicas';
+
+  messageSuccessSubject = new BehaviorSubject<string>('');
+  messageErrorSubject = new BehaviorSubject<string>('');
   successMessage$ = this.messageSuccessSubject.asObservable();
+  errorMessage$ = this.messageErrorSubject.asObservable();
 
-  private refreshListas = new ReplaySubject<number>(1);
-
-  nuevaLista = { nombre: '', descripcion: '' };
-
-  editLista: Lista = {
-    id: undefined,
-    nombre: '',
-    descripcion: '',
-    movies: undefined,
-    username: ''
-  }; 
-
-  constructor(private listaService: ListaService) {
-      this.listas$ = this.refreshListas.pipe(
-        switchMap(pagina => this.listaService.getListas(this.usuario.id, pagina)),
-        shareReplay(1),
-        catchError(error => {
-               this.setErrorMessage(error?.error?.message ?? 'Error cargando las listas');
-               return of({ results: [], page: 1, total_pages: 1, total_results: 0 });
-             }
-        )
-      )
-  }
+  constructor() {}
 
   ngOnInit(): void {
     const loggedUser = localStorage.getItem('loggedUser');
     if (loggedUser) {
       this.usuario = JSON.parse(loggedUser);
-    } 
-
-    this.loadListas(1); // Carga inicial página 1
-  }
-
-  loadListas(pagina: number = 1): void {
-    this.refreshListas.next(pagina); 
-  }
-
-  onSubmitCrear(): void {
-    if (this.nuevaLista.nombre && this.nuevaLista.descripcion && this.usuario) {
-      
-      this.listaService.crearLista({ ... this.nuevaLista, username: this.usuario.username }, this.usuario.id).subscribe({
-        next: () => {
-          this.setSuccessMessage('Lista creada con éxito');
-          
-          // Limpiamos el objeto para la próxima vez
-          this.nuevaLista = { nombre: '', descripcion: '' };
-          
-          // Recargamos la primera página
-          this.loadListas(1);
-        },
-        error: (err) => this.setErrorMessage( err?.error?.message ?? 'No se pudo crear la lista')
-      });
     }
   }
 
-  prepareLista(lista: Lista) {
-    this.editLista = { ... lista }
+  setPublica() {
+    this.publica = !this.publica;
+    this.updateTitle();
   }
 
-  onSubmitEditar(): void {
-    if (this.editLista.id && this.editLista.nombre && this.editLista.descripcion && this.editLista.username) {
-      
-      this.listaService.editarLista(this.usuario.id, this.editLista.id, this.editLista).subscribe({
-        next: () => {
-          this.setSuccessMessage('Lista editada con éxito');
-        
-           // Limpiamos el objeto para la próxima vez
-          this.editLista = { id: undefined, nombre: '', descripcion: '', movies: undefined, username: '' };
-          
-          // Recargamos la primera página
-          this.loadListas(1);
-        },
-        error: (err) => this.setErrorMessage( err?.error?.message ?? 'No se pudo editar la lista')
-      });
-    }
-  }
-
-  onDeleteLista(listaId: number) {
-     this.listaService.borrarLista(this.usuario.id, listaId).subscribe({
-        next: () => {
-          this.setSuccessMessage('Lista eliminada con exito')  
-
-          // Recargamos la primera página
-          this.loadListas(1);
-        },
-        
-        error: (err) => this.setErrorMessage( err?.error?.message ?? 'Error eliminando la lista')
-     }); 
+  private updateTitle() {
+    this.title = this.publica ? 'Listas Públicas' : 'Mis Listas';
   }
 
   setErrorMessage(message: string) {
-        this.messageErrorSubject.next(message);
-    
-        // Usamos un timer de RxJS que es más compatible con Angular
-        timer(5000).subscribe(() => this.messageErrorSubject.next(''));
+    this.messageErrorSubject.next(message);
+  
+    // Usamos un timer de RxJS que es más compatible con Angular
+    timer(5000).subscribe(() => this.messageErrorSubject.next(''));
   }
-    
+  
   setSuccessMessage(message: string) {
-        this.messageSuccessSubject.next(message);
-    
-        // Usamos un timer de RxJS que es más compatible con Angular
-        timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
+    this.messageSuccessSubject.next(message);
+  
+    // Usamos un timer de RxJS que es más compatible con Angular
+    timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
   }
-
 }

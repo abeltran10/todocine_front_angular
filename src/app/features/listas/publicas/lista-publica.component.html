@@ -1,0 +1,22 @@
+<div class="container mt-3">
+  <ng-container *ngIf="listas$ | async as paginator">
+      <div class="container mt-4">
+          <!-- Grid de 3 columnas -->
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+              <div class="col" *ngFor="let lista of paginator.results">
+                <app-card-lista-publica 
+                    [lista]="lista"
+                >
+                </app-card-lista-publica>
+              </div>
+          </div>
+      </div>
+    
+      <app-paginator
+        *ngIf="paginator"
+        [activePage]="paginator.page"
+        [totalPages]="paginator.total_pages"
+        (pageChange)="loadListas($event)">
+      </app-paginator>
+  </ng-container>
+</div>

@@ -1,13 +1,13 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { Lista } from '../../../core/models/lista.model';
+import { Lista } from '../../../../core/models/lista.model';
 
 @Component({
-  selector: 'app-card-lista',
+  selector: 'app-card-lista-usuario',
   standalone: true,
-  templateUrl: './lista-card.component.html'
+  templateUrl: './lista-card-usuario.component.html'
 })
-export class CardListaComponent {
+export class CardListaUsuarioComponent {
   @Input() lista: Lista | null = null;
 
   @Output() onDeleteLista = new EventEmitter<number>();
