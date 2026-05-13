@@ -1,0 +1,134 @@
+<div class="container mt-3">
+  <!-- Botón que abre el modal -->
+  <div class="d-flex justify-content-end mb-3">
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCrearLista">
+      <i class="bi bi-plus-circle"></i> Crear lista
+    </button>
+  </div>
+
+  <ng-container *ngIf="listas$ | async as paginator">
+      <div class="container mt-4">
+          <!-- Grid de 3 columnas -->
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+              <div class="col" *ngFor="let lista of paginator.results">
+              <app-card-lista-usuario 
+                  [lista]="lista"
+                  (onDeleteLista)="onDeleteLista($event)"
+                  (onEditLista)="prepareLista($event)"
+              >
+              </app-card-lista-usuario>
+              </div>
+          </div>
+      </div>
+    
+      <app-paginator
+        *ngIf="paginator"
+        [activePage]="paginator.page"
+        [totalPages]="paginator.total_pages"
+        (pageChange)="loadListas($event)">
+      </app-paginator>
+  </ng-container>
+</div>
+
+
+<!-- Estructura del Modal -->
+<div class="modal fade" id="modalCrearLista" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Nueva Lista</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Usamos una variable de referencia #listaForm para validar -->
+      <form #listaForm="ngForm" (ngSubmit)="onSubmitCrear()">
+        <div class="modal-body">
+          
+          <!-- Input Nombre -->
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" 
+                   class="form-control" 
+                   name="nombre" 
+                   [(ngModel)]="nuevaLista.nombre" 
+                   required>
+          </div>
+
+          <!-- Input Descripción -->
+          <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea class="form-control" 
+                      name="descripcion" 
+                      [(ngModel)]="nuevaLista.descripcion" 
+                      rows="3" 
+                      required></textarea>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <!-- El botón solo se activa si los campos con 'required' están llenos -->
+          <button type="submit" 
+                  class="btn btn-primary" 
+                  [disabled]="!listaForm.form.valid" 
+                  data-bs-dismiss="modal">
+            Crear lista
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Estructura del Modal -->
+<div class="modal fade" id="modalEditarLista" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Editar Lista</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      
+      <!-- Usamos una variable de referencia #listaForm para validar -->
+      <form #listaEditForm="ngForm" (ngSubmit)="onSubmitEditar()">
+        <div class="modal-body">
+          
+          <!-- Input Nombre -->
+          <div class="mb-3">
+            <label class="form-label">Nombre</label>
+            <input type="text" 
+                   class="form-control" 
+                   name="nombre" 
+                   [(ngModel)]="editLista.nombre" 
+                   required>
+          </div>
+
+          <!-- Input Descripción -->
+          <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea class="form-control" 
+                      name="descripcion" 
+                      [(ngModel)]="editLista.descripcion" 
+                      rows="3" 
+                      required></textarea>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <!-- El botón solo se activa si los campos con 'required' están llenos -->
+          <button type="submit" 
+                  class="btn btn-primary" 
+                  [disabled]="!listaEditForm.form.valid" 
+                  data-bs-dismiss="modal">
+            Editar lista
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

@@ -20,12 +20,20 @@
     </div>
 
     <!-- Botón Añadir Película alineado a la derecha -->
-    <div class="d-flex justify-content-end mb-3">
-      <button class="btn btn-outline-primary" type="button" 
-                  data-bs-toggle="modal" data-bs-target="#movieModal">
-        <i class="bi bi-plus-lg"></i> Añadir película
-      </button>
-    </div>
+    <ng-container *ngIf="lista.username === usuario.username">
+        <div class="d-flex justify-content-end mt-auto gap-2">
+              <button class="btn btn-outline-success" type="button" (click)="onEditar(!lista.publica)">
+                <i class="bi bi-plus-lg"></i> {{!lista.publica ? 'Publicar lista' : 'Privatizar lista'}}
+              </button>
+              <button class="btn btn-outline-primary" type="button" 
+                          data-bs-toggle="modal" data-bs-target="#movieModal">
+                <i class="bi bi-plus-lg"></i> Añadir película
+              </button>
+        </div>
+        <br/>
+        <br/>
+    </ng-container>
+    
 
     <!-- Tabla de Películas -->
     <div class="card shadow-sm">
@@ -51,12 +59,16 @@
                 <strong>{{ movie.title }}</strong>
               </td>
               <td>{{ movie.release_date | date:'dd/MM/yyyy' }}</td>
-              <td class="text-end">
-                <button class="btn btn-outline-danger btn-sm" 
-                        (click)="eliminarPelicula(movie.id)">
-                  <i class="bi bi-trash"></i> Eliminar
-                </button>
-              </td>
+              <ng-container *ngIf="lista.username === usuario.username">
+                  <td class="text-end">
+                    <button class="btn btn-outline-danger btn-sm" 
+                            (click)="eliminarPelicula(movie.id)">
+                      <i class="bi bi-trash"></i> Eliminar
+                    </button>
+                  </td>
+
+              </ng-container>
+              
             </tr>
             <tr *ngIf="lista.movies?.length === 0">
               <td colspan="4" class="text-center py-4">

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ListaService } from '../../../core/services/lista.service';
+import { UsuarioListaService } from '../../../core/services/usuarioLista.service';
 import { MovieService } from '../../../core/services/movie.service';
 import { Observable, BehaviorSubject, of, timer } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
@@ -28,15 +29,20 @@ export class ListaDetailComponent implements OnInit {
   paramSearch: string = '';
   searchText: string = '';
   listaId!: number;
-  
+  list!: Lista;
+    
   private errorMessageSubject = new BehaviorSubject<string>('');
   errorMessage$ = this.errorMessageSubject.asObservable();
+
+  messageSuccessSubject = new BehaviorSubject<string>('');  
+  successMessage$ = this.messageSuccessSubject.asObservable();
 
   private refreshLista$ = new BehaviorSubject<void>(undefined);
 
   constructor(
     private route: ActivatedRoute,
     private listaService: ListaService,
+    private usuarioListaService: UsuarioListaService,
     private movieService: MovieService
   ) {}
 
@@ -51,8 +57,13 @@ export class ListaDetailComponent implements OnInit {
       switchMap(() => this.route.paramMap.pipe(
         switchMap(params => {
           this.listaId = Number(params.get('listaId'));
-          if (this.usuario?.id && this.listaId) {
-            return this.listaService.getListaById(this.usuario.id, this.listaId).pipe(
+          if (this.listaId) {
+            return this.listaService.getListaById(this.listaId).pipe(
+              tap(res => {
+                if (res) {
+                  this.list = res;
+            }
+          }),
               catchError(error => {
                 this.setErrorMessage(error?.error?.message ?? 'Error al recuperar el detalle de la lista');
                 return of(null);
@@ -70,7 +81,7 @@ export class ListaDetailComponent implements OnInit {
   }
 
   eliminarPelicula(movieId: number) {
-    this.listaService.deleteMovieFromList(movieId, this.listaId, this.usuario.id).pipe(
+    this.usuarioListaService.deleteMovieFromList(movieId, this.listaId, this.usuario.id).pipe(
         catchError(error => {
                   this.setErrorMessage(error?.error?.message ?? 'Error al eliminar la película de la lista');
                   return of(null);
@@ -91,7 +102,7 @@ export class ListaDetailComponent implements OnInit {
     }
   
     selectMovie(movie: Movie) {
-      this.listaService.addMovieToList(this.usuario.id, this.listaId, movie.id).pipe(
+      this.usuarioListaService.addMovieToList(this.usuario.id, this.listaId, movie.id).pipe(
         catchError(error => {
                 this.setErrorMessage(error?.error?.message ?? 'Error al añadir la película a la lista');
                 return of(null); // emitimos un valor neutro para no romper el stream
@@ -103,9 +114,28 @@ export class ListaDetailComponent implements OnInit {
   
     }
 
-    setErrorMessage(msg: string) {
+    onEditar(isPublica: boolean): void {
+        if (this.list && this.list.id) {
+            this.usuarioListaService.editarLista(this.usuario.id, this.list.id, {... this.list, publica: isPublica}).subscribe({
+              next: () => {
+                  this.setSuccessMessage(isPublica ? 'Lista publicada con éxito' : 'Lista privatizada con exito');
+                  this.loadLista();
+              },
+              error: (err) => this.setErrorMessage( err?.error?.message ?? 'No se pudo editar la lista')
+            });     
+        }       
+    }
+
+  setSuccessMessage(message: string) {
+    this.messageSuccessSubject.next(message);
+
+    // Usamos un timer de RxJS que es más compatible con Angular
+    timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
+  }
+
+  setErrorMessage(msg: string) {
       this.errorMessageSubject.next(msg);
       // Usamos un timer de RxJS que es más compatible con Angular
       timer(5000).subscribe(() => this.errorMessageSubject.next(''));
-    }
+  }
 }
