@@ -47,7 +47,7 @@ Reusable resources used across multiple features.
 
 ## Last release
 
-- [v2.0.1](https://github.com/abeltran10/todocine_front_angular/releases/tag/v2.0.1)
+- [v2.1.5](https://github.com/abeltran10/todocine_front_angular/releases/tag/v2.1.5)
 
 ## Commands
 
