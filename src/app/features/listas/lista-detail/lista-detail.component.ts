@@ -16,6 +16,8 @@ import { HeaderComponent } from '../../../shared/layout/header/header.component'
 import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
 import { NotificationComponent } from '../../../shared/common/notification/notification.component';
 
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-lista-detail',
   standalone: true,
@@ -43,7 +45,8 @@ export class ListaDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private listaService: ListaService,
     private usuarioListaService: UsuarioListaService,
-    private movieService: MovieService
+    private movieService: MovieService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -109,6 +112,7 @@ export class ListaDetailComponent implements OnInit {
               })
         ).subscribe(() => {
           this.searchText = '';
+          this.movies$ = of(null);
           this.loadLista();
         });
   
@@ -124,6 +128,10 @@ export class ListaDetailComponent implements OnInit {
               error: (err) => this.setErrorMessage( err?.error?.message ?? 'No se pudo editar la lista')
             });     
         }       
+    }
+
+    handleLoadMovieDetail(movieId: number): void {
+      this.router.navigate(['/app/moviedetail', movieId]);
     }
 
   setSuccessMessage(message: string) {

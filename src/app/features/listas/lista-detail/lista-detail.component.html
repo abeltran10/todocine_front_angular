@@ -22,10 +22,10 @@
     <!-- Botón Añadir Película alineado a la derecha -->
     <ng-container *ngIf="lista.username === usuario.username">
         <div class="d-flex justify-content-end mt-auto gap-2">
-              <button class="btn btn-outline-success" type="button" (click)="onEditar(!lista.publica)">
-                <i class="bi bi-plus-lg"></i> {{!lista.publica ? 'Publicar lista' : 'Privatizar lista'}}
+              <button class="btn btn-info" type="button" (click)="onEditar(!lista.publica)">
+                <i class="bi bi-plus-lg"></i> {{!lista.publica ? 'Publicar lista' : 'Ocultar lista'}}
               </button>
-              <button class="btn btn-outline-primary" type="button" 
+              <button class="btn btn-primary" type="button" 
                           data-bs-toggle="modal" data-bs-target="#movieModal">
                 <i class="bi bi-plus-lg"></i> Añadir película
               </button>
@@ -59,16 +59,20 @@
                 <strong>{{ movie.title }}</strong>
               </td>
               <td>{{ movie.release_date | date:'dd/MM/yyyy' }}</td>
-              <ng-container *ngIf="lista.username === usuario.username">
-                  <td class="text-end">
-                    <button class="btn btn-outline-danger btn-sm" 
-                            (click)="eliminarPelicula(movie.id)">
-                      <i class="bi bi-trash"></i> Eliminar
-                    </button>
-                  </td>
-
-              </ng-container>
-              
+              <td class="text-end">
+                    <div class="d-flex justify-content-end mt-auto gap-2">
+                        <button class="btn btn-primary btn-sm" 
+                            (click)="handleLoadMovieDetail(movie.id)">
+                            <i class="bi bi-info"></i> Detalle
+                        </button>
+                        <ng-container *ngIf="lista.username === usuario.username">
+                          <button class="btn btn-outline-danger btn-sm" 
+                                  (click)="eliminarPelicula(movie.id)">
+                            <i class="bi bi-trash"></i> Eliminar
+                          </button>
+                        </ng-container>
+                    </div>  
+              </td>           
             </tr>
             <tr *ngIf="lista.movies?.length === 0">
               <td colspan="4" class="text-center py-4">

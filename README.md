@@ -100,13 +100,18 @@ This will compile your project and store the build artifacts in the `dist/` dire
 ### Winner insert form (ADMIN)
 <img width="1155" height="824" alt="Captura desde 2026-03-13 20-39-51" src="https://github.com/user-attachments/assets/05783da2-d9b2-4611-83d1-50edf760f01f" />
 
-### Lists
-<img width="1427" height="733" alt="Captura desde 2026-05-13 21-43-11" src="https://github.com/user-attachments/assets/75157752-ebfe-4bdf-afa3-7fa1f152c33b" />
+### Public Lists
+
+<img width="1368" height="550" alt="Captura desde 2026-05-15 13-53-57" src="https://github.com/user-attachments/assets/b8ea9689-010b-477f-8c53-22f55420f0fe" />
+<img width="1368" height="625" alt="Captura desde 2026-05-15 13-54-09" src="https://github.com/user-attachments/assets/27e0e347-42b0-4b8e-b6ff-49eae338d290" />
 
 
-### View List
 
-<img width="1427" height="733" alt="Captura desde 2026-05-13 21-43-29" src="https://github.com/user-attachments/assets/220185ab-e609-478b-bfe2-c1eafcdcfafa" />
+### Private List
+
+<img width="1368" height="625" alt="Captura desde 2026-05-15 13-54-27" src="https://github.com/user-attachments/assets/cc3bfdba-9d69-4da7-9315-a44e6de44700" />
+<img width="1368" height="754" alt="Captura desde 2026-05-15 13-55-08" src="https://github.com/user-attachments/assets/621f801a-c5e4-4baa-9ffe-e84acf9cb127" />
+
 
 
 
