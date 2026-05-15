@@ -59,16 +59,20 @@
                 <strong>{{ movie.title }}</strong>
               </td>
               <td>{{ movie.release_date | date:'dd/MM/yyyy' }}</td>
-              <ng-container *ngIf="lista.username === usuario.username">
-                  <td class="text-end">
-                    <button class="btn btn-outline-danger btn-sm" 
-                            (click)="eliminarPelicula(movie.id)">
-                      <i class="bi bi-trash"></i> Eliminar
-                    </button>
-                  </td>
-
-              </ng-container>
-              
+              <td class="text-end">
+                    <div class="d-flex justify-content-end mt-auto gap-2">
+                        <button class="btn btn-primary btn-sm" 
+                            (click)="handleLoadMovieDetail(movie.id)">
+                            <i class="bi bi-info"></i> Detalle
+                        </button>
+                        <ng-container *ngIf="lista.username === usuario.username">
+                          <button class="btn btn-outline-danger btn-sm" 
+                                  (click)="eliminarPelicula(movie.id)">
+                            <i class="bi bi-trash"></i> Eliminar
+                          </button>
+                        </ng-container>
+                    </div>  
+              </td>           
             </tr>
             <tr *ngIf="lista.movies?.length === 0">
               <td colspan="4" class="text-center py-4">
