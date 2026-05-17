@@ -4,7 +4,7 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ListaService } from '../../../core/services/lista.service';
 import { UsuarioListaService } from '../../../core/services/usuarioLista.service';
 import { MovieService } from '../../../core/services/movie.service';
-import { Observable, BehaviorSubject, of, timer } from 'rxjs';
+import { Observable, BehaviorSubject, combineLatest, of, timer } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 import { User } from '../../../core/models/user.model';
 import { Lista } from '../../../core/models/lista.model';
@@ -47,7 +47,30 @@ export class ListaDetailComponent implements OnInit {
     private usuarioListaService: UsuarioListaService,
     private movieService: MovieService,
     private router: Router
-  ) {}
+  ) {
+
+      // Obtenemos los IDs del path y cargamos la lista
+      this.lista$ = combineLatest([
+                          this.route.paramMap,
+                          this.refreshLista$ 
+                        ]).pipe(
+                          switchMap(([params, _]) => {
+                            this.listaId = Number(params.get('listaId'));
+                            
+                            if (!this.listaId) return of(null);
+
+                            return this.listaService.getListaById(this.listaId).pipe(
+                              tap(res => {
+                                if (res) this.list = res; 
+                              }),
+                              catchError(error => {
+                                this.setErrorMessage(error?.error?.message ?? 'Error al recuperar el detalle de la lista');
+                                return of(null);
+                              })
+                            );
+                          })
+                        );
+  }
 
   ngOnInit(): void {
     const loggedUser = localStorage.getItem('loggedUser');
@@ -55,28 +78,6 @@ export class ListaDetailComponent implements OnInit {
       this.usuario = JSON.parse(loggedUser);
     }
 
-    // Obtenemos los IDs del path y cargamos la lista
-    this.lista$ = this.refreshLista$.pipe(
-      switchMap(() => this.route.paramMap.pipe(
-        switchMap(params => {
-          this.listaId = Number(params.get('listaId'));
-          if (this.listaId) {
-            return this.listaService.getListaById(this.listaId).pipe(
-              tap(res => {
-                if (res) {
-                  this.list = res;
-            }
-          }),
-              catchError(error => {
-                this.setErrorMessage(error?.error?.message ?? 'Error al recuperar el detalle de la lista');
-                return of(null);
-              })
-            );
-          }
-          return of(null);
-        })
-      ))  
-    );
   }
 
   loadLista() {
@@ -122,7 +123,7 @@ export class ListaDetailComponent implements OnInit {
         if (this.list && this.list.id) {
             this.usuarioListaService.editarLista(this.usuario.id, this.list.id, {... this.list, publica: isPublica}).subscribe({
               next: () => {
-                  this.setSuccessMessage(isPublica ? 'Lista publicada con éxito' : 'Lista privatizada con exito');
+                  this.setSuccessMessage(isPublica ? 'Lista publicada con éxito' : 'Lista ocultada con exito');
                   this.loadLista();
               },
               error: (err) => this.setErrorMessage( err?.error?.message ?? 'No se pudo editar la lista')
