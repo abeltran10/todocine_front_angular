@@ -1,10 +1,10 @@
-import { Movie } from "./movie.model";
+import { MovieLista } from "./movieLista.model";
 
 export interface Lista {
   id?: number | null;
   nombre: string;
   descripcion: string;
-  movies?: Movie[];
+  movies?: MovieLista[];
   username: string;
   publica?: boolean;
 }
