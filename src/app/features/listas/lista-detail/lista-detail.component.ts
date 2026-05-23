@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ListaService } from '../../../core/services/lista.service';
-import { UsuarioListaService } from '../../../core/services/usuarioLista.service';
 import { MovieService } from '../../../core/services/movie.service';
 import { Observable, BehaviorSubject, combineLatest, of, timer } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
@@ -44,7 +43,6 @@ export class ListaDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private listaService: ListaService,
-    private usuarioListaService: UsuarioListaService,
     private movieService: MovieService,
     private router: Router
   ) {
@@ -85,7 +83,7 @@ export class ListaDetailComponent implements OnInit {
   }
 
   eliminarPelicula(movieId: number) {
-    this.usuarioListaService.deleteMovieFromList(movieId, this.listaId, this.usuario.id).pipe(
+    this.listaService.deleteMovieFromList(movieId, this.listaId).pipe(
         catchError(error => {
                   this.setErrorMessage(error?.error?.message ?? 'Error al eliminar la película de la lista');
                   return of(null);
@@ -106,7 +104,7 @@ export class ListaDetailComponent implements OnInit {
     }
   
     selectMovie(movie: Movie) {
-      this.usuarioListaService.addMovieToList(this.usuario.id, this.listaId, movie.id).pipe(
+      this.listaService.addMovieToList(this.listaId, movie.id).pipe(
         catchError(error => {
                 this.setErrorMessage(error?.error?.message ?? 'Error al añadir la película a la lista');
                 return of(null); // emitimos un valor neutro para no romper el stream
@@ -121,7 +119,7 @@ export class ListaDetailComponent implements OnInit {
 
     onEditar(isPublica: boolean): void {
         if (this.list && this.list.id) {
-            this.usuarioListaService.editarLista(this.usuario.id, this.list.id, {... this.list, publica: isPublica}).subscribe({
+            this.listaService.editarLista(this.list.id, {... this.list, publica: isPublica}).subscribe({
               next: () => {
                   this.setSuccessMessage(isPublica ? 'Lista publicada con éxito' : 'Lista ocultada con exito');
                   this.loadLista();
