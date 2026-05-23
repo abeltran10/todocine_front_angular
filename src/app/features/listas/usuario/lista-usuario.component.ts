@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UsuarioListaService } from '../../../core/services/usuarioLista.service';
 import { ListaService } from '../../../core/services/lista.service';
 import { Observable, BehaviorSubject, of, timer, ReplaySubject } from 'rxjs';
 import { catchError, shareReplay, switchMap, map } from 'rxjs/operators';
@@ -39,11 +38,10 @@ export class UserListasComponent implements OnInit {
     username: '',
   }; 
 
-  constructor(private usuarioListaService: UsuarioListaService,
-              private listaService: ListaService    
+  constructor(private listaService: ListaService    
   ) {
       this.listas$ = this.refreshListas.pipe(
-        switchMap(pagina => this.usuarioListaService.getListas(this.usuario.id, pagina)),
+        switchMap(pagina => this.listaService.getListasUser(pagina)),
         shareReplay(1),
         catchError(error => {
                this.setErrorMessage(error?.error?.message ?? 'Error cargando las listas');

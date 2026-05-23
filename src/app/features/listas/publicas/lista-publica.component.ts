@@ -30,7 +30,7 @@ export class PublicListasComponent implements OnInit {
 
   constructor(private listaService: ListaService) {
       this.listas$ = this.refreshListas.pipe(
-        switchMap(pagina => this.listaService.getListas(pagina)),
+        switchMap(pagina => this.listaService.getListasPublicas(pagina)),
         shareReplay(1),
         catchError(error => {
                this.setErrorMessage(error?.error?.message ?? 'Error cargando las listas');

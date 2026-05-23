@@ -12,9 +12,19 @@ export class ListaService {
 
   constructor(private http: HttpClient) {}
 
-  getListas(page: number) : Observable<Paginator<Lista>> {
+  getListasUser(page: number): Observable<Paginator<Lista>> {
     return this.http.get<Paginator<Lista>>(
           `${this.baseUrl}?page=${page}`
+          ).pipe( catchError(err => {
+                  // Puedes loguear o transformar el error aquí
+                  return throwError(() => err);
+                }));
+        
+  }
+
+  getListasPublicas(page: number) : Observable<Paginator<Lista>> {
+    return this.http.get<Paginator<Lista>>(
+          `${this.baseUrl}/publicas?page=${page}`
           ).pipe( catchError(err => {
                   // Puedes loguear o transformar el error aquí
                   return throwError(() => err);
