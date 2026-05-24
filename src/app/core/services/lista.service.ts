@@ -14,7 +14,7 @@ export class ListaService {
 
   getListasPublicas(page: number) : Observable<Paginator<Lista>> {
     return this.http.get<Paginator<Lista>>(
-          `${this.baseUrl}/publicas?page=${page}`
+          `${this.baseUrl}?page=${page}`
           ).pipe( catchError(err => {
                   // Puedes loguear o transformar el error aquí
                   return throwError(() => err);
