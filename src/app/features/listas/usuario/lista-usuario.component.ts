@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UsuarioListaService } from '../../../core/services/usuarioLista.service';
 import { Observable, BehaviorSubject, of, timer, ReplaySubject } from 'rxjs';
 import { catchError, shareReplay, switchMap, map } from 'rxjs/operators';
 
@@ -11,6 +10,9 @@ import { Paginator } from '../../../core/models/paginator.model';
 import { Lista } from '../../../core/models/lista.model';
 
 import { FormsModule } from '@angular/forms';
+
+import { ListaService } from '../../../core/services/lista.service';
+import { UsuarioListaService } from '../../../core/services/usuarioLista.service';
 
 @Component({
   selector: 'app-lista-usuario',
@@ -38,9 +40,11 @@ export class UserListasComponent implements OnInit {
     username: '',
   }; 
 
-  constructor(private usuarioListaService: UsuarioListaService) {
+  constructor(private listaService: ListaService,
+              private usuarioListaService: UsuarioListaService    
+  ) {
       this.listas$ = this.refreshListas.pipe(
-        switchMap(pagina => this.usuarioListaService.getListas(this.usuario.id, pagina)),
+        switchMap(pagina => this.usuarioListaService.getListasUser(this.usuario.id, pagina)),
         shareReplay(1),
         catchError(error => {
                this.setErrorMessage(error?.error?.message ?? 'Error cargando las listas');
@@ -66,7 +70,7 @@ export class UserListasComponent implements OnInit {
   onSubmitCrear(): void {
     if (this.nuevaLista.nombre && this.nuevaLista.descripcion && this.usuario) {
       
-      this.usuarioListaService.crearLista({ ... this.nuevaLista, username: this.usuario.username }, this.usuario.id).subscribe({
+      this.listaService.crearLista({ ... this.nuevaLista, username: this.usuario.username }).subscribe({
         next: () => {
           this.setSuccessMessage('Lista creada con éxito');
           
@@ -88,7 +92,7 @@ export class UserListasComponent implements OnInit {
   onSubmitEditar(): void {
     if (this.editLista.id && this.editLista.nombre && this.editLista.descripcion && this.editLista.username) {
       
-      this.usuarioListaService.editarLista(this.usuario.id, this.editLista.id, this.editLista).subscribe({
+      this.listaService.editarLista(this.editLista.id, this.editLista).subscribe({
         next: () => {
           this.setSuccessMessage('Lista editada con éxito');
         
@@ -104,7 +108,7 @@ export class UserListasComponent implements OnInit {
   }
 
   onDeleteLista(listaId: number) {
-     this.usuarioListaService.borrarLista(this.usuario.id, listaId).subscribe({
+     this.listaService.borrarLista(listaId).subscribe({
         next: () => {
           this.setSuccessMessage('Lista eliminada con exito')  
 

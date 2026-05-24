@@ -72,7 +72,7 @@
             <table class="table table-hover border">
               <thead class="table-light">
                 <tr>
-                  <th>ID</th>
+                  <th>Póster</th>
                   <th>Título</th>
                   <th>Fecha Lanzamiento</th>
                 </tr>
@@ -82,7 +82,12 @@
                     (click)="selectMovie(movie)" 
                     data-bs-dismiss="modal" 
                     style="cursor: pointer;">
-                  <td>{{ movie.id }}</td>
+                  <td>
+                    <img [src]="'https://image.tmdb.org/t/p/w92' + movie.poster_path" 
+                        [alt]="movie.title"
+                        class="img-thumbnail"
+                        style="width: 60px;">
+                  </td>
                   <td><strong>{{ movie.title }}</strong></td>
                   <td>{{ movie.release_date }}</td>
                 </tr>
