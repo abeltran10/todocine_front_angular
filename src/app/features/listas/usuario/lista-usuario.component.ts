@@ -1,6 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListaService } from '../../../core/services/lista.service';
 import { Observable, BehaviorSubject, of, timer, ReplaySubject } from 'rxjs';
 import { catchError, shareReplay, switchMap, map } from 'rxjs/operators';
 
@@ -11,6 +10,9 @@ import { Paginator } from '../../../core/models/paginator.model';
 import { Lista } from '../../../core/models/lista.model';
 
 import { FormsModule } from '@angular/forms';
+
+import { ListaService } from '../../../core/services/lista.service';
+import { UsuarioListaService } from '../../../core/services/usuarioLista.service';
 
 @Component({
   selector: 'app-lista-usuario',
@@ -38,10 +40,11 @@ export class UserListasComponent implements OnInit {
     username: '',
   }; 
 
-  constructor(private listaService: ListaService    
+  constructor(private listaService: ListaService,
+              private usuarioListaService: UsuarioListaService    
   ) {
       this.listas$ = this.refreshListas.pipe(
-        switchMap(pagina => this.listaService.getListasUser(pagina)),
+        switchMap(pagina => this.usuarioListaService.getListasUser(this.usuario.id, pagina)),
         shareReplay(1),
         catchError(error => {
                this.setErrorMessage(error?.error?.message ?? 'Error cargando las listas');
