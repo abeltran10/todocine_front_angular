@@ -4,7 +4,7 @@ export interface Lista {
   id?: number | null;
   nombre: string;
   descripcion: string;
-  movies?: Movie[];
-  username: string;
+  usuarioId?: number;
+  username?: string;
   publica?: boolean;
 }
