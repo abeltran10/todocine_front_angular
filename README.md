@@ -47,7 +47,7 @@ Reusable resources used across multiple features.
 
 ## Last release
 
-- [v2.1.5](https://github.com/abeltran10/todocine_front_angular/releases/tag/v2.1.5)
+- [v2.1.7](https://github.com/abeltran10/todocine_front_angular/releases/tag/v2.1.7)
 
 ## Commands
 
@@ -111,6 +111,12 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 <img width="1368" height="625" alt="Captura desde 2026-05-15 13-54-27" src="https://github.com/user-attachments/assets/cc3bfdba-9d69-4da7-9315-a44e6de44700" />
 <img width="1368" height="754" alt="Captura desde 2026-05-15 13-55-08" src="https://github.com/user-attachments/assets/621f801a-c5e4-4baa-9ffe-e84acf9cb127" />
+
+### Paginator in List's table of movies
+
+<img width="1110" height="287" alt="Captura desde 2026-06-04 18-29-06" src="https://github.com/user-attachments/assets/382dab0b-e407-4ceb-8793-e1e15b13ea84" />
+<img width="1286" height="926" alt="Captura desde 2026-06-04 18-28-20" src="https://github.com/user-attachments/assets/66cd4bf8-9f60-4dde-8d1a-493304c9e6b7" />
+
 
 
 
