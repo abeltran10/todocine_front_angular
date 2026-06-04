@@ -30,15 +30,15 @@ export class UserListasComponent implements OnInit {
 
   private refreshListas = new ReplaySubject<number>(1);
 
-  nuevaLista = { nombre: '', descripcion: '' };
+  nuevaLista = { nombre: '', descripcion: '', usuarioId: undefined };
 
   editLista: Lista = {
     id: undefined,
     nombre: '',
     descripcion: '',
-    movies: undefined,
-    username: '',
-  }; 
+    usuarioId: undefined,
+    publica: undefined
+  } 
 
   constructor(private listaService: ListaService,
               private usuarioListaService: UsuarioListaService    
@@ -70,12 +70,12 @@ export class UserListasComponent implements OnInit {
   onSubmitCrear(): void {
     if (this.nuevaLista.nombre && this.nuevaLista.descripcion && this.usuario) {
       
-      this.listaService.crearLista({ ... this.nuevaLista, username: this.usuario.username }).subscribe({
+      this.listaService.crearLista({ ... this.nuevaLista, usuarioId: this.usuario.id }).subscribe({
         next: () => {
           this.setSuccessMessage('Lista creada con éxito');
           
           // Limpiamos el objeto para la próxima vez
-          this.nuevaLista = { nombre: '', descripcion: '' };
+          this.nuevaLista = { nombre: '', descripcion: '', usuarioId: undefined };
           
           // Recargamos la primera página
           this.loadListas(1);
@@ -90,14 +90,14 @@ export class UserListasComponent implements OnInit {
   }
 
   onSubmitEditar(): void {
-    if (this.editLista.id && this.editLista.nombre && this.editLista.descripcion && this.editLista.username) {
+    if (this.editLista.id && this.editLista.nombre && this.editLista.descripcion && this.usuario) {
       
-      this.listaService.editarLista(this.editLista.id, this.editLista).subscribe({
+      this.listaService.editarLista(this.editLista.id, {id: this.editLista.id, nombre: this.editLista.nombre, descripcion: this.editLista.descripcion, usuarioId: this.usuario.id, publica: this.editLista.publica}).subscribe({
         next: () => {
           this.setSuccessMessage('Lista editada con éxito');
         
            // Limpiamos el objeto para la próxima vez
-          this.editLista = { id: undefined, nombre: '', descripcion: '', movies: undefined, username: '' };
+          this.editLista = { id: undefined, nombre: '', descripcion: '', usuarioId: undefined, publica: undefined};
           
           // Recargamos la primera página
           this.loadListas(1);
