@@ -73,7 +73,7 @@ export class ListaDetailComponent implements OnInit {
         })
       );
     }),
-    shareReplay(1) // Compartimos el resultado para que el Flujo 2 pueda usar la listaId de forma segura
+    shareReplay(1) 
   );
 
   // --- FLUJO 2: Obtener las películas paginadas de la lista ---
@@ -91,7 +91,8 @@ export class ListaDetailComponent implements OnInit {
           return of({ results: [], page: 1, total_pages: 1, total_results: 0 });
         })
       );
-    })
+    }),
+    shareReplay(1)
   );
 }
 
@@ -100,6 +101,9 @@ export class ListaDetailComponent implements OnInit {
     if (loggedUser) {
       this.usuario = JSON.parse(loggedUser);
     }
+
+    this.loadLista();
+    this.loadMoviesList(1);
 
   }
 
@@ -148,7 +152,7 @@ export class ListaDetailComponent implements OnInit {
 
     onEditar(isPublica: boolean): void {
         if (this.list && this.list.id) {
-            this.listaService.editarLista(this.list.id, {... this.list, usuarioId: this.usuario.id, publica: isPublica}).subscribe({
+            this.listaService.editarLista(this.list.id, {id: this.list.id, nombre: this.list.nombre, descripcion: this.list.descripcion, usuarioId: this.usuario.id, publica: isPublica}).subscribe({
               next: () => {
                   this.setSuccessMessage(isPublica ? 'Lista publicada con éxito' : 'Lista ocultada con exito');
                   this.loadLista();

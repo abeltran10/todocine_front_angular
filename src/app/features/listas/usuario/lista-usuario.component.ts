@@ -32,12 +32,7 @@ export class UserListasComponent implements OnInit {
 
   nuevaLista = { nombre: '', descripcion: '', usuarioId: undefined };
 
-  editLista: Lista = {
-    id: undefined,
-    nombre: '',
-    descripcion: '',
-    usuarioId: undefined,
-  }; 
+  editLista!: Lista; 
 
   constructor(private listaService: ListaService,
               private usuarioListaService: UsuarioListaService    
@@ -91,12 +86,12 @@ export class UserListasComponent implements OnInit {
   onSubmitEditar(): void {
     if (this.editLista.id && this.editLista.nombre && this.editLista.descripcion && this.usuario) {
       
-      this.listaService.editarLista(this.editLista.id, {... this.editLista, usuarioId: this.usuario.id}).subscribe({
+      this.listaService.editarLista(this.editLista.id, {id: this.editLista.id, nombre: this.editLista.nombre, descripcion: this.editLista.descripcion, usuarioId: this.usuario.id, publica: this.editLista.publica}).subscribe({
         next: () => {
           this.setSuccessMessage('Lista editada con éxito');
         
            // Limpiamos el objeto para la próxima vez
-          this.editLista = { id: undefined, nombre: '', descripcion: '', usuarioId: undefined };
+          this.editLista = { id: undefined, nombre: '', descripcion: '', usuarioId: undefined, publica: undefined};
           
           // Recargamos la primera página
           this.loadListas(1);
