@@ -62,7 +62,7 @@ export class ListaService {
   
   getMoviesByLista(listaId: number, page: number): Observable<Paginator<Movie>> {
       return this.http.get<Paginator<Movie>>(
-          `${this.baseUrl}/${listaId}?page=${page}`
+          `${this.baseUrl}/${listaId}/movies?page=${page}`
           ).pipe( catchError(err => {
                   // Puedes loguear o transformar el error aquí
                   return throwError(() => err);

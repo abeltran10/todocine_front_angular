@@ -32,7 +32,13 @@ export class UserListasComponent implements OnInit {
 
   nuevaLista = { nombre: '', descripcion: '', usuarioId: undefined };
 
-  editLista!: Lista; 
+  editLista: Lista = {
+    id: undefined,
+    nombre: '',
+    descripcion: '',
+    usuarioId: undefined,
+    publica: undefined
+  } 
 
   constructor(private listaService: ListaService,
               private usuarioListaService: UsuarioListaService    
