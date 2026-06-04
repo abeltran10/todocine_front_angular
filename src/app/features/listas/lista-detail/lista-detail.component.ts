@@ -148,7 +148,7 @@ export class ListaDetailComponent implements OnInit {
 
     onEditar(isPublica: boolean): void {
         if (this.list && this.list.id) {
-            this.listaService.editarLista(this.list.id, {... this.list, publica: isPublica}).subscribe({
+            this.listaService.editarLista(this.list.id, {... this.list, usuarioId: this.usuario.id, publica: isPublica}).subscribe({
               next: () => {
                   this.setSuccessMessage(isPublica ? 'Lista publicada con éxito' : 'Lista ocultada con exito');
                   this.loadLista();
