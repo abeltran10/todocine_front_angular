@@ -4,7 +4,6 @@ export interface Lista {
   id?: number | null;
   nombre: string;
   descripcion: string;
-  usuarioId?: number;
-  username?: string;
+  username: string;
   publica?: boolean;
 }

@@ -4,6 +4,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { Lista } from '../models/lista.model';
 import { Paginator } from '../models/paginator.model';
 import { Movie } from '../models/movie.model';
+import { Valoracion } from '../models/valoracion.model';
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +84,24 @@ export class ListaService {
     return this.http.post<Movie>(
           `${this.baseUrl}/${listaId}/movies/${movieId}`, null
           ).pipe(catchError(err => {
+                  // Puedes loguear o transformar el error aquí
+                  return throwError(() => err);
+                }));
+  }
+
+  putValoracion(listaId: number, valoracion: Valoracion): Observable<Valoracion> {
+    return this.http.put<Valoracion>(
+        `${this.baseUrl}/${listaId}/valoraciones`, valoracion
+    ).pipe(catchError(err => {
+                  // Puedes loguear o transformar el error aquí
+                  return throwError(() => err);
+                }));
+  }
+
+  getValoraciones(listaId:number): Observable<Valoracion[]> {
+    return this.http.get<Valoracion[]>(
+          `${this.baseUrl}/${listaId}/valoraciones`
+          ).pipe( catchError(err => {
                   // Puedes loguear o transformar el error aquí
                   return throwError(() => err);
                 }));

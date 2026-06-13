@@ -47,7 +47,7 @@ Reusable resources used across multiple features.
 
 ## Last release
 
-- [v2.1.7](https://github.com/abeltran10/todocine_front_angular/releases/tag/v2.1.7)
+- [v2.1.8](https://github.com/abeltran10/todocine_front_angular/releases/tag/v2.1.8)
 
 ## Commands
 
@@ -116,6 +116,13 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 <img width="1286" height="926" alt="Captura desde 2026-06-04 18-28-20" src="https://github.com/user-attachments/assets/66cd4bf8-9f60-4dde-8d1a-493304c9e6b7" />
 <img width="1110" height="287" alt="Captura desde 2026-06-04 18-29-06" src="https://github.com/user-attachments/assets/382dab0b-e407-4ceb-8793-e1e15b13ea84" />
+
+### Users's opinions about a list
+
+<img width="1269" height="929" alt="Captura desde 2026-06-13 18-14-25" src="https://github.com/user-attachments/assets/5d5df8af-71e1-4531-9cea-2a934e239972" />
+<img width="1175" height="645" alt="Captura desde 2026-06-13 18-16-22" src="https://github.com/user-attachments/assets/26576eb6-f210-4fbc-b569-a79bbc8f235b" />
+
+
 
 
 
