@@ -14,7 +14,8 @@ import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
 import { NotificationComponent } from '../../../shared/common/notification/notification.component';
-import { PaginatorComponent } from '../../../shared/common/paginator/paginator.component';
+import { ListaTableComponent } from './table/lista-table.component';
+import { ListaComentariosComponent } from './comentarios/lista-comentarios.component';
 
 import { Router } from '@angular/router';
 
@@ -27,7 +28,8 @@ import { Router } from '@angular/router';
     HeaderComponent, 
     NavigationBarComponent, 
     NotificationComponent,
-    PaginatorComponent
+    ListaTableComponent,
+    ListaComentariosComponent
   ],
   templateUrl: './lista-detail.component.html',
 })
@@ -115,16 +117,6 @@ export class ListaDetailComponent implements OnInit {
     this.refreshMoviesList$.next(page);
   }
 
-  eliminarPelicula(movieId: number) {
-    this.listaService.deleteMovieFromList(movieId, this.listaId).pipe(
-        catchError(error => {
-                  this.setErrorMessage(error?.error?.message ?? 'Error al eliminar la película de la lista');
-                  return of(null);
-                })
-    ).subscribe(() => {
-       this.loadMoviesList(1);
-    });
-  }
 
    searchMovies(text: string, pagina: number = 1) {
       this.movies$ = this.movieService.getByName(text, pagina).pipe(
@@ -152,7 +144,7 @@ export class ListaDetailComponent implements OnInit {
 
     onEditar(isPublica: boolean): void {
         if (this.list && this.list.id) {
-            this.listaService.editarLista(this.list.id, {id: this.list.id, nombre: this.list.nombre, descripcion: this.list.descripcion, usuarioId: this.usuario.id, publica: isPublica}).subscribe({
+            this.listaService.editarLista(this.list.id, {... this.list, publica: isPublica}).subscribe({
               next: () => {
                   this.setSuccessMessage(isPublica ? 'Lista publicada con éxito' : 'Lista ocultada con exito');
                   this.loadLista();
@@ -162,9 +154,6 @@ export class ListaDetailComponent implements OnInit {
         }       
     }
 
-    handleLoadMovieDetail(movieId: number): void {
-      this.router.navigate(['/app/moviedetail', movieId]);
-    }
 
   setSuccessMessage(message: string) {
     this.messageSuccessSubject.next(message);
