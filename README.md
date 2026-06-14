@@ -77,13 +77,15 @@ This will compile your project and store the build artifacts in the `dist/` dire
 <img width="1315" height="548" alt="Captura desde 2026-01-27 16-23-45" src="https://github.com/user-attachments/assets/493c9a5a-7916-4991-aa8c-af0bb090174f" />
 
 ### Search
-<img width="1315" height="548" alt="Captura desde 2026-01-27 16-23-59" src="https://github.com/user-attachments/assets/a8b7b51d-28c0-48a3-b63c-fb4515aaae79" />
+<img width="1421" height="611" alt="Captura desde 2026-06-14 21-50-23" src="https://github.com/user-attachments/assets/fa0a30e6-2a66-412c-84a0-c0536530cd7a" />
+
 
 ### Results search
 <img width="1155" height="824" alt="Captura desde 2026-03-13 20-37-40" src="https://github.com/user-attachments/assets/ff57ceac-b5a6-4496-9f7c-b9c27ab7764a" />
 
 ### Paginator
-<img width="1155" height="824" alt="Captura desde 2026-03-13 20-37-51" src="https://github.com/user-attachments/assets/8aee4a11-a916-490c-91c9-f2d8c1aa3814" />
+<img width="1421" height="786" alt="Captura desde 2026-06-14 21-50-55" src="https://github.com/user-attachments/assets/3684f956-d4e5-4434-9312-3ff584bcde75" />
+
 
 ### Movies in theaters
 <img width="1155" height="824" alt="Captura desde 2026-03-13 20-38-23" src="https://github.com/user-attachments/assets/1fe71228-3ce0-486e-8671-1dbcdc57d923" />
@@ -92,10 +94,12 @@ This will compile your project and store the build artifacts in the `dist/` dire
 <img width="1155" height="824" alt="Captura desde 2026-03-13 20-38-42" src="https://github.com/user-attachments/assets/546d6df5-13a5-4466-bc4a-2687c304c290" />
 
 ### Movie detail
-<img width="1155" height="824" alt="Captura desde 2026-03-13 20-38-53" src="https://github.com/user-attachments/assets/bdf4ede4-60ef-4f28-beca-f343e807057b" />
+<img width="1421" height="922" alt="Captura desde 2026-06-14 21-51-25" src="https://github.com/user-attachments/assets/b0ad560f-be8d-4797-a072-e30af17c72ab" />
+
 
 ### Favourites
-<img width="1155" height="824" alt="Captura desde 2026-03-13 20-39-20" src="https://github.com/user-attachments/assets/6abf8630-f218-440d-97cb-5503bc02aba6" />
+<img width="1197" height="921" alt="Captura desde 2026-06-14 22-04-27" src="https://github.com/user-attachments/assets/1417a3bf-9943-49c1-a2d1-b03792248dd6" />
+
 
 ### Winner insert form (ADMIN)
 <img width="1155" height="824" alt="Captura desde 2026-03-13 20-39-51" src="https://github.com/user-attachments/assets/05783da2-d9b2-4611-83d1-50edf760f01f" />
