@@ -22,11 +22,11 @@
     @if (lista.username === usuario.username) {
       <div class="d-flex justify-content-end mt-auto gap-2">
         <button class="btn btn-info" type="button" (click)="onEditar(!lista.publica)">
-          <i class="bi" [ngClass]="lista.publica ? 'bi-eye-slash' : 'bi-globe'"></i> 
+          <i class="fa fa-share-alt me-1"></i>
           {{ lista.publica ? 'Ocultar lista' : 'Publicar lista' }}
         </button>
         <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#movieModal">
-          <i class="bi bi-plus-lg"></i> Añadir película
+          <i class="fa fa-plus"></i> Añadir película
         </button>
       </div>
       <br/><br/>
