@@ -124,9 +124,8 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 
 ### Users's opinions about a list
+<img width="1415" height="363" alt="Captura desde 2026-06-14 22-00-41" src="https://github.com/user-attachments/assets/667eed00-1458-41ca-865b-791ee0e8ab1f" />
 
-<img width="1269" height="929" alt="Captura desde 2026-06-13 18-14-25" src="https://github.com/user-attachments/assets/5d5df8af-71e1-4531-9cea-2a934e239972" />
-<img width="1175" height="645" alt="Captura desde 2026-06-13 18-16-22" src="https://github.com/user-attachments/assets/26576eb6-f210-4fbc-b569-a79bbc8f235b" />
 
 
 
