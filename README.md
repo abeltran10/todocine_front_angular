@@ -81,7 +81,8 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 
 ### Results search
-<img width="1155" height="824" alt="Captura desde 2026-03-13 20-37-40" src="https://github.com/user-attachments/assets/ff57ceac-b5a6-4496-9f7c-b9c27ab7764a" />
+<img width="1197" height="928" alt="Captura desde 2026-06-14 22-05-29" src="https://github.com/user-attachments/assets/d929c30b-2cb1-423d-943d-3bb947644cb2" />
+
 
 ### Paginator
 <img width="1421" height="786" alt="Captura desde 2026-06-14 21-50-55" src="https://github.com/user-attachments/assets/3684f956-d4e5-4434-9312-3ff584bcde75" />
@@ -97,7 +98,7 @@ This will compile your project and store the build artifacts in the `dist/` dire
 <img width="1421" height="922" alt="Captura desde 2026-06-14 21-51-25" src="https://github.com/user-attachments/assets/b0ad560f-be8d-4797-a072-e30af17c72ab" />
 
 
-### Favourites
+### Favorites
 <img width="1197" height="921" alt="Captura desde 2026-06-14 22-04-27" src="https://github.com/user-attachments/assets/1417a3bf-9943-49c1-a2d1-b03792248dd6" />
 
 
