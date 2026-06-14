@@ -107,7 +107,8 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 ### Public Lists
 
-<img width="1368" height="550" alt="Captura desde 2026-05-15 13-53-57" src="https://github.com/user-attachments/assets/b8ea9689-010b-477f-8c53-22f55420f0fe" />
+<img width="1361" height="602" alt="Captura desde 2026-06-14 22-09-59" src="https://github.com/user-attachments/assets/17ce2ef3-7f3b-42ca-be5a-3fa9d40311c4" />
+
 <img width="1368" height="625" alt="Captura desde 2026-05-15 13-54-09" src="https://github.com/user-attachments/assets/27e0e347-42b0-4b8e-b6ff-49eae338d290" />
 
 
