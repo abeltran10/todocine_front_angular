@@ -115,12 +115,13 @@ This will compile your project and store the build artifacts in the `dist/` dire
 ### Private List
 
 <img width="1368" height="625" alt="Captura desde 2026-05-15 13-54-27" src="https://github.com/user-attachments/assets/cc3bfdba-9d69-4da7-9315-a44e6de44700" />
-<img width="1368" height="754" alt="Captura desde 2026-05-15 13-55-08" src="https://github.com/user-attachments/assets/621f801a-c5e4-4baa-9ffe-e84acf9cb127" />
+<img width="1415" height="925" alt="Captura desde 2026-06-14 22-01-30" src="https://github.com/user-attachments/assets/afa8b89c-8837-4a59-a74e-5e13117bdc9e" />
+
 
 ### Paginator in List's table of movies
 
-<img width="1286" height="926" alt="Captura desde 2026-06-04 18-28-20" src="https://github.com/user-attachments/assets/66cd4bf8-9f60-4dde-8d1a-493304c9e6b7" />
-<img width="1110" height="287" alt="Captura desde 2026-06-04 18-29-06" src="https://github.com/user-attachments/assets/382dab0b-e407-4ceb-8793-e1e15b13ea84" />
+<img width="1202" height="656" alt="Captura desde 2026-06-14 22-08-05" src="https://github.com/user-attachments/assets/8a63bb4f-6b14-4710-96fd-c09af9d59354" />
+
 
 ### Users's opinions about a list
 
