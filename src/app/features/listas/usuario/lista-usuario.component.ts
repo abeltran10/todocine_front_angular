@@ -30,15 +30,8 @@ export class UserListasComponent implements OnInit {
 
   private refreshListas = new ReplaySubject<number>(1);
 
-  nuevaLista = { nombre: '', descripcion: '', username: '' };
-
-  editLista: Lista = {
-    id: undefined,
-    nombre: '',
-    descripcion: '',
-    username: '',
-    publica: undefined
-  } 
+  listaActual = { id: null, nombre: '', descripcion: '' };
+  esEdicion = false;
 
   constructor(private listaService: ListaService,
               private usuarioListaService: UsuarioListaService    
@@ -67,15 +60,21 @@ export class UserListasComponent implements OnInit {
     this.refreshListas.next(pagina); 
   }
 
+  // Llamado desde el botón "Crear"
+  prepararCreacion() {
+    this.esEdicion = false;
+    this.limpiarFormulario();
+  }
+
   onSubmitCrear(): void {
-    if (this.nuevaLista.nombre && this.nuevaLista.descripcion && this.usuario) {
+    if (this.listaActual.nombre && this.listaActual.descripcion && this.usuario) {
       
-      this.listaService.crearLista({ ... this.nuevaLista, username: this.usuario.username }).subscribe({
+      this.listaService.crearLista({ ... this.listaActual, username: this.usuario.username }).subscribe({
         next: () => {
           this.setSuccessMessage('Lista creada con éxito');
           
           // Limpiamos el objeto para la próxima vez
-          this.nuevaLista = { nombre: '', descripcion: '', username: '' };
+          this.listaActual = { id: null, nombre: '', descripcion: '' };
           
           // Recargamos la primera página
           this.loadListas(1);
@@ -85,19 +84,22 @@ export class UserListasComponent implements OnInit {
     }
   }
 
-  prepareLista(lista: Lista) {
-    this.editLista = { ... lista }
+  // Llamado desde el botón "Editar" (el que ya tenías en tu card)
+  prepareLista(lista: any) {
+    this.esEdicion = true;
+    // Clonamos el objeto para no modificar la card directamente hasta guardar
+    this.listaActual = { ...lista }; 
   }
 
   onSubmitEditar(): void {
-    if (this.editLista.id && this.editLista.nombre && this.editLista.descripcion && this.usuario) {
+    if (this.listaActual.id && this.listaActual.nombre && this.listaActual.descripcion && this.usuario) {
       
-      this.listaService.editarLista(this.editLista.id, {... this.editLista, username: this.usuario.username}).subscribe({
+      this.listaService.editarLista(this.listaActual.id, {... this.listaActual, username: this.usuario.username}).subscribe({
         next: () => {
           this.setSuccessMessage('Lista editada con éxito');
         
            // Limpiamos el objeto para la próxima vez
-          this.editLista = { id: undefined, nombre: '', descripcion: '', username: '', publica: undefined};
+          this.listaActual = { id: null, nombre: '', descripcion: ''};
           
           // Recargamos la primera página
           this.loadListas(1);
@@ -105,6 +107,10 @@ export class UserListasComponent implements OnInit {
         error: (err) => this.setErrorMessage( err?.error?.message ?? 'No se pudo editar la lista')
       });
     }
+  }
+
+  limpiarFormulario() {
+    this.listaActual = { id: null, nombre: '', descripcion: '' };
   }
 
   onDeleteLista(listaId: number) {

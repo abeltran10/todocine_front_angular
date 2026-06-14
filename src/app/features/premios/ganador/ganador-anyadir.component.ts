@@ -58,15 +58,11 @@ export class GanadorAnyadirComponent implements OnInit{
   } ) {
     
     if (ganador.premioId && ganador.anyo && ganador.categoriaId && ganador.movieId) {
-
-       try {
-          await this.ganadorService.createGanador(ganador);
-          this.setSuccessMessage("Ganador creado correctamente");
-
-       } catch (error: any) {
-          this.setErrorMessage(error?.error?.message ?? 'Error guardando el ganador');
-       }
-       
+       this.ganadorService.createGanador(ganador).subscribe({
+            next: () => this.setSuccessMessage("Ganador creado correctamente"),
+            error: (error) =>  this.setErrorMessage(error?.error?.message ?? 'Error guardando el ganador')
+          });
+                 
     } else {
       alert('Por favor, rellena todos los campos');
     }

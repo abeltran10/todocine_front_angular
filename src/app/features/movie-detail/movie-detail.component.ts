@@ -54,49 +54,24 @@ export class MovieDetailComponent implements OnInit {
 
    loadMovieDetail(movieId: number) {
        this.movieService.getDetailMovieById(movieId)
-         .pipe(
-           catchError(error => {
-             this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
-             return of(null);
-           })
-         )
-         .subscribe(movie => {
-             this.movieDetailSubject.next(movie);
-          });
-      
+         .subscribe({
+            next: (movie) => this.movieDetailSubject.next(movie),
+            error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error cargando la película')
+         });         
     }
 
   addFavoritos(movie: MovieDetail) {
-    this.updateUsuarioMovie(movie, true);
+    this.updateFavs(movie, true);
   }
 
-  //removeFavoritos(movie: MovieDetail) {
-    // this.usuarioMovieService.deleteUsuarioMovie(this.usuario.id, movie.id)
-    //     .pipe(
-    //       catchError(error => {
-    //         this.setErrorMessage(error?.error?.message ?? 'Error quitando la película de favoritos');
-    //         return of(null);
-    //       })
-    //     ).subscribe({
-    //       next: () => {
-    //           const currentMovie = this.movieDetailSubject.value;
-    //           if (currentMovie) {
-    //             const movieDetail = { ...currentMovie, favoritos: false }; 
-    //             this.movieDetailSubject.next(movieDetail);
-    //           }
-    //       }
-    //     });
-
-    //     this.setSuccessMessage("Eliminada película de favoritos");
-  //}
 
   removeFavoritos(movie: MovieDetail) {
-    this.updateUsuarioMovie(movie, false);
+    this.updateFavs(movie, false);
   }
 
   addVote(movie: MovieDetail, rating: number) {
     
-      const payload = {
+      const usuarioMovie: UsuarioMovie = {
         usuarioId: this.usuario.id,
         movieId: movie.id,
         vista: movie.vista,
@@ -107,18 +82,14 @@ export class MovieDetailComponent implements OnInit {
       this.usuarioMovieService.updateUsuarioMovie(
                 this.usuario.id,
                 movie.id,
-                payload
-              ).pipe(
-                catchError(error => {
-                     this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
-                     return of(null);
-                })
-              ).subscribe(movie => {
-                    this.movieDetailSubject.next(movie);
+                usuarioMovie
+              ).subscribe({
+                next: (movie) => this.movieDetailSubject.next(movie),
+                error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error cargando la película')
               });
     }
 
-  updateUsuarioMovie(
+  updateFavs(
     movie: MovieDetail,
     favoritos: boolean    
   ) {
@@ -135,16 +106,39 @@ export class MovieDetailComponent implements OnInit {
             this.usuario.id,
             movie.id,
             usuarioMovie
-      ).pipe(
-            catchError(error => {
-                     this.setErrorMessage(error?.error?.message ?? 'Error cargando la película');
-                     return of(null);
-                })
-      ).subscribe(movie => {
-                    this.movieDetailSubject.next(movie);
+      ).subscribe({
+                   next: (movie) => {
+                      this.movieDetailSubject.next(movie);
+                      this.setSuccessMessage(favoritos ? "Añadida película a favoritos" : "Eliminada película de favoritos");
+                   },
+                   error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error gestionando favoritos')
+                   
+
               });   
       
-      this.setSuccessMessage(favoritos ? "Añadida película a favoritos" : "Eliminada película de favoritos");
+      
+  }
+
+  updateVista(movie: MovieDetail, isVista: boolean) {
+       const usuarioMovie: UsuarioMovie = {
+        usuarioId: this.usuario.id,
+        movieId: movie.id,
+        vista: isVista,
+        favoritos: movie.favoritos,
+        voto: null
+      };
+      
+      this.usuarioMovieService.updateUsuarioMovie(
+                this.usuario.id,
+                movie.id,
+                usuarioMovie
+              ).subscribe({
+                    next: (movie) => {
+                      this.movieDetailSubject.next(movie);
+                      this.setSuccessMessage(isVista ? "Película vista" : "Película no vista");
+                    },
+                    error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error gestionando vista')  
+              });
   }
 
   setErrorMessage(message: string) {

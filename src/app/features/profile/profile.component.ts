@@ -42,31 +42,29 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  async updateUser(username: string, password: string, passConfirm: string) {
+  updateUser(username: string, password: string, passConfirm: string) {
 
     if (password !== passConfirm) {
       this.setErrorMessage('Las password no coinciden');
       return;
     }
+    
+    const updatedUser: User = {
+      ...this.usuario,
+      username,
+      password
+    };
 
-    try {
-      const updatedUser: User = {
-        ...this.usuario,
-        username,
-        password
-      };
+    this.userService.updateUser(updatedUser).subscribe({
+      next: (user) => {
+          localStorage.setItem('loggedUser', JSON.stringify(user));
+          this.usuario = user;
 
-      const response: User = await this.userService.updateUser(updatedUser);
-
-      localStorage.setItem('loggedUser', JSON.stringify(response));
-      this.usuario = response;
-
-      this.setSuccessMessage('Usuario actualizado con éxito');
-
-    } catch (error: any) {
-      this.setErrorMessage(error?.error?.message ?? 'Error actualizando usuario');
-    }
-  }
+          this.setSuccessMessage('Usuario actualizado con éxito');
+      },
+      error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error actualizando usuario')
+    });
+  }    
 
   setErrorMessage(message: string) {
         this.messageErrorSubject.next(message);

@@ -22,7 +22,7 @@ export class FavoritosFiltrosComponent {
     order: string;
   }>();
 
-  emitChanges(): void {
+  private emitChanges(): void {
     this.filtersChange.emit({
       usuarioId: this.usuarioId,
       vistaFiltro: this.vistaFiltro,

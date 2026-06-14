@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable, catchError, of, ReplaySubject, switchMap, shareReplay, BehaviorSubject, timer } from 'rxjs';
 
-import { UserService } from '../../core/services/user.service';
 import { UsuarioMovieService } from '../../core/services/usuarioMovie.service';
 
 import { Paginator } from '../../core/models/paginator.model';
@@ -53,12 +52,11 @@ export class FavoritosComponent implements OnInit {
   private refreshUserFavs = new ReplaySubject<number>(1);
 
   constructor(
-    private userService: UserService,
     private usuarioMovieService: UsuarioMovieService,
   ) {
-    // Se hace así porque trás actualizar Vista tarda mucho en hacer la llamada a loadUserFavs
-     this.movies$ = this.refreshUserFavs.pipe(
-             switchMap(page => this.userService.getUserMovies(
+    
+    this.movies$ = this.refreshUserFavs.pipe(
+             switchMap(page => this.usuarioMovieService.getUserMovies(
                this.usuario.id,
                this.vistaFiltro,
                this.votadaFiltro,
@@ -81,41 +79,11 @@ export class FavoritosComponent implements OnInit {
 
       this.loadUserFavs(1);
     }
-
-    
   }
 
   
   loadUserFavs(page: number = 1) {
      this.refreshUserFavs.next(page);
-  }
-  
-  updateVista(movie: MovieDetail, isVista: boolean, page: number) {
-      const usuarioMovie = {
-        usuarioId: this.usuario.id,
-        movieId: movie.id,
-        vista: isVista,
-        favoritos: movie.favoritos,
-        voto: null
-      };
-      
-      this.usuarioMovieService.updateUsuarioMovie(
-                  this.usuario.id,
-                  movie.id,
-                  usuarioMovie
-                ).pipe(
-                    catchError(error =>  {
-                      this.setErrorMessage(error?.error?.message ?? 'Error actualizando el estado de los favoritos');
-                      return of(null);
-                  })
-                ).subscribe(() => {
-                      this.loadUserFavs(page);
-                    }
-                );
-
-      this.setSuccessMessage(isVista ? 'Película vista' : 'Película no vista');
-            
-    
   }
 
   onFiltersChange(filters: {
@@ -129,27 +97,6 @@ export class FavoritosComponent implements OnInit {
     this.order = filters.order;
 
     this.loadUserFavs(1);
-  }
-
-
-  /** Grid de 3 */
-  buildRows(movies: Paginator<MovieDetail>): (MovieDetail | null)[][] {
-    if (!movies) return [];
-
-    const rows: (MovieDetail | null)[][] = [];
-    const results = movies.results;
-
-    for (let i = 0; i < results.length; i += 3) {
-      const row: (MovieDetail | null)[] = results.slice(i, i + 3);
-
-      while (row.length < 3) {
-        row.push(null);
-      }
-
-      rows.push(row);
-    }
-
-    return rows;
   }
 
   setErrorMessage(message: string) {

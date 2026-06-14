@@ -9,35 +9,36 @@
           <a class="nav-link" [routerLink]="['/app']">Home</a>
         </li>
 
-        <!-- Cartelera -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
             Cartelera
           </a>
           <ul class="dropdown-menu">
-            <li *ngFor="let r of regions">
-              <a class="dropdown-item" [routerLink]="['/app/cartelera', r.code]">
-                {{ r.name }}
-              </a>
-            </li>
+            @for (r of regions; track r.code) {
+              <li>
+                <a class="dropdown-item" [routerLink]="['/app/cartelera', r.code]">
+                  {{ r.name }}
+                </a>
+              </li>
+            }
           </ul>
         </li>
 
-        <!-- Premios -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
             Premios
           </a>
           <ul class="dropdown-menu">
-            <li *ngFor="let a of (awards$ | async)">
-              <a class="dropdown-item" [routerLink]="['/app/premio', a.id]">
-                {{ a.titulo }}
-              </a>
-            </li>
+            @for (a of (awards$ | async); track a.id) {
+              <li>
+                <a class="dropdown-item" [routerLink]="['/app/premio', a.id]">
+                  {{ a.titulo }}
+                </a>
+              </li>
+            }
           </ul>
         </li>
 
-        <!-- Usuario -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
             Signed as {{ user.username }}
@@ -46,9 +47,11 @@
             <li><a class="dropdown-item" [routerLink]="['/app/profile']">Perfil</a></li>
             <li><a class="dropdown-item" [routerLink]="['/app/favoritos']">Favoritos</a></li>
             <li><a class="dropdown-item" [routerLink]="['/app/listas']">Listas</a></li>
-            <ng-container *ngIf="user.rol === 'ADMIN'">
-                <li><a class="dropdown-item" [routerLink]="['/app/ganador']">Ganador</a></li>
-            </ng-container>            
+            
+            @if (user.rol === 'ADMIN') {
+              <li><a class="dropdown-item" [routerLink]="['/app/ganador']">Ganador</a></li>
+            }
+            
             <li><a class="dropdown-item" role="button" (click)="logout()">Log out</a></li>
           </ul>
         </li>

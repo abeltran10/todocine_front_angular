@@ -19,6 +19,9 @@ export class MovieComponent {
   @Output() addFavoritos = new EventEmitter<MovieDetail>();
   @Output() removeFavoritos = new EventEmitter<MovieDetail>();
   @Output() addVote = new EventEmitter<{ movie: MovieDetail; rating: number }>();
+  @Output() updateVista = new EventEmitter<{movie: MovieDetail, isVista: boolean}>();
+
+  hoverPuntuacion = 0;
   
   constructor(private sanitizer: DomSanitizer) {}
 
@@ -59,10 +62,16 @@ export class MovieComponent {
 
   handleVote(rate: number) {
     this.addVote.emit({ movie: this.movieDetail, rating: rate });
+
+    this.hoverPuntuacion = 0;
   }
 
   ratingStars(): number[] {
     return [1, 2, 3, 4, 5];
+  }
+
+  handleVista() {
+    this.updateVista.emit({ movie: this.movieDetail, isVista: !this.movieDetail.vista});
   }
 
   get genresText(): string {

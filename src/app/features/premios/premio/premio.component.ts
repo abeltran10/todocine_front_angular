@@ -98,24 +98,6 @@ export class PremioComponent implements OnInit {
       );
   }
 
-  /** filas de 3 ganadores */
-  buildRows(ganadores: Paginator<Ganador>): (Ganador | null)[][] {
-    if (!ganadores) return [];
-
-    const rows: (Ganador | null)[][] = [];
-    const results = ganadores.results;
-
-    for (let i = 0; i < results.length; i += 3) {
-      const row: (Ganador | null)[] = results.slice(i, i + 3);
-      while (row.length < 3) {
-        row.push(null);
-      }
-      rows.push(row);
-    }
-
-    return rows;
-  }
-
   setErrorMessage(message: string) {
       this.messageErrorSubject.next(message);
   

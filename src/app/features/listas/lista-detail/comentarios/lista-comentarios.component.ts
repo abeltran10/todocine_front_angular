@@ -34,22 +34,22 @@ export class ListaComentariosComponent implements OnInit {
 
   constructor(private listaService: ListaService) {
       this.valoraciones$ = this.refreshValoraciones$.pipe(
-      switchMap(() => {
-        if (!this.listaId) {
-          return of([]);
-        }
+        switchMap(() => {
+          if (!this.listaId) {
+            return of([]);
+          }
 
-        return this.listaService.getValoraciones(this.listaId).pipe(
-          tap((res) => {
-            this.reviews = res || [];
-          }),
-          catchError(error => {
-            this.errorMessage.emit(error?.error?.message ?? 'Error cargando las valoraciones');
-            return of([]); 
-          }),
-          shareReplay(1)
-        );
-      })
+          return this.listaService.getValoraciones(this.listaId).pipe(
+            tap((res) => {
+              this.reviews = res || [];
+            }),
+            catchError(error => {
+              this.errorMessage.emit(error?.error?.message ?? 'Error cargando las valoraciones');
+              return of([]); 
+            }),
+            shareReplay(1)
+          );
+        })
     );
 
   }
@@ -97,15 +97,10 @@ export class ListaComentariosComponent implements OnInit {
     };
 
     
-    this.listaService.putValoracion(this.listaId, nuevaValoracion).pipe(
-      catchError(error => {
-        this.errorMessage.emit(error?.error?.message ?? 'Error guardando la valoración');
-          return of([]);
-      })
-    ).subscribe(() => {
-        this.loadValoraciones();
-    })
-   
+    this.listaService.putValoracion(this.listaId, nuevaValoracion).subscribe({
+        next: () => this.loadValoraciones(),
+        error: (error) =>  this.errorMessage.emit(error?.error?.message ?? 'Error guardando la valoración')
+    });
     
     // Resetear formulario
     this.toggleFormulario();

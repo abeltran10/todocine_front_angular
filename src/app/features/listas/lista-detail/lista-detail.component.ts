@@ -129,16 +129,14 @@ export class ListaDetailComponent implements OnInit {
     }
   
     selectMovie(movie: Movie) {
-      this.listaService.addMovieToList(this.listaId, movie.id).pipe(
-        catchError(error => {
-                this.setErrorMessage(error?.error?.message ?? 'Error al añadir la película a la lista');
-                return of(null); // emitimos un valor neutro para no romper el stream
-              })
-        ).subscribe(() => {
-          this.searchText = '';
-          this.movies$ = of(null);
-          this.loadMoviesList(1);
-        });
+      this.listaService.addMovieToList(this.listaId, movie.id).subscribe({
+        next: () => {
+            this.searchText = '';
+            this.movies$ = of(null);
+            this.loadMoviesList(1);
+        },
+        error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error al añadir la película a la lista')
+      }); 
   
     }
 

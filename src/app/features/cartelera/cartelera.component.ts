@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Observable, catchError, of } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, of, timer } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
 import { MovieService } from '../../core/services/movie.service';
@@ -16,7 +16,7 @@ import { CarteleraCardComponent } from './card/cartelera-card.component';
 import { PaginatorComponent } from '../../shared/common/paginator/paginator.component';
 
 import { Regions, RegionKey, Region } from '../../core/enum/regions';
-import { Cine, Cines } from '../../core/enum/cines';
+import { Cines } from '../../core/enum/cines';
 
 @Component({
   selector: 'app-cartelera',
@@ -41,8 +41,8 @@ export class CarteleraComponent implements OnInit {
 
   movies$!: Observable<Paginator<Movie>>;
 
-  successMessage = '';
-  errorMessage = '';
+  messageErrorSubject = new BehaviorSubject<string>('');
+  errorMessage$ = this.messageErrorSubject.asObservable();
 
   selectedCineUrl: string = '';
 
@@ -67,17 +67,14 @@ export class CarteleraComponent implements OnInit {
         this.title = `CARTELERA ${regionData.name.toUpperCase()}`;
 
         this.loadCartelera(regionData.code, 1);
-    });
-
-    
+    });  
     
   }
 
   loadCartelera(region: string, page: number) {
     this.movies$ = this.movieService.getMoviesPlayingNowByRegion(region, page).pipe(
       catchError(error => {
-        this.errorMessage = error?.error?.message ?? 'Error cargando cartelera';
-        setTimeout(() => (this.errorMessage = ''), 5000);
+        this.setErrorMessage(error?.error?.message ?? 'Error cargando cartelera');
         return of({
           results: [],
           page: 1,
@@ -88,24 +85,6 @@ export class CarteleraComponent implements OnInit {
   );
 }
 
-  buildRows(movies: Paginator<Movie>): (Movie | null)[][] {
-    if (!movies) return [];
-
-    const rows: (Movie | null)[][] = [];
-    const results = movies.results;
-    
-    for (let i = 0; i < results.length; i += 3) {
-      const row: (Movie | null)[] = results.slice(i, i + 3);
-
-      while (row.length < 3) {
-        row.push(null);
-      }
-
-      rows.push(row);
-    }
-
-    return rows;
-  }
 
   get cines() {
     return Cines.getCinesByRegion(this.region);
@@ -119,4 +98,13 @@ export class CarteleraComponent implements OnInit {
       alert('Por favor, selecciona un cine primero');
     }
   }
+
+  setErrorMessage(message: string) {
+      this.messageErrorSubject.next(message);
+  
+      // Usamos un timer de RxJS que es más compatible con Angular
+      timer(5000).subscribe(() => this.messageErrorSubject.next(''));
+    } 
+
 }
+

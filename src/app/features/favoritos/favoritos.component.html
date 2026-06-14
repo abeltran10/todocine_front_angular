@@ -10,39 +10,32 @@
 
 <app-header [title]="title"></app-header>
 
-<ng-container *ngIf="movies$ | async as paginator">
-  <app-favoritos-filtros
-    [usuarioId]="usuario.id"
-    [vistaFiltro]="vistaFiltro"
-    [votadaFiltro]="votadaFiltro"
-    [order]="order"
-    (filtersChange)="onFiltersChange($event)">
-  </app-favoritos-filtros>
+@if (movies$ | async; as paginator) {
+  @if (paginator) {
+    <app-favoritos-filtros
+      [usuarioId]="usuario.id"
+      [vistaFiltro]="vistaFiltro"
+      [votadaFiltro]="votadaFiltro"
+      [order]="order"
+      (filtersChange)="onFiltersChange($event)">
+    </app-favoritos-filtros>
 
-  <br/>
-  <br/>
-  
-  <div class="container-md" *ngIf="paginator">
-      <div class="row mb-3" *ngFor="let row of buildRows(paginator)">
-        <div class="card-group">
-          <ng-container *ngFor="let movie of row">
+    <div class="container-md mt-5">
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        @for (movie of paginator.results; track movie.id) {
+          <div class="col">
             <app-favoritos-card
-                *ngIf="movie"
-                [movie]="movie"
-                [page]="paginator.page"
-                (updateVista)="updateVista($event.movie, $event.vista, $event.page)">
+              [movie]="movie">
             </app-favoritos-card>
-          </ng-container>
-        </div>
+          </div>
+        }
       </div>
-  </div>
+    </div>
 
-  <app-paginator
-    *ngIf="paginator"
-    [activePage]="paginator.page"
-    [totalPages]="paginator.total_pages"
-    (pageChange)="loadUserFavs($event)">
-  </app-paginator>
-</ng-container>
-
-
+    <app-paginator
+      [activePage]="paginator.page"
+      [totalPages]="paginator.total_pages"
+      (pageChange)="loadUserFavs($event)">
+    </app-paginator>
+  }
+}
