@@ -40,10 +40,12 @@ export class GanadorService {
 
 
   // Crear ganador
-  async createGanador(ganador: GanadorPK): Promise<Ganador> {
-    const response = await firstValueFrom(
-      this.http.post<Ganador>(this.baseUrl, ganador)
-    );
-    return response;
+  createGanador(ganador: GanadorPK): Observable<Ganador> {
+    return this.http.post<Ganador>(`${this.baseUrl}`, ganador).pipe(
+      catchError(err => {
+        // Puedes loguear o transformar el error aquí
+        return throwError(() => err);
+      })
+    )
   }
 }

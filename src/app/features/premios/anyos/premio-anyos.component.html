@@ -8,22 +8,21 @@
   [errorMessage]="(errorMessage$ | async) ?? ''">
 </app-notification>
 
-<ng-container *ngIf="award$ | async as award">
+@if (award$ | async; as award) {
   <app-header [title]="award.titulo | uppercase"></app-header>
 
   <div class="container-md">
-    <div class="row mb-3" *ngFor="let row of rows">
-      <div class="card-group">
-        <app-anyos
-          *ngFor="let anyo of row"
-          [premioCod]="award.id"
-          [premioAnyo]="anyo"
-          [premioTitulo]="award.titulo">
-        </app-anyos>
-      </div>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      @for (anyo of award.anyos; track anyo) {
+        <div class="col">
+          <app-anyos
+            [premioCod]="award.id"
+            [premioAnyo]="anyo">
+          </app-anyos>
+        </div>
+      }
     </div>
   </div>
-  
-</ng-container>
+}
 
 

@@ -31,18 +31,16 @@
   </ul>
 
   <div class="tab-content mt-4">
-    <ng-container *ngIf="publica; else vistaUsuario">
-        <app-lista-publica
+    @if (publica) {
+      <app-lista-publica
         (error)="setErrorMessage($event)"
         (success)="setSuccessMessage($event)">
-        </app-lista-publica>
-    </ng-container>
-    
-    <ng-template #vistaUsuario>
-        <app-lista-usuario
+      </app-lista-publica>
+    } @else {
+      <app-lista-usuario
         (error)="setErrorMessage($event)"
         (success)="setSuccessMessage($event)">
-        </app-lista-usuario>
-    </ng-template>
+      </app-lista-usuario>
+    }
   </div>
 </div>

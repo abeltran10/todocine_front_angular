@@ -12,7 +12,6 @@ export class AnyosComponent {
 
   @Input() premioCod!: number;
   @Input() premioAnyo!: number;
-  @Input() premioTitulo!: string;
 
   constructor(private router: Router) {}
 

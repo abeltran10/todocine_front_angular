@@ -45,17 +45,16 @@ export class NavigationBarComponent implements OnInit {
                         );
   }
 
-  async logout() {
-    try {
-      await this.loginService.logout();
+  logout() {
+    this.loginService.logout().subscribe({
+      next: () => {
+          localStorage.removeItem('loggedUserToken');
+          localStorage.removeItem('loggedUser');
 
-      localStorage.removeItem('loggedUserToken');
-      localStorage.removeItem('loggedUser');
-
-      this.router.navigate(['/app']);
-    } catch (error) {
-      this.error.emit('Error al abandonar la sesión');
-    }
+          this.router.navigate(['/app']);
+      },
+      error: () => this.error.emit('Error al abandonar la sesión')
+    });
   }
 
 }

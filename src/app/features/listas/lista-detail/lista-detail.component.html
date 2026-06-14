@@ -8,8 +8,7 @@
   [errorMessage]="(errorMessage$ | async) ?? ''">
 </app-notification>
 
-<ng-container *ngIf="lista$ | async as lista; else loadingLista">
-  
+@if (lista$ | async; as lista) {
   <app-header [title]="lista.nombre"></app-header>
   
   <div class="container mt-4">
@@ -20,57 +19,51 @@
       </div>
     </div>
 
-    <!-- Botón Añadir Película alineado a la derecha -->
-    <ng-container *ngIf="lista.username === usuario.username">
-        <div class="d-flex justify-content-end mt-auto gap-2">
-              <button class="btn btn-info" type="button" (click)="onEditar(!lista.publica)">
-                <i class="bi bi-plus-lg"></i> {{!lista.publica ? 'Publicar lista' : 'Ocultar lista'}}
-              </button>
-              <button class="btn btn-primary" type="button" 
-                          data-bs-toggle="modal" data-bs-target="#movieModal">
-                <i class="bi bi-plus-lg"></i> Añadir película
-              </button>
-        </div>
-        <br/>
-        <br/>
-    </ng-container>
+    @if (lista.username === usuario.username) {
+      <div class="d-flex justify-content-end mt-auto gap-2">
+        <button class="btn btn-info" type="button" (click)="onEditar(!lista.publica)">
+          <i class="fa fa-share-alt me-1"></i>
+          {{ lista.publica ? 'Ocultar lista' : 'Publicar lista' }}
+        </button>
+        <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#movieModal">
+          <i class="fa fa-plus"></i> Añadir película
+        </button>
+      </div>
+      <br/><br/>
+    }
 
-    <ng-container *ngIf="moviesList$ | async as moviesList; else loadingMovies">
-        <app-lista-table
-          [lista]="lista"
-          [usuario]="usuario"
-          [moviesList]="moviesList"
-          (handleMoviesList)="loadMoviesList($event)"
-          (errorMessage)="setErrorMessage($event)">
-        </app-lista-table>
-    </ng-container>
+    @if (moviesList$ | async; as moviesList) {
+      <app-lista-table
+        [lista]="lista"
+        [usuario]="usuario"
+        [moviesList]="moviesList"
+        (handleMoviesList)="loadMoviesList($event)"
+        (errorMessage)="setErrorMessage($event)">
+      </app-lista-table>
+    } @else {
+      <div class="text-center py-5">
+        <div class="spinner-border text-secondary" role="status"></div>
+        <p class="mt-2 text-muted">Cargando películas...</p>
+      </div>
+    }
     
     <app-lista-comentarios 
       [listaId]="lista.id" 
       [usuario]="usuario"
       (errorMessage)="setErrorMessage($event)">
     </app-lista-comentarios>
-  
   </div>
-</ng-container>
-
-<ng-template #loadingLista>
+} @else {
   <div class="text-center mt-5">
     <div class="spinner-border text-primary" role="status"></div>
     <p class="mt-2">Cargando detalles de la lista...</p>
   </div>
-</ng-template>
+}
 
-<ng-template #loadingMovies>
-  <div class="text-center py-5">
-    <div class="spinner-border text-secondary" role="status"></div>
-    <p class="mt-2 text-muted">Cargando películas...</p>
-  </div>
-</ng-template>
-
-<div class="modal fade" id="movieModal" tabindex="-1" aria-labelledby="movieModalLabel" aria-hidden="true" #movieModal>
+<div class="modal fade" id="movieModal" tabindex="-1" aria-hidden="true" #movieModal>
   <div class="modal-dialog modal-lg">
-    <div class="modal-content"> <div class="modal-header">
+    <div class="modal-content">
+      <div class="modal-header">
         <h5 class="modal-title">Buscador de Películas</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
@@ -80,12 +73,10 @@
           <input type="text" class="form-control" [(ngModel)]="searchText"
                 placeholder="Escribe el nombre de la película..."
                 (keyup.enter)="searchMovies(searchText)">
-          <button class="btn btn-primary" (click)="searchMovies(searchText)">
-            Buscar
-          </button>
+          <button class="btn btn-primary" (click)="searchMovies(searchText)">Buscar</button>
         </div>
 
-        <ng-container *ngIf="movies$ | async as paginator">
+        @if (movies$ | async; as paginator) {
           <div class="table-responsive" style="max-height: 350px;">
             <table class="table table-hover border">
               <thead class="table-light">
@@ -96,54 +87,39 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let movie of paginator.results" 
-                    (click)="selectMovie(movie)" 
-                    data-bs-dismiss="modal" 
-                    style="cursor: pointer;">
-                  <td>
-                    <img [src]="'https://image.tmdb.org/t/p/w92' + movie.poster_path" 
-                        [alt]="movie.title"
-                        class="img-thumbnail"
-                        style="width: 60px;">
-                  </td>
-                  <td><strong>{{ movie.title }}</strong></td>
-                  <td>{{ movie.release_date }}</td>
-                </tr>
-                <tr *ngIf="paginator.results.length === 0">
-                  <td colspan="3" class="text-center text-muted py-3">No se encontraron películas.</td>
-                </tr>
+                @for (movie of paginator.results; track movie.id) {
+                  <tr (click)="selectMovie(movie)" data-bs-dismiss="modal" style="cursor: pointer;">
+                    <td>
+                      <img [src]="'https://image.tmdb.org/t/p/w92' + movie.poster_path" [alt]="movie.title" class="img-thumbnail" style="width: 60px;">
+                    </td>
+                    <td><strong>{{ movie.title }}</strong></td>
+                    <td>{{ movie.release_date }}</td>
+                  </tr>
+                } @empty {
+                  <tr><td colspan="3" class="text-center text-muted py-3">No se encontraron películas.</td></tr>
+                }
               </tbody>
             </table>
           </div>
 
           <div class="d-flex justify-content-between align-items-center mt-3">
-            <small class="text-muted">
-              Página <strong>{{ paginator.page }}</strong> de {{ paginator.total_pages }}
-            </small>
-            
+            <small class="text-muted">Página <strong>{{ paginator.page }}</strong> de {{ paginator.total_pages }}</small>
             <nav>
               <ul class="pagination pagination-sm mb-0">
                 <li class="page-item" [class.disabled]="paginator.page === 1">
-                  <button class="btn btn-sm btn-outline-secondary me-1" 
-                          (click)="searchMovies(paramSearch, paginator.page - 1)"
-                          [disabled]="paginator.page === 1"> Anterior
-                  </button>
+                  <button class="btn btn-sm btn-outline-secondary me-1" (click)="searchMovies(paramSearch, paginator.page - 1)" [disabled]="paginator.page === 1">Anterior</button>
                 </li>
-
                 <li class="page-item" [class.disabled]="paginator.page === paginator.total_pages">
-                  <button class="btn btn-sm btn-outline-secondary" 
-                          (click)="searchMovies(paramSearch, paginator.page + 1)"
-                          [disabled]="paginator.page === paginator.total_pages"> Siguiente
-                  </button>
+                  <button class="btn btn-sm btn-outline-secondary" (click)="searchMovies(paramSearch, paginator.page + 1)" [disabled]="paginator.page === paginator.total_pages">Siguiente</button>
                 </li>
               </ul>
             </nav>
           </div>
-        
-          <div *ngIf="!(paginator)" class="text-center text-muted py-4">
+        } @else {
+          <div class="text-center text-muted py-4">
             <i class="bi bi-info-circle"></i> Realiza una búsqueda para ver resultados.
           </div>
-        </ng-container>
+        }
       </div>
     </div>
   </div>

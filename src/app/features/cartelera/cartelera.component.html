@@ -1,39 +1,37 @@
 <app-navigation-bar
   [user]="usuario"
-  (error)="errorMessage = $event">
+  (error)="setErrorMessage($event)">
 </app-navigation-bar>
 
 <app-notification
-  [successMessage]="successMessage"
-  [errorMessage]="errorMessage">
+  [successMessage]="''"
+  [errorMessage]="(errorMessage$ | async) ?? ''">
 </app-notification>
 
 <app-header [title]="title"></app-header>
 
-<ng-container *ngIf="movies$ | async as paginator">
-    <div class="container-md" *ngIf="paginator">
-      <div class="row mb-3" *ngFor="let row of buildRows(paginator)">
-        <div class="card-group">
-          <ng-container *ngFor="let movie of row">
+@if (movies$ | async; as paginator) {
+  @if (paginator) {
+    <div class="container-md">
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        @for (movie of paginator.results; track movie.id) {
+          <div class="col">
             <app-cartelera-card
-              *ngIf="movie"
               [movie]="movie"
               [cines]="cines">
             </app-cartelera-card>
-          </ng-container>
-
-        </div>
+          </div>
+        }
       </div>
     </div>
 
     <app-paginator
-      *ngIf="paginator"
       [activePage]="paginator.page"
       [totalPages]="paginator.total_pages"
       (pageChange)="loadCartelera(region, $event)">
     </app-paginator>
-</ng-container>
-
+  }
+}
 
 <div class="modal fade" id="cineModal" tabindex="-1" aria-labelledby="cineModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -47,9 +45,11 @@
         
         <select class="form-select" [(ngModel)]="selectedCineUrl">
           <option value="" disabled selected>Selecciona un cine...</option>
-          <option *ngFor="let cine of cines" [value]="cine.url">
-            {{ cine.name }}
-          </option>
+          @for (cine of cines; track cine.id) {
+            <option [value]="cine.url">
+              {{ cine.name }}
+            </option>
+          }
         </select>
       </div>
 

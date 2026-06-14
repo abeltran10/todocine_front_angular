@@ -10,76 +10,74 @@
     </button>
   </div>
 
-  <div *ngIf="mostrarFormulario" class="card bg-dark shadow-sm mb-4 border-0">
-    <div class="card-body">
-      <h5 class="card-title text-secondary mb-3">Tu valoración</h5>
-      
-      <div class="mb-3 d-flex align-items-center">
-        <label class="form-label me-3 mb-0">Puntuación:</label>
-        <div class="stars-selector fs-4">
-          <i *ngFor="let star of [1,2,3,4,5]" 
-             class="fa-star cursor-pointer me-1 transition-all"
-             [ngClass]="(hoverPuntuacion || nuevaPuntuacion) >= star ? 'fa text-warning' : 'fa text-muted'"
-             (click)="setRating(star)"
-             (mouseenter)="hoverPuntuacion = star"
-             (mouseleave)="hoverPuntuacion = 0"
-             style="cursor: pointer;">
-          </i>
+  @if (mostrarFormulario) {
+    <div class="card bg-dark shadow-sm mb-4 border-0">
+      <div class="card-body">
+        <h5 class="card-title text-secondary mb-3">Tu valoración</h5>
+        
+        <div class="mb-3 d-flex align-items-center">
+          <label class="form-label me-3 mb-0">Puntuación:</label>
+          <div class="stars-selector fs-4">
+            @for (star of [1,2,3,4,5]; track star) {
+              <i class="fa fa-star cursor-pointer me-1 transition-all"
+                 [ngClass]="(hoverPuntuacion || nuevaPuntuacion) >= star ? 'text-warning' : 'text-muted'"
+                 (click)="setRating(star)"
+                 (mouseenter)="hoverPuntuacion = star"
+                 (mouseleave)="hoverPuntuacion = 0">
+              </i>
+            }
+          </div>
+          <span class="ms-2 text-muted small">
+            {{ nuevaPuntuacion > 0 ? nuevaPuntuacion + ' / 5 estrellas' : 'Sin puntuar (0)' }}
+          </span>
         </div>
-        <span class="ms-2 text-muted small">
-          {{ nuevaPuntuacion > 0 ? nuevaPuntuacion + ' / 5 estrellas' : 'Sin puntuar (0)' }}
-        </span>
-      </div>
 
-      <div class="mb-3">
-        <label class="form-label">Comentario</label>
-        <textarea class="form-control" rows="3" [(ngModel)]="nuevoComentario" 
-                  placeholder="Escribe tu opinión sobre esta lista..."></textarea>
-      </div>
+        <div class="mb-3">
+          <label class="form-label">Comentario</label>
+          <textarea class="form-control" rows="3" [(ngModel)]="nuevoComentario" 
+                    placeholder="Escribe tu opinión sobre esta lista..."></textarea>
+        </div>
 
-      <div class="d-flex justify-content-end">
-        <button class="btn btn-success" [disabled]="nuevaPuntuacion === 0" (click)="guardarValoracion()">
-          <i class="fa fa-paper-plane me-1"></i> Publicar opinión
-        </button>
+        <div class="d-flex justify-content-end">
+          <button class="btn btn-success" [disabled]="nuevaPuntuacion === 0" (click)="guardarValoracion()">
+            <i class="fa fa-paper-plane me-1"></i> Publicar opinión
+          </button>
+        </div>
       </div>
     </div>
-  </div>
+  }
 
   <div>
-    <div *ngFor="let v of (valoraciones$ | async)" class="card mb-3 shadow-sm border-start border-4" 
-        [ngClass]="v.puntuacion > 0 ? 'border-primary' : 'border-secondary'">
-      <div class="card-body py-3">
-        
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <div class="d-flex align-items-center gap-2">
-            <strong class="text-primary"><i class="fa fa-user me-1"></i>{{ v.username }}</strong>
-            <span class="text-muted small">| {{ v.fecha }}</span>
-          </div>
+    @for (v of (valoraciones$ | async); track v.listaId + '-' + v.username) {
+      <div class="card mb-3 shadow-sm border-start border-4" 
+           [ngClass]="v.puntuacion > 0 ? 'border-primary' : 'border-secondary'">
+        <div class="card-body py-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center gap-2">
+              <strong class="text-primary"><i class="fa fa-user me-1"></i>{{ v.username }}</strong>
+              <span class="text-muted small">| {{ v.fecha }}</span>
+            </div>
 
-          <div class="stars-display text-warning">
-            <ng-container *ngIf="v.puntuacion > 0">
-              <i *ngFor="let star of [1,2,3,4,5]" 
-                class="fa"
-                [ngClass]="v.puntuacion >= star ? 'fa-star' : 'fa-star-o'">
-              </i>
-            </ng-container>
-            <span *ngIf="!v.puntuacion || v.puntuacion === 0" class="badge bg-secondary text-white">
-              No puntuado
-            </span>
+            <div class="stars-display text-warning">
+              @if (v.puntuacion > 0) {
+                @for (star of [1,2,3,4,5]; track star) {
+                  <i class="fa" [ngClass]="v.puntuacion >= star ? 'fa-star' : 'fa-star-o'"></i>
+                }
+              } @else {
+                <span class="badge bg-secondary text-white">No puntuado</span>
+              }
+            </div>
           </div>
+          <p class="card-text text-muted mb-0 pt-2 border-top border-light">
+            {{ v.comentario }}
+          </p>
         </div>
-
-        <p class="card-text text-muted mb-0 pt-2 border-top border-light">
-          {{ v.comentario ? v.comentario : 'Sin comentario' }}
-        </p>
-
       </div>
-    </div>
-  
-
-    <div *ngIf="reviews.length === 0" class="text-center py-4 text-muted bg-dark rounded">
-      <i class="fa fa-comments-o fs-1 mb-2 d-block text-secondary"></i>
-      Nadie ha comentado esta lista todavía. ¡Sé el primero!
-    </div>
+    } @empty {
+      <div class="text-center py-4 text-muted bg-dark rounded">
+        <i class="fa fa-comments-o fs-1 mb-2 d-block text-secondary"></i>
+        Nadie ha comentado esta lista todavía. ¡Sé el primero!
+      </div>
+    }
   </div>
 </div>

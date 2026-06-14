@@ -4,6 +4,7 @@ import { catchError, throwError, Observable } from 'rxjs';
 
 import { UsuarioMovie } from '../models/usuarioMovie.model';
 import { MovieDetail } from '../models/movieDetail.model';
+import { Paginator } from '../models/paginator.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,12 +31,22 @@ export class UsuarioMovieService {
    
   }
 
-  // deleteUsuarioMovie(userId: number, movieId: number): Observable<any> {
-  //   return this.http.delete<any>(`${this.baseUrl}/${userId}/movies/${movieId}`)
-  //                                   .pipe(
-  //                                     catchError(err => {
-  //                                       return throwError(() => err);
-  //                                     })
-  //                                   );
-  // }
+  // Obtener películas del usuario
+  getUserMovies(
+    userId: number,
+    vista: string,
+    votada: string,
+    order: string,
+    pagina: number
+  ): Observable<Paginator<MovieDetail>> {
+    const url = `${this.baseUrl}/${userId}/movies?vista=${vista}&votada=${votada}&orderBy=${order}&page=${pagina}`;
+    return this.http.get<Paginator<MovieDetail>>(url).pipe(
+        catchError(err => {
+        // Puedes loguear o transformar el error aquí
+        return throwError(() => err);
+      })
+    );
+    
+  }
+
 }

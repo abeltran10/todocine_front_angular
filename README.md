@@ -77,13 +77,16 @@ This will compile your project and store the build artifacts in the `dist/` dire
 <img width="1315" height="548" alt="Captura desde 2026-01-27 16-23-45" src="https://github.com/user-attachments/assets/493c9a5a-7916-4991-aa8c-af0bb090174f" />
 
 ### Search
-<img width="1315" height="548" alt="Captura desde 2026-01-27 16-23-59" src="https://github.com/user-attachments/assets/a8b7b51d-28c0-48a3-b63c-fb4515aaae79" />
+<img width="1421" height="611" alt="Captura desde 2026-06-14 21-50-23" src="https://github.com/user-attachments/assets/fa0a30e6-2a66-412c-84a0-c0536530cd7a" />
+
 
 ### Results search
-<img width="1155" height="824" alt="Captura desde 2026-03-13 20-37-40" src="https://github.com/user-attachments/assets/ff57ceac-b5a6-4496-9f7c-b9c27ab7764a" />
+<img width="1197" height="928" alt="Captura desde 2026-06-14 22-05-29" src="https://github.com/user-attachments/assets/d929c30b-2cb1-423d-943d-3bb947644cb2" />
+
 
 ### Paginator
-<img width="1155" height="824" alt="Captura desde 2026-03-13 20-37-51" src="https://github.com/user-attachments/assets/8aee4a11-a916-490c-91c9-f2d8c1aa3814" />
+<img width="1421" height="786" alt="Captura desde 2026-06-14 21-50-55" src="https://github.com/user-attachments/assets/3684f956-d4e5-4434-9312-3ff584bcde75" />
+
 
 ### Movies in theaters
 <img width="1155" height="824" alt="Captura desde 2026-03-13 20-38-23" src="https://github.com/user-attachments/assets/1fe71228-3ce0-486e-8671-1dbcdc57d923" />
@@ -92,35 +95,39 @@ This will compile your project and store the build artifacts in the `dist/` dire
 <img width="1155" height="824" alt="Captura desde 2026-03-13 20-38-42" src="https://github.com/user-attachments/assets/546d6df5-13a5-4466-bc4a-2687c304c290" />
 
 ### Movie detail
-<img width="1155" height="824" alt="Captura desde 2026-03-13 20-38-53" src="https://github.com/user-attachments/assets/bdf4ede4-60ef-4f28-beca-f343e807057b" />
+<img width="1421" height="922" alt="Captura desde 2026-06-14 21-51-25" src="https://github.com/user-attachments/assets/b0ad560f-be8d-4797-a072-e30af17c72ab" />
 
-### Favourites
-<img width="1155" height="824" alt="Captura desde 2026-03-13 20-39-20" src="https://github.com/user-attachments/assets/6abf8630-f218-440d-97cb-5503bc02aba6" />
+
+### Favorites
+<img width="1197" height="921" alt="Captura desde 2026-06-14 22-04-27" src="https://github.com/user-attachments/assets/1417a3bf-9943-49c1-a2d1-b03792248dd6" />
+
 
 ### Winner insert form (ADMIN)
 <img width="1155" height="824" alt="Captura desde 2026-03-13 20-39-51" src="https://github.com/user-attachments/assets/05783da2-d9b2-4611-83d1-50edf760f01f" />
 
 ### Public Lists
 
-<img width="1368" height="550" alt="Captura desde 2026-05-15 13-53-57" src="https://github.com/user-attachments/assets/b8ea9689-010b-477f-8c53-22f55420f0fe" />
+<img width="1361" height="602" alt="Captura desde 2026-06-14 22-09-59" src="https://github.com/user-attachments/assets/17ce2ef3-7f3b-42ca-be5a-3fa9d40311c4" />
+
 <img width="1368" height="625" alt="Captura desde 2026-05-15 13-54-09" src="https://github.com/user-attachments/assets/27e0e347-42b0-4b8e-b6ff-49eae338d290" />
 
 
 
 ### Private List
 
-<img width="1368" height="625" alt="Captura desde 2026-05-15 13-54-27" src="https://github.com/user-attachments/assets/cc3bfdba-9d69-4da7-9315-a44e6de44700" />
-<img width="1368" height="754" alt="Captura desde 2026-05-15 13-55-08" src="https://github.com/user-attachments/assets/621f801a-c5e4-4baa-9ffe-e84acf9cb127" />
+<img width="1361" height="610" alt="Captura desde 2026-06-14 22-10-42" src="https://github.com/user-attachments/assets/06637f38-a701-4cc6-bf95-8c91111ea5b6" />
+
+<img width="1415" height="925" alt="Captura desde 2026-06-14 22-01-30" src="https://github.com/user-attachments/assets/afa8b89c-8837-4a59-a74e-5e13117bdc9e" />
+
 
 ### Paginator in List's table of movies
 
-<img width="1286" height="926" alt="Captura desde 2026-06-04 18-28-20" src="https://github.com/user-attachments/assets/66cd4bf8-9f60-4dde-8d1a-493304c9e6b7" />
-<img width="1110" height="287" alt="Captura desde 2026-06-04 18-29-06" src="https://github.com/user-attachments/assets/382dab0b-e407-4ceb-8793-e1e15b13ea84" />
+<img width="1202" height="656" alt="Captura desde 2026-06-14 22-08-05" src="https://github.com/user-attachments/assets/8a63bb4f-6b14-4710-96fd-c09af9d59354" />
+
 
 ### Users's opinions about a list
+<img width="1415" height="363" alt="Captura desde 2026-06-14 22-00-41" src="https://github.com/user-attachments/assets/667eed00-1458-41ca-865b-791ee0e8ab1f" />
 
-<img width="1269" height="929" alt="Captura desde 2026-06-13 18-14-25" src="https://github.com/user-attachments/assets/5d5df8af-71e1-4531-9cea-2a934e239972" />
-<img width="1175" height="645" alt="Captura desde 2026-06-13 18-16-22" src="https://github.com/user-attachments/assets/26576eb6-f210-4fbc-b569-a79bbc8f235b" />
 
 
 

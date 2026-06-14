@@ -17,7 +17,7 @@ import { NotificationComponent } from '../../shared/common/notification/notifica
 import { HeaderComponent } from '../../shared/layout/header/header.component';
 import { SearchFormComponent } from './search/search-form.component';
 import { PaginatorComponent } from '../../shared/common/paginator/paginator.component';
-import { MovieCardComponent } from '../movie-detail/card/movie-card.component';
+import { MovieCardComponent } from './movie-card/movie-card.component';
 
 @Component({
   selector: 'app-home',
@@ -62,8 +62,17 @@ export class HomeComponent implements OnInit {
     this.activatedRoute.paramMap
     .pipe(map(() => window.history.state))
     .subscribe(state => {
+      // Verificamos si existe el mensaje
       if (state && state.successMessage) {
         this.setSuccessMessage(state.successMessage);
+
+        // Limpiamos el estado del historial
+        // El primer parámetro es el nuevo estado, el segundo es el título (opcional), 
+        // y el tercero es la URL actual (null para mantenerla igual).
+        const cleanState = { ...window.history.state };
+        delete cleanState.successMessage;
+        
+        window.history.replaceState(cleanState, '', window.location.href);
       }
     });
   }
@@ -81,29 +90,6 @@ export class HomeComponent implements OnInit {
             })
       );
     this.paramSearch = text;
-  }
-
-  /**
-   * Prepara las filas de 3 películas
-   */
-  buildRows(movies: Paginator<Movie>): (Movie | null)[][] {
-    if (!movies) return [];
-
-    const rows: (Movie | null)[][] = [];
-    const results = movies.results;
-
-    for (let i = 0; i < results.length; i += 3) {
-      const row: (Movie | null)[] = results.slice(i, i + 3);
-
-      // rellenar hasta 3
-      while (row.length < 3) {
-        row.push(null);
-      }
-
-      rows.push(row);
-    }
-
-    return rows;
   }
 
 

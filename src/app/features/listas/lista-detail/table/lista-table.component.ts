@@ -41,14 +41,10 @@ export class ListaTableComponent {
 
   eliminarPelicula(movieId: number) {
     if (!this.lista || !this.lista.id) return;
-    this.listaService.deleteMovieFromList(movieId, this.lista.id).pipe(
-        catchError(error => {
-                  this.setErrorMessage(error?.error?.message ?? 'Error al eliminar la película de la lista');
-                  return of(null);
-                })
-    ).subscribe(() => {
-       this.loadMoviesList(1);
-    });
+    this.listaService.deleteMovieFromList(movieId, this.lista.id).subscribe({
+       next: () => this.loadMoviesList(1),
+       error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error al eliminar la película de la lista')
+    })
   }
 
     handleLoadMovieDetail(movieId: number): void {

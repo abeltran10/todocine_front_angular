@@ -30,15 +30,12 @@ export class CreateAccountComponent {
 
   constructor(private userService: UserService) {}
 
-  async createUser(username: string, password: string) {
-    try {
-      await this.userService.createUser({ username, password });
-
-      this.setSuccessMessage('Cuenta creada con éxito');
-
-    } catch (error: any) {
-      this.setErrorMessage(error?.error?.message ?? 'Error al crear la cuenta');
-    }
+  createUser(username: string, password: string) {
+    this.userService.createUser({ username, password }).subscribe({
+      next: () => this.setSuccessMessage('Cuenta creada con éxito'),
+      error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error al crear la cuenta')
+      
+    });
   }
 
   setErrorMessage(message: string) {

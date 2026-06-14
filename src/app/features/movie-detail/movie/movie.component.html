@@ -1,26 +1,48 @@
-<ng-container *ngIf="movieDetail">
+@if (movieDetail) {
   <div class="container">
     <div class="row">
       <div class="col"></div>
       <div class="col">
-        <h3 class="text-info text-center">
-          {{ movieDetail.title }} {{ releaseDate }}
-        </h3>
+        <h3 class="text-info text-center">{{ movieDetail.title }} {{ releaseDate }}</h3>
       </div>
     </div>
 
     <div class="row">
       <div class="col">
-        <img *ngIf="img" [src]="img" class="img-thumbnail" />
+        @if (img) {
+          <img [src]="img" class="img-thumbnail" />
+        }
       </div>
 
       <div class="col">
         <div class="row">{{ movieDetail.overview }}</div>
         <br />
 
-        <div class="row" *ngIf="video">
-          <div class="container">
-            <iframe width="420" height="315" [src]="video"></iframe>
+        @if (video) {
+          <div class="row">
+            <div class="container">
+              <iframe width="420" height="315" [src]="video"></iframe>
+            </div>
+          </div>
+          <br />
+        }
+
+        <div class="row">
+          <div class="container d-flex gap-2">
+            @if (!showAddButton) {
+              <button class="btn btn-secondary" (click)="handleFavoritos()">Añadir a favoritos</button>
+            } @else {
+              <button class="btn btn-secondary" (click)="handleRemoveFav()">Quitar de favoritos</button>
+            }
+
+            @if (showAddButton) {
+              <button class="btn" 
+                      [ngClass]="movieDetail.vista ? 'btn-primary' : 'btn-outline-primary'" 
+                      (click)="handleVista()">
+                <i class="fa" [ngClass]="movieDetail.vista ? 'fa-eye' : 'fa-eye-slash'"></i>
+                {{ movieDetail.vista ? ' Vista' : ' Marcar como vista' }}
+              </button>
+            }
           </div>
         </div>
 
@@ -28,19 +50,7 @@
 
         <div class="row">
           <div class="container">
-            <button
-              *ngIf="!showAddButton"
-              class="btn btn-secondary"
-              (click)="handleFavoritos()">
-              Añadir a favoritos
-            </button>
-
-            <button
-              *ngIf="showAddButton"
-              class="btn btn-secondary"
-              (click)="handleRemoveFav()">
-              Quitar de favoritos
-            </button>
+            <span class="fw-bold fst-italic">Géneros:</span> {{ genresText }}
           </div>
         </div>
 
@@ -48,27 +58,15 @@
 
         <div class="row">
           <div class="container">
-            <span class="fw-bold fst-italic">Géneros:</span>
-              {{ genresText }}
-          </div>
-        </div>
-
-        <br />
-
-        <div class="row">
-          <div class="container">
-            <span class="fw-bold fst-italic">Valora:  </span>
-
-            <ng-container *ngFor="let star of ratingStars()">
-               <i
-                  class="fa"
-                  [ngClass]="{
-                    'fa-star': star <= (movieDetail.voto),
-                    'fa-star-o': star > (movieDetail.voto)
-                  }"
-                  (click)="handleVote(star)">
-                </i>  
-            </ng-container>
+            <span class="fw-bold fst-italic">Valora: </span>
+            @for (star of ratingStars(); track star) {
+              <i class="fa fa-lg cursor-pointer me-1"
+                [ngClass]="(hoverPuntuacion || movieDetail.voto) >= star ? 'fa-star text-warning' : 'fa-star-o text-muted'"
+                (click)="handleVote(star)"
+                (mouseenter)="hoverPuntuacion = star"
+                (mouseleave)="hoverPuntuacion = 0">
+              </i>
+            }
           </div>
         </div>
 
@@ -101,7 +99,8 @@
             {{ movieDetail.vote_average }}
           </div>
         </div>
+
       </div>
     </div>
   </div>
-</ng-container>
+}

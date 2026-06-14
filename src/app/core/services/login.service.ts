@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+
+import { catchError, throwError } from 'rxjs';
 
 export interface LoginCredentials {
   username: string;
@@ -29,9 +31,12 @@ export class LoginService {
   }
 
   // Logout
-  async logout() {
-    await firstValueFrom(
-      this.http.post('/api/logout', null) // token se añade automáticamente desde el interceptor
-    );
+  logout() {
+     return this.http.post<any>('/api/logout', null).pipe(
+          catchError(err => {
+            // Puedes loguear o transformar el error aquí
+            return throwError(() => err);
+          })
+        )
   }
 }

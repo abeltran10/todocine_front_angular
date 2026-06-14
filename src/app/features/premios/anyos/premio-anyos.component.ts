@@ -33,7 +33,6 @@ export class PremioAnyosComponent implements OnInit {
   usuario!: User;
 
   award$!: Observable<Premio | null>;
-  rows: number[][] = [];
   messageErrorSubject = new BehaviorSubject<string>('');
   errorMessage$ = this.messageErrorSubject.asObservable();
 
@@ -53,23 +52,12 @@ export class PremioAnyosComponent implements OnInit {
       map(params => Number(params.get('premioId'))),
       filter(id => !!id), // Si el id es 0 o null, se detiene aquí
       switchMap(id => this.premioService.getPremioById(id).pipe(
-        tap(premio => {
-          this.buildRows(premio.anyos ?? [])
-        }),
         catchError(error => {
           this.setErrorMessage(error?.error?.message ?? 'Error al cargar el premio');
           return of(null);
         })
       ))
     );
-  }
-
-  private buildRows(anyos: number[]): void {
-    this.rows = [];
-
-    for (let i = 0; i < anyos.length; i += 3) {
-      this.rows.push(anyos.slice(i, i + 3));
-    }
   }
 
   setErrorMessage(message: string) {
