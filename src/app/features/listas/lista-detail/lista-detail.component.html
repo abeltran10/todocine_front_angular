@@ -21,8 +21,8 @@
 
     @if (lista.username === usuario.username) {
       <div class="d-flex justify-content-end mt-auto gap-2">
-        <button class="btn" [ngClass] = "lista.publica ? 'btn-secondary' : 'btn-outline-secondary'" type="button" (click)="onEditar(!lista.publica)">
-          <i class="fa fa-share me-1"></i>
+        <button class="btn btn-secondary" type="button" (click)="onEditar(!lista.publica)">
+          <i class="fa" [ngClass]="lista.publica ? 'fa-ban me-1' : 'fa-share me-1'"></i>
           {{ lista.publica ? 'Dejar de compartir' : 'Compartir lista' }}
         </button>
         <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#movieModal">
