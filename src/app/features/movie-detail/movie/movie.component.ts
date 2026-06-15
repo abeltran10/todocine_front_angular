@@ -11,6 +11,7 @@ import { User } from '../../../core/models/user.model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './movie.component.html',
+  styleUrl: '/movie.component.css'
 })
 export class MovieComponent {
 
