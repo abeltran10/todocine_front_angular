@@ -30,14 +30,14 @@
         <div class="row">
           <div class="container d-flex gap-2">
             @if (!showAddButton) {
-              <button class="btn btn-secondary" (click)="handleFavoritos()">Añadir a favoritos</button>
+              <button class="btn btn-primary" (click)="handleFavoritos()">Añadir a favoritos</button>
             } @else {
-              <button class="btn btn-secondary" (click)="handleRemoveFav()">Quitar de favoritos</button>
+              <button class="btn btn-primary" (click)="handleRemoveFav()">Quitar de favoritos</button>
             }
 
             @if (showAddButton) {
               <button class="btn" 
-                      [ngClass]="movieDetail.vista ? 'btn-primary' : 'btn-outline-primary'" 
+                      [ngClass]="movieDetail.vista ? 'btn-secondary' : 'btn-outline-secondary'" 
                       (click)="handleVista()">
                 <i class="fa" [ngClass]="movieDetail.vista ? 'fa-eye' : 'fa-eye-slash'"></i>
                 {{ movieDetail.vista ? ' Vista' : ' Marcar como vista' }}
