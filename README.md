@@ -98,7 +98,7 @@ This will compile your project and store the build artifacts in the `dist/` dire
 <img width="1421" height="922" alt="Captura desde 2026-06-14 21-51-25" src="https://github.com/user-attachments/assets/b0ad560f-be8d-4797-a072-e30af17c72ab" />
 
 
-### Favorites
+### Favourites
 <img width="1197" height="921" alt="Captura desde 2026-06-14 22-04-27" src="https://github.com/user-attachments/assets/1417a3bf-9943-49c1-a2d1-b03792248dd6" />
 
 
@@ -113,7 +113,7 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 
 
-### Private List
+### Private Lists
 
 <img width="1361" height="610" alt="Captura desde 2026-06-14 22-10-42" src="https://github.com/user-attachments/assets/06637f38-a701-4cc6-bf95-8c91111ea5b6" />
 
@@ -125,7 +125,7 @@ This will compile your project and store the build artifacts in the `dist/` dire
 <img width="1202" height="656" alt="Captura desde 2026-06-14 22-08-05" src="https://github.com/user-attachments/assets/8a63bb4f-6b14-4710-96fd-c09af9d59354" />
 
 
-### Users's opinions about a list
+### Users' opinions about a list
 <img width="1415" height="363" alt="Captura desde 2026-06-14 22-00-41" src="https://github.com/user-attachments/assets/667eed00-1458-41ca-865b-791ee0e8ab1f" />
 
 
