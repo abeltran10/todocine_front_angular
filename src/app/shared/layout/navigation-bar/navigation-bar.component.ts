@@ -28,7 +28,7 @@ export class NavigationBarComponent implements OnInit {
   regions: Region[] = Regions.getValues();
 
   awardsSubject = new BehaviorSubject<Premio[]>([]);
-  awards = this.awardsSubject.asObservable();
+  awards$ = this.awardsSubject.asObservable();
 
 
   constructor(

@@ -46,7 +46,7 @@ export class PremioComponent implements OnInit {
       }
 
   ganadoresSubject = new BehaviorSubject<Paginator<Ganador>>(this.emptyPaginator);
-  ganadores = this.ganadoresSubject.asObservable();
+  ganadores$ = this.ganadoresSubject.asObservable();
 
   constructor(
     private route: ActivatedRoute,
