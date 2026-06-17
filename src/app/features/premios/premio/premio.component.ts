@@ -41,7 +41,12 @@ export class PremioComponent implements OnInit {
 
   title = '';
 
-  ganadores$!: Observable<Paginator<Ganador>>;
+  emptyPaginator: Paginator<Ganador> = {
+          results: [], page: 1, total_pages: 1, total_results: 0
+      }
+
+  ganadoresSubject = new BehaviorSubject<Paginator<Ganador>>(this.emptyPaginator);
+  ganadores$ = this.ganadoresSubject.asObservable();
 
   constructor(
     private route: ActivatedRoute,
@@ -81,21 +86,17 @@ export class PremioComponent implements OnInit {
   }
 
   loadPremio(page: number) {
-    this.ganadores$ = this.ganadorService.getGanadoresByPremioIdAnyo(
+    this.ganadorService.getGanadoresByPremioIdAnyo(
         this.premioCod,
         this.premioAnyo,
         page
-      ).pipe(
-          catchError(error => {
-             this.setErrorMessage(error?.error?.message ?? 'Error cargando los premios');
-              return of({
-                results: [],
-                page: 1,
-                total_pages: 1,
-                total_results: 0
-              });
-          }) // emiti
-      );
+      ).subscribe({
+          next: (paginator) => this.ganadoresSubject.next(paginator),
+          error: (error) => {
+            this.setErrorMessage(error?.error?.message ?? 'Error cargando los premios')
+            this.ganadoresSubject.next(this.emptyPaginator);
+          }
+      });
   }
 
   setErrorMessage(message: string) {

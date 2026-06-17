@@ -39,7 +39,12 @@ export class CarteleraComponent implements OnInit {
 
   usuario!: User;
 
-  movies$!: Observable<Paginator<Movie>>;
+  emptyPaginator: Paginator<Movie> = {
+      results: [], page: 1, total_pages: 1, total_results: 0
+  }
+
+  moviesSubject = new BehaviorSubject<Paginator<Movie>>(this.emptyPaginator);
+  movies$ = this.moviesSubject.asObservable();
 
   messageErrorSubject = new BehaviorSubject<string>('');
   errorMessage$ = this.messageErrorSubject.asObservable();
@@ -72,18 +77,15 @@ export class CarteleraComponent implements OnInit {
   }
 
   loadCartelera(region: string, page: number) {
-    this.movies$ = this.movieService.getMoviesPlayingNowByRegion(region, page).pipe(
-      catchError(error => {
-        this.setErrorMessage(error?.error?.message ?? 'Error cargando cartelera');
-        return of({
-          results: [],
-          page: 1,
-          total_pages: 1,
-          total_results: 0
-        }); // emitimos un valor neutro para no romper el stream
-      })
-  );
-}
+     this.movieService.getMoviesPlayingNowByRegion(region, page).subscribe({
+        next: (paginator) => this.moviesSubject.next(paginator),
+        error: (error) => {
+              this.setErrorMessage(error?.error?.message ?? 'Error cargando cartelera');
+              this.moviesSubject.next(this.emptyPaginator);
+      
+        }
+      });
+  }
 
 
   get cines() {

@@ -10,7 +10,7 @@ import { User } from '../../../core/models/user.model';
   selector: 'app-movie',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './movie.component.html',
+  templateUrl: './movie.component.html'
 })
 export class MovieComponent {
 
@@ -64,10 +64,6 @@ export class MovieComponent {
     this.addVote.emit({ movie: this.movieDetail, rating: rate });
 
     this.hoverPuntuacion = 0;
-  }
-
-  ratingStars(): number[] {
-    return [1, 2, 3, 4, 5];
   }
 
   handleVista() {

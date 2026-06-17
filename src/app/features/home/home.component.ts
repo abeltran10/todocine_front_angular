@@ -42,7 +42,13 @@ export class HomeComponent implements OnInit {
   successMessage$ = this.messageSuccessSubject.asObservable();;
   errorMessage$ = this.messageErrorSubject.asObservable();;
 
-  movies$!: Observable<Paginator<Movie>>;
+  emptyPaginator: Paginator<Movie> = {
+      results: [], page: 1, total_pages: 1, total_results: 0
+  }
+
+  moviesSubject = new BehaviorSubject<Paginator<Movie> | null>(null);
+  movies$ = this.moviesSubject.asObservable();
+
   paramSearch = '';
 
   usuario!: User;
@@ -78,17 +84,14 @@ export class HomeComponent implements OnInit {
   }
 
   search(text: string, pagina: number = 1) {
-    this.movies$ = this.movieService.getByName(text, pagina).pipe(
-        catchError(error => {
+    this.movieService.getByName(text, pagina).subscribe({
+        next: (paginator) => this.moviesSubject.next(paginator),
+        error: (error) => {
               this.setErrorMessage(error?.error?.message ?? 'Error cargando la busqueda');
-              return of({
-                results: [],
-                page: 1,
-                total_pages: 1,
-                total_results: 0
-              }); // emitimos un valor neutro para no romper el stream
-            })
-      );
+              
+        }
+    }); 
+    
     this.paramSearch = text;
   }
 
