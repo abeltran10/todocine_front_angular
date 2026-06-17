@@ -10,8 +10,7 @@ import { User } from '../../../core/models/user.model';
   selector: 'app-movie',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './movie.component.html',
-  styleUrl: '/movie.component.css'
+  templateUrl: './movie.component.html'
 })
 export class MovieComponent {
 
