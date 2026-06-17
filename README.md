@@ -77,11 +77,10 @@ This will compile your project and store the build artifacts in the `dist/` dire
 <img width="1315" height="548" alt="Captura desde 2026-01-27 16-23-45" src="https://github.com/user-attachments/assets/493c9a5a-7916-4991-aa8c-af0bb090174f" />
 
 ### Search
-<img width="1421" height="611" alt="Captura desde 2026-06-14 21-50-23" src="https://github.com/user-attachments/assets/fa0a30e6-2a66-412c-84a0-c0536530cd7a" />
+<img width="1467" height="495" alt="Captura desde 2026-06-17 20-02-13" src="https://github.com/user-attachments/assets/9b2a6c00-5e51-4841-bf2c-01be8ac197cb" />
 
-
-### Results search
-<img width="1197" height="928" alt="Captura desde 2026-06-14 22-05-29" src="https://github.com/user-attachments/assets/d929c30b-2cb1-423d-943d-3bb947644cb2" />
+### Search results
+<img width="873" height="928" alt="Captura desde 2026-06-17 20-04-17" src="https://github.com/user-attachments/assets/490577f2-2337-4424-9236-d95bf266e4a2" />
 
 
 ### Paginator
@@ -95,11 +94,12 @@ This will compile your project and store the build artifacts in the `dist/` dire
 <img width="1155" height="824" alt="Captura desde 2026-03-13 20-38-42" src="https://github.com/user-attachments/assets/546d6df5-13a5-4466-bc4a-2687c304c290" />
 
 ### Movie detail
-<img width="1421" height="922" alt="Captura desde 2026-06-14 21-51-25" src="https://github.com/user-attachments/assets/b0ad560f-be8d-4797-a072-e30af17c72ab" />
+<img width="1261" height="907" alt="Captura desde 2026-06-17 20-03-18" src="https://github.com/user-attachments/assets/6e6a4db8-21ec-4acc-be7a-1b67f8e30a17" />
+
 
 
 ### Favourites
-<img width="1197" height="921" alt="Captura desde 2026-06-14 22-04-27" src="https://github.com/user-attachments/assets/1417a3bf-9943-49c1-a2d1-b03792248dd6" />
+<img width="873" height="940" alt="Captura desde 2026-06-17 20-05-11" src="https://github.com/user-attachments/assets/5897b74d-eb51-43e0-9f67-2c6847fb2e9f" />
 
 
 ### Winner insert form (ADMIN)
@@ -114,10 +114,9 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 
 ### Private Lists
+<img width="1115" height="588" alt="Captura desde 2026-06-17 20-10-14" src="https://github.com/user-attachments/assets/db2a0b5d-477a-487f-b141-55ec9aed8120" />
 
-<img width="1361" height="610" alt="Captura desde 2026-06-14 22-10-42" src="https://github.com/user-attachments/assets/06637f38-a701-4cc6-bf95-8c91111ea5b6" />
-
-<img width="1415" height="925" alt="Captura desde 2026-06-14 22-01-30" src="https://github.com/user-attachments/assets/afa8b89c-8837-4a59-a74e-5e13117bdc9e" />
+<img width="1155" height="929" alt="Captura desde 2026-06-17 20-05-55" src="https://github.com/user-attachments/assets/d93c73ad-22b8-458c-b75b-73e37f92fb35" />
 
 
 ### Paginator in List's table of movies
