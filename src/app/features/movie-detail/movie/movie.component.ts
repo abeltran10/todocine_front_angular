@@ -67,10 +67,6 @@ export class MovieComponent {
     this.hoverPuntuacion = 0;
   }
 
-  ratingStars(): number[] {
-    return [1, 2, 3, 4, 5];
-  }
-
   handleVista() {
     this.updateVista.emit({ movie: this.movieDetail, isVista: !this.movieDetail.vista});
   }

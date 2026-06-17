@@ -38,7 +38,7 @@
             <button class="btn btn-secondary"  
                       (click)="handleVista()"
                       [disabled]="!showAddButton">
-                <i class="fa" [ngClass]="movieDetail.vista ? 'fa-eye me-1' : 'fa-eye-slash me-1'"></i>
+                <i class="fa me-1" [ngClass]="movieDetail.vista ? 'fa-eye' : 'fa-eye-slash'"></i>
                 {{ movieDetail.vista ? 'Vista' : 'Marcar como vista' }}
             </button>  
           </div>
@@ -57,7 +57,7 @@
         <div class="row">
           <div class="container">
             <span class="fw-bold fst-italic">Valora: </span>
-            @for (star of ratingStars(); track star) {
+            @for (star of [1, 2, 3, 4, 5]; track star) {
               <i class="fa fa-lg cursor-pointer me-1"
                 [ngClass]="(hoverPuntuacion || movieDetail.voto) >= star ? 'fa-star text-warning' : 'fa-star-o text-muted'"
                 (click)="handleVote(star)"

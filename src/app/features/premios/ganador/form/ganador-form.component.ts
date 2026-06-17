@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { Observable, catchError, of } from 'rxjs';
+import { BehaviorSubject, Observable, catchError, of } from 'rxjs';
 
 import { Categoria } from '../../../../core/models/categoria.model';
 import { Movie } from '../../../../core/models/movie.model';
@@ -42,7 +42,13 @@ export class GanadorFormComponent implements OnInit {
   anyo: number | null = null;
   movieId: number | null = null;
 
-  movies$!: Observable<Paginator<Movie> | null>;
+  emptyPaginator: Paginator<Movie> = {
+        results: [], page: 1, total_pages: 1, total_results: 0
+    }
+  
+    moviesSubject = new BehaviorSubject<Paginator<Movie>>(this.emptyPaginator);
+    movies$ = this.moviesSubject.asObservable();
+    
 
   searchText: string = '';
   paramSearch: string = '';
@@ -74,12 +80,13 @@ export class GanadorFormComponent implements OnInit {
   }
 
   searchMovies(text: string, pagina: number = 1) {
-    this.movies$ = this.movieService.getByName(text, pagina).pipe(
-        catchError(error => {
-              this.error.emit(error?.error?.message ?? 'Error al cargar las películas');
-              return of(null); // emitimos un valor neutro para no romper el stream
-            })
-      );
+    this.movieService.getByName(text, pagina).subscribe({
+        next: (paginator) => this.moviesSubject.next(paginator),
+        error: (error) => {
+              this.error.emit(error?.error?.message ?? 'Error cargando la busqueda');
+              this.moviesSubject.next(this.emptyPaginator);
+        }
+    }); 
       this.paramSearch = text;
   }
 
@@ -87,7 +94,7 @@ export class GanadorFormComponent implements OnInit {
     this.selectedMovieText = `${movie.title} (${movie.release_date.split('-')[0]})`;
     this.movieId = movie.id;
 
-    this.movies$ = of(null);
+    this.moviesSubject.next(this.emptyPaginator);
 
     this.searchText = '';
 

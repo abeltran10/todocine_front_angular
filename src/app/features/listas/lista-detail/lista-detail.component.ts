@@ -36,7 +36,14 @@ import { Router } from '@angular/router';
 export class ListaDetailComponent implements OnInit {
   usuario!: User;
   lista$!: Observable<Lista | null>;
-  movies$!: Observable<Paginator<Movie> | null>;
+
+  emptyPaginator: Paginator<Movie> = {
+      results: [], page: 1, total_pages: 1, total_results: 0
+  }
+
+  moviesSubject = new BehaviorSubject<Paginator<Movie>>(this.emptyPaginator);
+  movies$ = this.moviesSubject.asObservable();
+  
   paramSearch: string = '';
   searchText: string = '';
   listaId!: number;
@@ -119,12 +126,13 @@ export class ListaDetailComponent implements OnInit {
 
 
    searchMovies(text: string, pagina: number = 1) {
-      this.movies$ = this.movieService.getByName(text, pagina).pipe(
-          catchError(error => {
-                this.setErrorMessage(error?.error?.message ?? 'Error al cargar las películas');
-                return of(null); // emitimos un valor neutro para no romper el stream
-              })
-        );
+      this.movieService.getByName(text, pagina).subscribe({
+        next: (paginator) => this.moviesSubject.next(paginator),
+        error: (error) => {
+              this.setErrorMessage(error?.error?.message ?? 'Error cargando la busqueda');
+              this.moviesSubject.next(this.emptyPaginator);
+        }
+      }); 
         this.paramSearch = text;
     }
   
@@ -132,7 +140,7 @@ export class ListaDetailComponent implements OnInit {
       this.listaService.addMovieToList(this.listaId, movie.id).subscribe({
         next: () => {
             this.searchText = '';
-            this.movies$ = of(null);
+            this.moviesSubject.next(this.emptyPaginator);
             this.loadMoviesList(1);
         },
         error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error al añadir la película a la lista')

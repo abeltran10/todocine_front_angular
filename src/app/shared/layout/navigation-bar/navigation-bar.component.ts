@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { RouterModule } from '@angular/router';
 
-import { catchError, Observable, of } from 'rxjs';
+import { BehaviorSubject, catchError, Observable, of } from 'rxjs';
 
 import { LoginService } from '../../../core/services/login.service';
 import { User } from '../../../core/models/user.model';
@@ -26,7 +26,9 @@ export class NavigationBarComponent implements OnInit {
   @Output() error = new EventEmitter<string>();
 
   regions: Region[] = Regions.getValues();
-  awards$!: Observable<Premio[]>;
+
+  awardsSubject = new BehaviorSubject<Premio[]>([]);
+  awards = this.awardsSubject.asObservable();
 
 
   constructor(
@@ -36,13 +38,14 @@ export class NavigationBarComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.awards$ = this.premioService.getPremios()
-                          .pipe(
-                            catchError(error => {
+    this.premioService.getPremios()
+                          .subscribe({
+                              next: (premios) => this.awardsSubject.next(premios),
+                              error: (error) => {
                                 this.error.emit(error?.error?.message ?? 'Error recuperando los premios');
-                                return of([]);
-                          })
-                        );
+                                this.awardsSubject.next([]);  
+                              }
+                          }) 
   }
 
   logout() {
