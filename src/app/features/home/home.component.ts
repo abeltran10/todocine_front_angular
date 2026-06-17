@@ -46,7 +46,7 @@ export class HomeComponent implements OnInit {
       results: [], page: 1, total_pages: 1, total_results: 0
   }
 
-  moviesSubject = new BehaviorSubject<Paginator<Movie>>(this.emptyPaginator);
+  moviesSubject = new BehaviorSubject<Paginator<Movie> | null>(null);
   movies$ = this.moviesSubject.asObservable();
 
   paramSearch = '';
@@ -88,7 +88,7 @@ export class HomeComponent implements OnInit {
         next: (paginator) => this.moviesSubject.next(paginator),
         error: (error) => {
               this.setErrorMessage(error?.error?.message ?? 'Error cargando la busqueda');
-              this.moviesSubject.next(this.emptyPaginator);
+              
         }
     }); 
     
