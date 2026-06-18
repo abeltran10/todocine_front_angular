@@ -4,8 +4,18 @@
             <thead class="table-dark">
                 <tr>
                     <th style="width: 100px;">Póster</th>
-                    <th>Título</th>
-                    <th>Fecha de Estreno</th>
+                    <th>
+                        Título
+                        <button class="btn btn-link btn-sm text-white p-0 ms-2" (click)="ordenarPor('title')">
+                            <i class="fa" [ngClass]="getIcono('titulo')"></i>
+                        </button>
+                    </th>
+                    <th>
+                        Fecha de Estreno
+                        <button class="btn btn-link btn-sm text-white p-0 ms-2" (click)="ordenarPor('release_date')">
+                            <i class="fa" [ngClass]="getIcono('fecha')"></i>
+                        </button>
+                    </th>
                     <th class="text-end">Acciones</th>
                 </tr>
             </thead>

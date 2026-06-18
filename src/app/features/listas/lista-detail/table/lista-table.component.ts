@@ -29,6 +29,9 @@ export class ListaTableComponent {
   @Output() errorMessage = new EventEmitter<string>();
   @Output() handleMoviesList = new EventEmitter<number>();
 
+  ordenColumna: string = '';
+  ordenAscendente: boolean = true;
+
   constructor(
   private listaService: ListaService,
   private router: Router
@@ -51,6 +54,34 @@ export class ListaTableComponent {
       this.router.navigate(['/app/moviedetail', movieId]);
     }
 
+
+  ordenarPor(columna: string) {
+      // Si clicamos en la misma columna, cambiamos el sentido
+      if (this.ordenColumna === columna) {
+        this.ordenAscendente = !this.ordenAscendente;
+      } else {
+        this.ordenColumna = columna;
+        this.ordenAscendente = true;
+      }
+
+      // Lógica de ordenamiento
+      this.moviesList.results.sort((a: any, b: any) => {
+        let valorA = columna === 'release_date' ? new Date(a[columna]).getTime() : a[columna];
+        let valorB = columna === 'release_date' ? new Date(b[columna]).getTime() : b[columna];
+        
+        // Comparación básica
+        if (valorA < valorB) return this.ordenAscendente ? -1 : 1;
+        if (valorA > valorB) return this.ordenAscendente ? 1 : -1;
+
+        return 0;
+      });
+
+  }
+
+  getIcono(columna: string): string {
+    if (this.ordenColumna !== columna) return 'fa-sort'; // Icono neutro
+    return this.ordenAscendente ? 'fa-sort-up' : 'fa-sort-down';
+  }
 
   setErrorMessage(msg: string) {
       this.errorMessage.emit(msg);
