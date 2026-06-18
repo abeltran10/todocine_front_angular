@@ -80,7 +80,7 @@ export class ListaDetailComponent implements OnInit {
           if (!this.listaId) return;
 
           this.loadLista();
-          this.loadMoviesList(1);
+          this.loadMoviesList({orderBy: '', direction: '', page: 1});
     }); 
 
   }
@@ -98,8 +98,8 @@ export class ListaDetailComponent implements OnInit {
     })
   }
 
-  loadMoviesList(page: number) {
-    this.listaService.getMoviesByLista(this.listaId, page).subscribe({
+  loadMoviesList(sort: {orderBy: string, direction: string, page: number}) {
+    this.listaService.getMoviesByLista(this.listaId, sort.orderBy, sort.direction, sort.page).subscribe({
         next: (paginator) => this.moviesListSubject.next(paginator),
         error: (error) => {
               this.setErrorMessage(error?.error?.message ?? 'Error al recuperar las películas');
@@ -125,7 +125,7 @@ export class ListaDetailComponent implements OnInit {
         next: () => {
             this.searchText = '';
             this.moviesSubject.next(this.emptyPaginator);
-            this.loadMoviesList(1);
+            this.loadMoviesList({orderBy: '', direction: '', page: 1});
         },
         error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error al añadir la película a la lista')
       }); 

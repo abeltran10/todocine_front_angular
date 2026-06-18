@@ -12,8 +12,8 @@
                     </th>
                     <th>
                         Fecha de Estreno
-                        <button class="btn btn-link btn-sm text-white p-0 ms-2" (click)="ordenarPor('release_date')">
-                            <i class="fa" [ngClass]="getIcono('release_date')"></i>
+                        <button class="btn btn-link btn-sm text-white p-0 ms-2" (click)="ordenarPor('fecha')">
+                            <i class="fa" [ngClass]="getIcono('fecha')"></i>
                         </button>
                     </th>
                     <th class="text-end">Acciones</th>
@@ -60,7 +60,7 @@
         <app-paginator
             [activePage]="moviesList.page"
             [totalPages]="moviesList.total_pages"
-            (pageChange)="loadMoviesList($event)">
+            (pageChange)="loadMoviesList(orderBy, direction, $event)">
         </app-paginator>
     </div>
 }

@@ -27,10 +27,13 @@ export class ListaTableComponent {
   @Input() moviesList!: Paginator<Movie>
 
   @Output() errorMessage = new EventEmitter<string>();
-  @Output() handleMoviesList = new EventEmitter<number>();
+  @Output() handleMoviesList = new EventEmitter<{orderBy: string, direction: string, page: number}>();
 
   ordenColumna: string = '';
   ordenAscendente: boolean = true;
+
+  orderBy: string = '';
+  direction: string = '';
 
   constructor(
   private listaService: ListaService,
@@ -38,14 +41,14 @@ export class ListaTableComponent {
 ) {}
 
 
- loadMoviesList(page: number) {
-    this.handleMoviesList.emit(page);
+ loadMoviesList(orderBy: string, direction: string, page: number) {    
+    this.handleMoviesList.emit({orderBy, direction, page});
   }
 
   eliminarPelicula(movieId: number) {
     if (!this.lista || !this.lista.id) return;
     this.listaService.deleteMovieFromList(movieId, this.lista.id).subscribe({
-       next: () => this.loadMoviesList(1),
+       next: () => this.loadMoviesList('', '', 1),
        error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error al eliminar la película de la lista')
     })
   }
@@ -64,18 +67,10 @@ export class ListaTableComponent {
         this.ordenAscendente = true;
       }
 
-      // Lógica de ordenamiento
-      this.moviesList.results.sort((a: any, b: any) => {
-        let valorA = columna === 'release_date' ? new Date(a[columna]).getTime() : a[columna];
-        let valorB = columna === 'release_date' ? new Date(b[columna]).getTime() : b[columna];
-        
-        // Comparación básica
-        if (valorA < valorB) return this.ordenAscendente ? -1 : 1;
-        if (valorA > valorB) return this.ordenAscendente ? 1 : -1;
+      this.orderBy = this.ordenColumna;
+      this.direction = this.ordenAscendente ? "asc" : "desc";
 
-        return 0;
-      });
-
+      this.loadMoviesList(this.orderBy, this.direction, this.moviesList.page);
   }
 
   getIcono(columna: string): string {
