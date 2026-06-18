@@ -70,7 +70,7 @@ export class ListaTableComponent {
       this.orderBy = this.ordenColumna;
       this.direction = this.ordenAscendente ? "asc" : "desc";
 
-      this.loadMoviesList(this.orderBy, this.direction, this.moviesList.page);
+      this.loadMoviesList(this.orderBy, this.direction, 1);
   }
 
   getIcono(columna: string): string {
