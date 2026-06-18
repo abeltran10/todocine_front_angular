@@ -21,8 +21,8 @@ export class ListaComentariosComponent implements OnInit {
 
   @Output() errorMessage = new EventEmitter<string>();
 
-  private refreshValoraciones$ = new BehaviorSubject<void>(undefined);
-  valoraciones$!: Observable<Valoracion[]>;
+  valoracionesSubject = new BehaviorSubject<Valoracion[]>([]);
+  valoraciones$ = this.valoracionesSubject.asObservable();
   
   reviews: Valoracion[] = [];
 
@@ -32,34 +32,22 @@ export class ListaComentariosComponent implements OnInit {
   nuevoComentario = '';
   hoverPuntuacion = 0; // Para el efecto visual de las estrellas
 
-  constructor(private listaService: ListaService) {
-      this.valoraciones$ = this.refreshValoraciones$.pipe(
-        switchMap(() => {
-          if (!this.listaId) {
-            return of([]);
-          }
-
-          return this.listaService.getValoraciones(this.listaId).pipe(
-            tap((res) => {
-              this.reviews = res || [];
-            }),
-            catchError(error => {
-              this.errorMessage.emit(error?.error?.message ?? 'Error cargando las valoraciones');
-              return of([]); 
-            }),
-            shareReplay(1)
-          );
-        })
-    );
-
-  }
+  constructor(private listaService: ListaService) {}
 
   ngOnInit(): void {
-    this.loadValoraciones();
+      this.loadValoraciones();
   }
 
   loadValoraciones(): void {
-    this.refreshValoraciones$.next();
+      if (!this.listaId) return;
+      this.listaService.getValoraciones(this.listaId).subscribe({
+          next: (valoraciones) => this.valoracionesSubject.next(valoraciones),
+          error: (error) => {
+            this.errorMessage.emit(error?.error?.message ?? 'Error cargando las valoraciones');
+            this.valoracionesSubject.next([]);
+          }
+      })
+            
   }
 
   setRating(rating: number): void {

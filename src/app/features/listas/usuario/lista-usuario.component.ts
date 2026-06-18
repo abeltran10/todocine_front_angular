@@ -23,29 +23,21 @@ import { UsuarioListaService } from '../../../core/services/usuarioLista.service
 export class UserListasComponent implements OnInit {
   usuario!: User;
   title: string = 'Mis Listas de Películas';
-  listas$!: Observable<Paginator<Lista>>;
+
+  emptyPaginator: Paginator<Lista> =  {results: [], page: 1, total_pages: 1, total_results: 0};
+
+  listasSubject = new BehaviorSubject<Paginator<Lista>>(this.emptyPaginator);
+  listas$ = this.listasSubject.asObservable();
   
   @Output() success = new EventEmitter<string>();
   @Output() error = new EventEmitter<string>();
-
-  private refreshListas = new ReplaySubject<number>(1);
 
   listaActual = { id: null, nombre: '', descripcion: '' };
   esEdicion = false;
 
   constructor(private listaService: ListaService,
               private usuarioListaService: UsuarioListaService    
-  ) {
-      this.listas$ = this.refreshListas.pipe(
-        switchMap(pagina => this.usuarioListaService.getListasUser(this.usuario.id, pagina)),
-        shareReplay(1),
-        catchError(error => {
-               this.setErrorMessage(error?.error?.message ?? 'Error cargando las listas');
-               return of({ results: [], page: 1, total_pages: 1, total_results: 0 });
-             }
-        )
-      )
-  }
+  ) {}
 
   ngOnInit(): void {
     const loggedUser = localStorage.getItem('loggedUser');
@@ -57,7 +49,13 @@ export class UserListasComponent implements OnInit {
   }
 
   loadListas(pagina: number = 1): void {
-    this.refreshListas.next(pagina); 
+     this.usuarioListaService.getListasUser(this.usuario.id, pagina).subscribe({
+        next: (paginator) => this.listasSubject.next(paginator),
+        error: (error) => {
+          this.setErrorMessage(error?.error?.message ?? 'Error cargando las listas');
+          this.listasSubject.next(this.emptyPaginator);
+        }
+     })
   }
 
   // Llamado desde el botón "Crear"

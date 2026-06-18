@@ -41,36 +41,20 @@ export class FavoritosComponent implements OnInit {
   messageErrorSubject = new BehaviorSubject<string>('');
   errorMessage$ = this.messageErrorSubject.asObservable();
 
-  movies$!: Observable<Paginator<MovieDetail>>;
+  emptyPaginator: Paginator<MovieDetail> = { results: [], page: 1, total_pages: 1, total_results: 0 }
+
+  moviesSubject = new BehaviorSubject<Paginator<MovieDetail>>(this.emptyPaginator);
+  movies$ =  this.moviesSubject.asObservable();
 
   usuario!: User;
 
   vistaFiltro = '';
   votadaFiltro = '';
   order = '';
-  
-  private refreshUserFavs = new ReplaySubject<number>(1);
 
   constructor(
     private usuarioMovieService: UsuarioMovieService,
-  ) {
-    
-    this.movies$ = this.refreshUserFavs.pipe(
-             switchMap(page => this.usuarioMovieService.getUserMovies(
-               this.usuario.id,
-               this.vistaFiltro,
-               this.votadaFiltro,
-               this.order,
-               page
-             )),
-             shareReplay(1),
-             catchError(error => {
-               this.setErrorMessage(error?.error?.message ?? 'Error cargando favoritos');
-               return of({ results: [], page: 1, total_pages: 1, total_results: 0 });
-             })
-     );
-
-  }
+  ) {}
 
   ngOnInit(): void {
     const loggedUser = localStorage.getItem('loggedUser');
@@ -83,7 +67,16 @@ export class FavoritosComponent implements OnInit {
 
   
   loadUserFavs(page: number = 1) {
-     this.refreshUserFavs.next(page);
+     this.usuarioMovieService.getUserMovies(
+               this.usuario.id,
+               this.vistaFiltro,
+               this.votadaFiltro,
+               this.order,
+               page
+             ).subscribe({
+                next: (paginator) => this.moviesSubject.next(paginator),
+                error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error cargando favoritos')
+             })
   }
 
   onFiltersChange(filters: {
