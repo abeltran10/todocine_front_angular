@@ -69,17 +69,17 @@ export class PremioComponent implements OnInit {
 
       // 2. Solo si tenemos el código, disparamos la petición
       if (this.premioCod && this.premioAnyo) {
-        this.premioService.getPremioById(this.premioCod).pipe(
-          catchError(error => {
+        this.premioService.getPremioById(this.premioCod).subscribe({
+           next: (premio) => {
+                if (premio) {
+                  this.title = `${premio.titulo.toUpperCase()} ${this.premioAnyo}`;
+                }
+            },
+            error: (error) => {
               this.setErrorMessage(error?.error?.message ?? 'Error cargando el premio');
-              return of(null);
-          })
-        ).subscribe(premio => {
-            if (premio) {
-              this.title = `${premio.titulo.toUpperCase()} ${this.premioAnyo}`;
             }
-        });
-      
+        })
+     
         this.loadPremio(1);
       }
     }); 

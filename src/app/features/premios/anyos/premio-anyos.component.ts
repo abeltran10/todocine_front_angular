@@ -32,7 +32,9 @@ export class PremioAnyosComponent implements OnInit {
 
   usuario!: User;
 
-  award$!: Observable<Premio | null>;
+  awardSubject = new BehaviorSubject<Premio | null>(null);
+  award$ = this.awardSubject.asObservable();
+
   messageErrorSubject = new BehaviorSubject<string>('');
   errorMessage$ = this.messageErrorSubject.asObservable();
 
@@ -47,17 +49,17 @@ export class PremioAnyosComponent implements OnInit {
       this.usuario = JSON.parse(loggedUser);
     }
 
-   // 2. Definimos el flujo de award$ de forma reactiva
-    this.award$ = this.route.paramMap.pipe(
-      map(params => Number(params.get('premioId'))),
-      filter(id => !!id), // Si el id es 0 o null, se detiene aquí
-      switchMap(id => this.premioService.getPremioById(id).pipe(
-        catchError(error => {
+   this.route.paramMap.subscribe(params => {
+      const id = Number(params.get('premioId'));
+      if (!id) return;
+      this.premioService.getPremioById(id).subscribe({
+        next: (premio) => this.awardSubject.next(premio),
+        error: (error) => {
           this.setErrorMessage(error?.error?.message ?? 'Error al cargar el premio');
-          return of(null);
-        })
-      ))
-    );
+        }
+      });
+
+    });
   }
 
   setErrorMessage(message: string) {

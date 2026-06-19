@@ -35,7 +35,7 @@ import { Router } from '@angular/router';
 })
 export class ListaDetailComponent implements OnInit {
   usuario!: User;
-  lista$!: Observable<Lista | null>;
+  
 
   emptyPaginator: Paginator<Movie> = {
       results: [], page: 1, total_pages: 1, total_results: 0
@@ -48,7 +48,7 @@ export class ListaDetailComponent implements OnInit {
   searchText: string = '';
   listaId!: number;
   list!: Lista;
-  moviesList$!: Observable<Paginator<Movie> | null>;
+  
     
   private errorMessageSubject = new BehaviorSubject<string>('');
   errorMessage$ = this.errorMessageSubject.asObservable();
@@ -56,54 +56,20 @@ export class ListaDetailComponent implements OnInit {
   messageSuccessSubject = new BehaviorSubject<string>('');  
   successMessage$ = this.messageSuccessSubject.asObservable();
 
-  private refreshLista$ = new BehaviorSubject<void>(undefined);
-  private refreshMoviesList$ = new BehaviorSubject<number>(1);
+  listaSubject = new BehaviorSubject<Lista | null>(null);
+  lista$ = this.listaSubject.asObservable();
+
+  moviesListSubject = new BehaviorSubject<Paginator<Movie> | null>(null);
+  moviesList$ = this.moviesListSubject.asObservable();
+
+  ordenar = {orderBy: '', direction: ''};
 
   constructor(
   private route: ActivatedRoute,
   private listaService: ListaService,
   private movieService: MovieService,
   private router: Router
-) {
-  // --- FLUJO 1: Obtener los datos generales de la lista ---
-  this.lista$ = combineLatest([
-    this.route.paramMap,
-    this.refreshLista$
-  ]).pipe(
-    switchMap(([params, _]) => {
-      this.listaId = Number(params.get('listaId'));
-      if (!this.listaId) return of(null);
-
-      return this.listaService.getListaById(this.listaId).pipe(
-        tap(res => { if (res) this.list = res; }),
-        catchError(error => {
-          this.setErrorMessage(error?.error?.message ?? 'Error al recuperar el detalle de la lista');
-          return of(null);
-        })
-      );
-    }),
-    shareReplay(1) 
-  );
-
-  // --- FLUJO 2: Obtener las películas paginadas de la lista ---
-  this.moviesList$ = combineLatest([
-    this.route.paramMap,
-    this.refreshMoviesList$
-  ]).pipe(
-    switchMap(([params, paginaActual]) => {
-      this.listaId = Number(params.get('listaId'));
-      if (!this.listaId) return of(null);
-
-      return this.listaService.getMoviesByLista(this.listaId, paginaActual).pipe(
-        catchError(error => {
-          this.setErrorMessage(error?.error?.message ?? 'Error al recuperar las películas');
-          return of({ results: [], page: 1, total_pages: 1, total_results: 0 });
-        })
-      );
-    }),
-    shareReplay(1)
-  );
-}
+) {}
 
   ngOnInit(): void {
     const loggedUser = localStorage.getItem('loggedUser');
@@ -111,17 +77,42 @@ export class ListaDetailComponent implements OnInit {
       this.usuario = JSON.parse(loggedUser);
     }
 
-    this.loadLista();
-    this.loadMoviesList(1);
+    this.route.paramMap.subscribe(params => {
+          this.listaId = Number(params.get('listaId'))
+          if (!this.listaId) return;
+
+          this.loadLista();
+          this.loadMoviesList(1);
+    }); 
 
   }
 
   loadLista() {
-    this.refreshLista$.next();
+     this.listaService.getListaById(this.listaId).subscribe({
+        next: (lista) => {
+          this.listaSubject.next(lista);
+          this.list = lista;
+        },
+        error: (error) => {
+          this.setErrorMessage(error?.error?.message ?? 'Error al recuperar el detalle de la lista')
+          this.listaSubject.next(null);
+        }
+    })
   }
 
   loadMoviesList(page: number) {
-    this.refreshMoviesList$.next(page);
+    this.listaService.getMoviesByLista(this.listaId, this.ordenar.orderBy, this.ordenar.direction , page).subscribe({
+        next: (paginator) => this.moviesListSubject.next(paginator),
+        error: (error) => {
+              this.setErrorMessage(error?.error?.message ?? 'Error al recuperar las películas');
+              this.moviesListSubject.next(this.emptyPaginator);
+        } 
+    })
+  }
+
+  handleMoviesList(query: {ordenar: any, page: number}) {
+    this.ordenar = query.ordenar;
+    this.loadMoviesList(query.page);
   }
 
 
@@ -141,7 +132,7 @@ export class ListaDetailComponent implements OnInit {
         next: () => {
             this.searchText = '';
             this.moviesSubject.next(this.emptyPaginator);
-            this.loadMoviesList(1);
+            this.handleMoviesList({ordenar: {orderBy: '', direction: ''}, page: 1});
         },
         error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error al añadir la película a la lista')
       }); 

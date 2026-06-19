@@ -37,7 +37,8 @@
         [lista]="lista"
         [usuario]="usuario"
         [moviesList]="moviesList"
-        (handleMoviesList)="loadMoviesList($event)"
+        [ordenar]="ordenar"
+        (handleMoviesList)="handleMoviesList($event)"
         (errorMessage)="setErrorMessage($event)">
       </app-lista-table>
     } @else {

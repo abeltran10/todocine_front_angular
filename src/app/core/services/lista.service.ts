@@ -61,9 +61,9 @@ export class ListaService {
                 }));
   }
   
-  getMoviesByLista(listaId: number, page: number): Observable<Paginator<Movie>> {
+  getMoviesByLista(listaId: number, orderBy: string, direction: string, page: number): Observable<Paginator<Movie>> {
       return this.http.get<Paginator<Movie>>(
-          `${this.baseUrl}/${listaId}/movies?page=${page}`
+          `${this.baseUrl}/${listaId}/movies?orderBy=${orderBy}&direction=${direction}&page=${page}`
           ).pipe( catchError(err => {
                   // Puedes loguear o transformar el error aquí
                   return throwError(() => err);

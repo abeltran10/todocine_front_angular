@@ -25,8 +25,11 @@ import { Premio } from '../../../../core/models/premio.model';
 
 export class GanadorFormComponent implements OnInit {
 
-  categorias$!: Observable<Categoria[] | null>;
-  awards$!: Observable<Premio[]>;
+  categoriasSubject = new BehaviorSubject<Categoria[] | null>(null);
+  categorias$ = this.categoriasSubject.asObservable();
+
+  awardsSubject = new BehaviorSubject<Premio[]>([]);
+  awards$ = this.awardsSubject.asObservable();
   
   @Output() enviar = new EventEmitter<{
     premioId: number | null;
@@ -59,24 +62,25 @@ export class GanadorFormComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-     this.awards$ = this.premioService.getPremios().pipe(
-          catchError(error => {
-             this.error.emit(error?.error?.message ?? 'Error cargando los premios');
-              return of([]);
-          }) // emiti
-     );
-    
+     this.premioService.getPremios().subscribe({
+        next: (premios) => this.awardsSubject.next(premios),
+        error: (error) => {
+              this.error.emit(error?.error?.message ?? 'Error cargando los premios');
+              this.awardsSubject.next([]);
+        }
+     })    
   }
 
   loadCategorias(premioCod: number) {
-    this.categorias$ = this.premioService
+    this.premioService
     .getCategorias(premioCod)
-    .pipe(
-          catchError(error => {
-             this.error.emit(error?.error?.message ?? 'Error cargando las categorias');
-              return of([]);
-          }) // emiti
-      );
+    .subscribe({
+      next: (categorias) => this.categoriasSubject.next(categorias),
+      error: (error) => {
+          this.error.emit(error?.error?.message ?? 'Error cargando las categorias');
+          this.categoriasSubject.next([])
+      }
+    });
   }
 
   searchMovies(text: string, pagina: number = 1) {
