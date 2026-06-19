@@ -132,8 +132,7 @@ export class ListaDetailComponent implements OnInit {
         next: () => {
             this.searchText = '';
             this.moviesSubject.next(this.emptyPaginator);
-            this.ordenar = {orderBy: '', direction: ''};
-            this.loadMoviesList(1);
+            this.handleMoviesList({ordenar: {orderBy: '', direction: ''}, page: 1});
         },
         error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error al añadir la película a la lista')
       }); 
