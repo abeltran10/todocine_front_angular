@@ -27,28 +27,31 @@ export class ListaTableComponent {
   @Input() moviesList!: Paginator<Movie>
 
   @Output() errorMessage = new EventEmitter<string>();
-  @Output() handleMoviesList = new EventEmitter<{orderBy: string, direction: string, page: number}>();
+  @Output() handleMoviesList = new EventEmitter<{ordenar: any, page: number}>();
 
-  ordenColumna: string = '';
+  @Input() ordenar!: any;
+  
   ordenAscendente: boolean = true;
 
-  orderBy: string = '';
-  direction: string = '';
-
+  
   constructor(
   private listaService: ListaService,
   private router: Router
 ) {}
 
 
- loadMoviesList(orderBy: string, direction: string, page: number) {    
-    this.handleMoviesList.emit({orderBy, direction, page});
+ loadMoviesList(ordenar: any, page: number) {    
+    this.handleMoviesList.emit({ordenar, page});
   }
 
   eliminarPelicula(movieId: number) {
     if (!this.lista || !this.lista.id) return;
     this.listaService.deleteMovieFromList(movieId, this.lista.id).subscribe({
-       next: () => this.loadMoviesList('', '', 1),
+       next: () => {
+          const ordenar = {orderBy: '', direction: ''};
+          this.loadMoviesList(ordenar, 1);
+          
+       },
        error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error al eliminar la película de la lista')
     })
   }
@@ -60,21 +63,20 @@ export class ListaTableComponent {
 
   ordenarPor(columna: string) {
       // Si clicamos en la misma columna, cambiamos el sentido
-      if (this.ordenColumna === columna) {
+      if (this.ordenar.orderBy === columna) {
         this.ordenAscendente = !this.ordenAscendente;
       } else {
-        this.ordenColumna = columna;
+        this.ordenar.orderBy = columna;
         this.ordenAscendente = true;
       }
 
-      this.orderBy = this.ordenColumna;
-      this.direction = this.ordenAscendente ? "asc" : "desc";
+      const ordenar = {... this.ordenar, direction: this.ordenAscendente ? "asc" : "desc"};
 
-      this.loadMoviesList(this.orderBy, this.direction, 1);
+      this.loadMoviesList(ordenar, 1);
   }
 
   getIcono(columna: string): string {
-    if (this.ordenColumna !== columna) return 'fa-sort'; // Icono neutro
+    if (this.ordenar.orderBy !== columna) return 'fa-sort'; // Icono neutro
     return this.ordenAscendente ? 'fa-sort-up' : 'fa-sort-down';
   }
 

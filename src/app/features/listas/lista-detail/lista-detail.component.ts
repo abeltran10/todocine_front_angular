@@ -62,6 +62,8 @@ export class ListaDetailComponent implements OnInit {
   moviesListSubject = new BehaviorSubject<Paginator<Movie> | null>(null);
   moviesList$ = this.moviesListSubject.asObservable();
 
+  ordenar = {orderBy: '', direction: ''};
+
   constructor(
   private route: ActivatedRoute,
   private listaService: ListaService,
@@ -80,7 +82,7 @@ export class ListaDetailComponent implements OnInit {
           if (!this.listaId) return;
 
           this.loadLista();
-          this.loadMoviesList({orderBy: '', direction: '', page: 1});
+          this.loadMoviesList(1);
     }); 
 
   }
@@ -98,14 +100,19 @@ export class ListaDetailComponent implements OnInit {
     })
   }
 
-  loadMoviesList(sort: {orderBy: string, direction: string, page: number}) {
-    this.listaService.getMoviesByLista(this.listaId, sort.orderBy, sort.direction, sort.page).subscribe({
+  loadMoviesList(page: number) {
+    this.listaService.getMoviesByLista(this.listaId, this.ordenar.orderBy, this.ordenar.direction , page).subscribe({
         next: (paginator) => this.moviesListSubject.next(paginator),
         error: (error) => {
               this.setErrorMessage(error?.error?.message ?? 'Error al recuperar las películas');
               this.moviesListSubject.next(this.emptyPaginator);
         } 
     })
+  }
+
+  handleMoviesList(query: {ordenar: any, page: number}) {
+    this.ordenar = query.ordenar;
+    this.loadMoviesList(query.page);
   }
 
 
@@ -125,7 +132,8 @@ export class ListaDetailComponent implements OnInit {
         next: () => {
             this.searchText = '';
             this.moviesSubject.next(this.emptyPaginator);
-            this.loadMoviesList({orderBy: '', direction: '', page: 1});
+            this.ordenar = {orderBy: '', direction: ''};
+            this.loadMoviesList(1);
         },
         error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error al añadir la película a la lista')
       }); 

@@ -6,8 +6,8 @@
                     <th style="width: 100px;">Póster</th>
                     <th>
                         Título
-                        <button class="btn btn-link btn-sm text-white p-0 ms-2" (click)="ordenarPor('title')">
-                            <i class="fa" [ngClass]="getIcono('title')"></i>
+                        <button class="btn btn-link btn-sm text-white p-0 ms-2" (click)="ordenarPor('titulo')">
+                            <i class="fa" [ngClass]="getIcono('titulo')"></i>
                         </button>
                     </th>
                     <th>
@@ -60,7 +60,7 @@
         <app-paginator
             [activePage]="moviesList.page"
             [totalPages]="moviesList.total_pages"
-            (pageChange)="loadMoviesList(orderBy, direction, $event)">
+            (pageChange)="loadMoviesList(ordenar, $event)">
         </app-paginator>
     </div>
 }
