@@ -31,7 +31,7 @@ export class ListaTableComponent {
 
   @Input() ordenar!: any;
   
-  ordenAscendente: boolean = true;
+  ordenAscendente: boolean = this.ordenar?.direction !== 'desc' ? true : false;
 
   
   constructor(
