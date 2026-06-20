@@ -116,7 +116,8 @@ This will compile your project and store the build artifacts in the `dist/` dire
 ### Private Lists
 <img width="1115" height="588" alt="Captura desde 2026-06-17 20-10-14" src="https://github.com/user-attachments/assets/db2a0b5d-477a-487f-b141-55ec9aed8120" />
 
-<img width="1155" height="929" alt="Captura desde 2026-06-17 20-05-55" src="https://github.com/user-attachments/assets/d93c73ad-22b8-458c-b75b-73e37f92fb35" />
+<img width="1444" height="923" alt="Captura desde 2026-06-20 10-56-17" src="https://github.com/user-attachments/assets/9b675e39-d1fe-4dae-9079-2dd379e991d3" />
+
 
 
 ### Paginator in List's table of movies
