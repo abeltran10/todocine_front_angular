@@ -31,7 +31,6 @@ export class ListaTableComponent {
 
   @Input() ordenar!: any;
   
-  columnaOrden: string = '';
   ordenAscendente: boolean = true;
 
   
@@ -64,20 +63,20 @@ export class ListaTableComponent {
 
   ordenarPor(columna: string) {
       // Si clicamos en la misma columna, cambiamos el sentido
-      if (this.columnaOrden === columna) {
+      if (this.ordenar.orderBy === columna) {
         this.ordenAscendente = !this.ordenAscendente;
       } else {
-        this.columnaOrden = columna;
+        this.ordenar.orderBy = columna;
         this.ordenAscendente = true;
       }
 
-      const ordenar = {orderBy: this.columnaOrden, direction: this.ordenAscendente ? "asc" : "desc"};
+      const ordenar = {... this.ordenar, direction: this.ordenAscendente ? "asc" : "desc"};
 
       this.loadMoviesList(ordenar, 1);
   }
 
   getIcono(columna: string): string {
-    if (this.columnaOrden !== columna) return 'fa-sort'; // Icono neutro
+    if (this.ordenar.orderBy !== columna) return 'fa-sort'; // Icono neutro
     return this.ordenAscendente ? 'fa-sort-up' : 'fa-sort-down';
   }
 
