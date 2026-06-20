@@ -31,6 +31,7 @@ export class ListaTableComponent {
 
   @Input() ordenar!: any;
   
+  columnaOrden: string = '';
   ordenAscendente: boolean = true;
 
   
@@ -63,14 +64,14 @@ export class ListaTableComponent {
 
   ordenarPor(columna: string) {
       // Si clicamos en la misma columna, cambiamos el sentido
-      if (this.ordenar.orderBy === columna) {
+      if (this.columnaOrden === columna) {
         this.ordenAscendente = !this.ordenAscendente;
       } else {
-        this.ordenar.orderBy = columna;
+        this.columnaOrden = columna;
         this.ordenAscendente = true;
       }
 
-      const ordenar = {... this.ordenar, direction: this.ordenAscendente ? "asc" : "desc"};
+      const ordenar = {orderBy: this.columnaOrden, direction: this.ordenAscendente ? "asc" : "desc"};
 
       this.loadMoviesList(ordenar, 1);
   }
