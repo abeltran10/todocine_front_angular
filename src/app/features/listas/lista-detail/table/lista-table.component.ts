@@ -77,7 +77,7 @@ export class ListaTableComponent {
   }
 
   getIcono(columna: string): string {
-    if (this.ordenar.orderBy !== columna) return 'fa-sort'; // Icono neutro
+    if (this.columnaOrden !== columna) return 'fa-sort'; // Icono neutro
     return this.ordenAscendente ? 'fa-sort-up' : 'fa-sort-down';
   }
 
