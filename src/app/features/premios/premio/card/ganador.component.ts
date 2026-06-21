@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
-import { Ganador } from '../../../core/models/ganador.model';
+import { Ganador } from '../../../../core/models/ganador.model';
 
 @Component({
   selector: 'app-ganador',

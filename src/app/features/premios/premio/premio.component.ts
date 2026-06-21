@@ -9,7 +9,7 @@ import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/na
 import { NotificationComponent } from '../../../shared/common/notification/notification.component';
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { PaginatorComponent } from '../../../shared/common/paginator/paginator.component';
-import { GanadorComponent } from '../ganador/ganador.component';
+import { GanadorComponent } from './card/ganador.component';
 
 import { User } from '../../../core/models/user.model';
 import { Paginator } from '../../../core/models/paginator.model';
