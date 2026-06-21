@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, SimpleChanges, OnChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -20,7 +20,7 @@ import { User } from '../../../../core/models/user.model';
   ],
   templateUrl: './lista-table.component.html',
 })
-export class ListaTableComponent implements OnInit {
+export class ListaTableComponent implements OnInit, OnChanges {
   @Input() usuario!: User;
   @Input() lista!: Lista;
   
@@ -43,6 +43,13 @@ export class ListaTableComponent implements OnInit {
  ngOnInit(): void {
    this.columnaOrden = this.ordenar.orderBy;
  }
+
+ ngOnChanges(changes: SimpleChanges) {
+  if (changes['ordenar']) {
+    // Esto se ejecuta cada vez que el padre cambia el valor del Input
+    this.columnaOrden = this.ordenar.orderBy;
+  }
+}
 
  loadMoviesList(ordenar: any, page: number) {    
     this.handleMoviesList.emit({ordenar, page});
