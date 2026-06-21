@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -20,7 +20,7 @@ import { User } from '../../../../core/models/user.model';
   ],
   templateUrl: './lista-table.component.html',
 })
-export class ListaTableComponent {
+export class ListaTableComponent implements OnInit {
   @Input() usuario!: User;
   @Input() lista!: Lista;
   
@@ -31,6 +31,7 @@ export class ListaTableComponent {
 
   @Input() ordenar!: any;
   
+  columnaOrden!: string;
   ordenAscendente: boolean = true;
 
   
@@ -39,6 +40,9 @@ export class ListaTableComponent {
   private router: Router
 ) {}
 
+ ngOnInit(): void {
+   this.columnaOrden = this.ordenar.orderBy;
+ }
 
  loadMoviesList(ordenar: any, page: number) {    
     this.handleMoviesList.emit({ordenar, page});
@@ -63,20 +67,20 @@ export class ListaTableComponent {
 
   ordenarPor(columna: string) {
       // Si clicamos en la misma columna, cambiamos el sentido
-      if (this.ordenar.orderBy === columna) {
+      if (this.columnaOrden === columna) {
         this.ordenAscendente = !this.ordenAscendente;
       } else {
-        this.ordenar.orderBy = columna;
+        this.columnaOrden = columna;
         this.ordenAscendente = true;
       }
 
-      const ordenar = {... this.ordenar, direction: this.ordenAscendente ? "asc" : "desc"};
+      const ordenar = {orderBy: this.columnaOrden, direction: this.ordenAscendente ? "asc" : "desc"};
 
       this.loadMoviesList(ordenar, 1);
   }
 
   getIcono(columna: string): string {
-    if (this.ordenar.orderBy !== columna) return 'fa-sort'; // Icono neutro
+    if (this.columnaOrden !== columna) return 'fa-sort'; // Icono neutro
     return this.ordenAscendente ? 'fa-sort-up' : 'fa-sort-down';
   }
 
