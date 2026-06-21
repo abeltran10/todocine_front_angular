@@ -92,7 +92,7 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 
 ### Paginator
-<!(paginator)[ui-screenshots/paginator.png]
+!(paginator)[ui-screenshots/paginator.png]
 
 
 ### Movies in theaters
