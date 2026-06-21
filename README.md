@@ -53,6 +53,12 @@ Reusable resources used across multiple features.
 
 ### Development server
 
+First, install dependencies:
+
+```bash
+npm install
+```
+
 To start a local development server, run:
 
 ```bash
@@ -74,60 +80,65 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 ## UI
 ### Login
-<img width="1315" height="548" alt="Captura desde 2026-01-27 16-23-45" src="https://github.com/user-attachments/assets/493c9a5a-7916-4991-aa8c-af0bb090174f" />
+![login](ui-screenshots/login.png)
 
 ### Search
-<img width="1467" height="495" alt="Captura desde 2026-06-17 20-02-13" src="https://github.com/user-attachments/assets/9b2a6c00-5e51-4841-bf2c-01be8ac197cb" />
+![search](ui-screenshots/search.png)
+
 
 ### Search results
-<img width="873" height="928" alt="Captura desde 2026-06-17 20-04-17" src="https://github.com/user-attachments/assets/490577f2-2337-4424-9236-d95bf266e4a2" />
+![search results](ui-screenshots/search_results.png)
+
 
 
 ### Paginator
-<img width="1421" height="786" alt="Captura desde 2026-06-14 21-50-55" src="https://github.com/user-attachments/assets/3684f956-d4e5-4434-9312-3ff584bcde75" />
+![paginator](ui-screenshots/paginator.png)
 
 
 ### Movies in theaters
-<img width="1155" height="824" alt="Captura desde 2026-03-13 20-38-23" src="https://github.com/user-attachments/assets/1fe71228-3ce0-486e-8671-1dbcdc57d923" />
+![movies in theaters](ui-screenshots/movies_theaters.png)
+
 
 ### Awards
-<img width="1155" height="824" alt="Captura desde 2026-03-13 20-38-42" src="https://github.com/user-attachments/assets/546d6df5-13a5-4466-bc4a-2687c304c290" />
+![awards](ui-screenshots/awards.png)
+
 
 ### Movie detail
-<img width="1261" height="907" alt="Captura desde 2026-06-17 20-03-18" src="https://github.com/user-attachments/assets/6e6a4db8-21ec-4acc-be7a-1b67f8e30a17" />
+![movie datail](ui-screenshots/movie_detail.png)
 
 
 
 ### Favourites
-<img width="873" height="940" alt="Captura desde 2026-06-17 20-05-11" src="https://github.com/user-attachments/assets/5897b74d-eb51-43e0-9f67-2c6847fb2e9f" />
+![favourites](ui-screenshots/favourites.png)
 
 
 ### Winner insert form (ADMIN)
-<img width="1155" height="824" alt="Captura desde 2026-03-13 20-39-51" src="https://github.com/user-attachments/assets/05783da2-d9b2-4611-83d1-50edf760f01f" />
+![winner](ui-screenshots/winner_insert.png)
 
 ### Public Lists
 
-<img width="1361" height="602" alt="Captura desde 2026-06-14 22-09-59" src="https://github.com/user-attachments/assets/17ce2ef3-7f3b-42ca-be5a-3fa9d40311c4" />
+![public lists 1](ui-screenshots/public_lists_1.png)
 
-<img width="1368" height="625" alt="Captura desde 2026-05-15 13-54-09" src="https://github.com/user-attachments/assets/27e0e347-42b0-4b8e-b6ff-49eae338d290" />
+
+![public lists 2](ui-screenshots/public_lists_2.png)
 
 
 
 ### Private Lists
-<img width="1115" height="588" alt="Captura desde 2026-06-17 20-10-14" src="https://github.com/user-attachments/assets/db2a0b5d-477a-487f-b141-55ec9aed8120" />
 
-<img width="1444" height="923" alt="Captura desde 2026-06-20 10-56-17" src="https://github.com/user-attachments/assets/9b675e39-d1fe-4dae-9079-2dd379e991d3" />
+![private lists 1](ui-screenshots/private_lists_1.png)
+
+![private lists 2](ui-screenshots/private_lists_2.png)
 
 
 
 ### Paginator in List's table of movies
 
-<img width="1202" height="656" alt="Captura desde 2026-06-14 22-08-05" src="https://github.com/user-attachments/assets/8a63bb4f-6b14-4710-96fd-c09af9d59354" />
-
+![paginator table movies](ui-screenshots/paginator_lists.png)
 
 ### Users' opinions about a list
-<img width="1415" height="363" alt="Captura desde 2026-06-14 22-00-41" src="https://github.com/user-attachments/assets/667eed00-1458-41ca-865b-791ee0e8ab1f" />
 
+![user opinions](ui-screenshots/user_opinions.png)
 
 
 

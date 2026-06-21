@@ -111,7 +111,7 @@ export class ListaDetailComponent implements OnInit {
   }
 
   handleMoviesList(query: {ordenar: any, page: number}) {
-    this.ordenar = query.ordenar;
+    this.ordenar = {...query.ordenar};
     this.loadMoviesList(query.page);
   }
 

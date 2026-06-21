@@ -9,7 +9,7 @@ import { MovieDetailComponent } from './features/movie-detail/movie-detail.compo
 import { FavoritosComponent } from './features/favoritos/favoritos.component';
 import { CreateAccountComponent } from './features/create-account/create-account.component';
 import { CarteleraComponent } from './features/cartelera/cartelera.component';
-import { GanadorAnyadirComponent } from './features/premios/ganador/ganador-anyadir.component';
+import { GanadorAnyadirComponent } from './features/premios/ganador-form/ganador-anyadir.component';
 
 import { authGuard } from './core/guards/auth.guard';
 import { publicGuard } from './core/guards/public.guard';
