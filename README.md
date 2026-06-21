@@ -80,65 +80,65 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 ## UI
 ### Login
-!(login)[ui-screenshots/login.png]
+![login](ui-screenshots/login.png)
 
 ### Search
-!(search)[ui-screenshots/search.png]
+![search](ui-screenshots/search.png)
 
 
 ### Search results
-!(search results)[ui-screenshots/search_results.png]
+![search results](ui-screenshots/search_results.png)
 
 
 
 ### Paginator
-!(paginator)[ui-screenshots/paginator.png]
+![paginator](ui-screenshots/paginator.png)
 
 
 ### Movies in theaters
-!(movies in theaters)[ui-screenshots/movies_theaters.png]
+![movies in theaters](ui-screenshots/movies_theaters.png)
 
 
 ### Awards
-<!(awards)[ui-screenshots/awards.png]
+![awards](ui-screenshots/awards.png)
 
 
 ### Movie detail
-!(movie datail)[ui-screenshots/movie_detail.png]
+![movie datail](ui-screenshots/movie_detail.png)
 
 
 
 ### Favourites
-!(favourites)[ui-screenshots/favourites.png]
+![favourites](ui-screenshots/favourites.png)
 
 
 ### Winner insert form (ADMIN)
-!(winner)[ui-screenshots/winner_insert.png]
+![winner](ui-screenshots/winner_insert.png)
 
 ### Public Lists
 
-!(public lists 1)[ui-screenshots/public_lists_1.png]
+![public lists 1](ui-screenshots/public_lists_1.png)
 
 
-!(public lists 2)[ui-screenshots/public_lists_2.png]
+![public lists 2](ui-screenshots/public_lists_2.png)
 
 
 
 ### Private Lists
 
-!(private lists 1)[ui-screenshots/private_lists_1.png]
+![private lists 1](ui-screenshots/private_lists_1.png)
 
-!(private lists 2)[ui-screenshots/private_lists_2.png]
+![private lists 2](ui-screenshots/private_lists_2.png)
 
 
 
 ### Paginator in List's table of movies
 
-!(paginator table movies)[ui-screenshots/paginator_lists.png]
+![paginator table movies](ui-screenshots/paginator_lists.png)
 
 ### Users' opinions about a list
 
-!(user opinions)[ui-screenshots/user_opinions.png]
+![user opinions](ui-screenshots/user_opinions.png)
 
 
 
