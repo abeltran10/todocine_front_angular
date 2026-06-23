@@ -32,7 +32,7 @@ export class ListaTableComponent implements OnInit, OnChanges {
   @Input() ordenar!: any;
   
   columnaOrden!: string;
-  ordenAscendente: boolean = true;
+  ordenAscendente!: boolean;
 
   
   constructor(
@@ -42,12 +42,14 @@ export class ListaTableComponent implements OnInit, OnChanges {
 
  ngOnInit(): void {
    this.columnaOrden = this.ordenar.orderBy;
+   this.ordenAscendente = this.ordenar.direction !== 'desc' ? true : false;
  }
 
  ngOnChanges(changes: SimpleChanges) {
   if (changes['ordenar']) {
     // Esto se ejecuta cada vez que el padre cambia el valor del Input
     this.columnaOrden = this.ordenar.orderBy;
+    this.ordenAscendente = this.ordenar.direction !== 'desc' ? true : false;
   }
 }
 
