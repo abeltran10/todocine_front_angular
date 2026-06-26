@@ -79,7 +79,7 @@
                       <img [src]="'https://image.tmdb.org/t/p/w92' + movie.poster_path" [alt]="movie.title" class="img-thumbnail" style="width: 60px;">
                     </td>
                     <td><strong>{{ movie.title }}</strong></td>
-                    <td>{{ movie.release_date }}</td>
+                    <td>{{ movie.release_date | date:'dd/MM/yyyy' }}</td>
                   </tr>
                 } @empty {
                   <tr>
