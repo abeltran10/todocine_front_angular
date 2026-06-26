@@ -51,13 +51,15 @@ Reusable resources used across multiple features.
 
 ## Commands
 
-### Development server
+### Install dependencies
 
 First, install dependencies:
 
 ```bash
 npm install
 ```
+
+### Development server
 
 To start a local development server, run:
 
