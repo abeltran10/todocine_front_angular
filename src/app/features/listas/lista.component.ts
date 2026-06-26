@@ -26,7 +26,7 @@ import { BehaviorSubject, timer } from 'rxjs';
 export class ListaComponent implements OnInit {
   usuario!: User;
   publica: boolean = true;
-  title: string = 'Listas Públicas';
+  title: string = 'LISTAS PÚBLICAS';
 
   messageSuccessSubject = new BehaviorSubject<string>('');
   messageErrorSubject = new BehaviorSubject<string>('');
@@ -48,7 +48,7 @@ export class ListaComponent implements OnInit {
   }
 
   private updateTitle() {
-    this.title = this.publica ? 'Listas Públicas' : 'Mis Listas';
+    this.title = this.publica ? 'LISTAS PÚBLICAS' : 'MIS LISTAS';
   }
 
   setErrorMessage(message: string) {

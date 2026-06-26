@@ -1,19 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { ListaService } from '../../../core/services/lista.service';
-import { MovieService } from '../../../core/services/movie.service';
+import { ListaService } from '../../core/services/lista.service';
+import { MovieService } from '../../core/services/movie.service';
 import { Observable, BehaviorSubject, combineLatest, of, timer, shareReplay } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
-import { User } from '../../../core/models/user.model';
-import { Lista } from '../../../core/models/lista.model';
-import { Movie } from '../../../core/models/movie.model';
-import { Paginator } from '../../../core/models/paginator.model';
+import { User } from '../../core/models/user.model';
+import { Lista } from '../../core/models/lista.model';
+import { Movie } from '../../core/models/movie.model';
+import { Paginator } from '../../core/models/paginator.model';
 import { FormsModule } from '@angular/forms';
 
-import { HeaderComponent } from '../../../shared/layout/header/header.component';
-import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
-import { NotificationComponent } from '../../../shared/common/notification/notification.component';
+import { HeaderComponent } from '../../shared/layout/header/header.component';
+import { NavigationBarComponent } from '../../shared/layout/navigation-bar/navigation-bar.component';
+import { NotificationComponent } from '../../shared/common/notification/notification.component';
 import { ListaTableComponent } from './table/lista-table.component';
 import { ListaComentariosComponent } from './comentarios/lista-comentarios.component';
 

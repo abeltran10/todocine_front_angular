@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Valoracion } from '../../../../core/models/valoracion.model';
-import { User } from '../../../../core/models/user.model';
+import { Valoracion } from '../../../core/models/valoracion.model';
+import { User } from '../../../core/models/user.model';
 
-import { ListaService } from '../../../../core/services/lista.service';
+import { ListaService } from '../../../core/services/lista.service';
 import { BehaviorSubject, catchError, Observable, of, tap, switchMap, shareReplay } from 'rxjs';
 
 

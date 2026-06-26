@@ -9,7 +9,7 @@
 </app-notification>
 
 @if (lista$ | async; as lista) {
-  <app-header [title]="lista.nombre"></app-header>
+  <app-header [title]="lista.nombre | uppercase"></app-header>
   
   <div class="container mt-4">
     <div class="row mb-4">
