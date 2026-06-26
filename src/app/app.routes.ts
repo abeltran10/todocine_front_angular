@@ -13,8 +13,8 @@ import { GanadorAnyadirComponent } from './features/premios/ganador-form/ganador
 
 import { authGuard } from './core/guards/auth.guard';
 import { publicGuard } from './core/guards/public.guard';
-import { ListaDetailComponent } from './features/lista-detail/lista-detail.component';
-import { ListaComponent } from './features/listas/lista.component';
+import { ListaDetailComponent } from './features/listas/lista-detail/lista-detail.component';
+import { ListaComponent } from './features/listas/listado-listas/lista.component';
 
 export const routes: Routes = [
   { path: 'app', component: LoginComponent, canActivate: [publicGuard] },

@@ -4,13 +4,13 @@ import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-import { PaginatorComponent } from '../../../shared/common/paginator/paginator.component';
-import { Paginator } from '../../../core/models/paginator.model';
-import { Movie } from '../../../core/models/movie.model';
+import { PaginatorComponent } from '../../../../shared/common/paginator/paginator.component';
+import { Paginator } from '../../../../core/models/paginator.model';
+import { Movie } from '../../../../core/models/movie.model';
 
-import { ListaService } from '../../../core/services/lista.service';
-import { Lista } from '../../../core/models/lista.model';
-import { User } from '../../../core/models/user.model';
+import { ListaService } from '../../../../core/services/lista.service';
+import { Lista } from '../../../../core/models/lista.model';
+import { User } from '../../../../core/models/user.model';
 
 @Component({
   selector: 'app-lista-table',

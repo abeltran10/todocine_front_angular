@@ -1,6 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
-import { Lista } from '../../../../core/models/lista.model';
+import { Lista } from '../../../../../core/models/lista.model';
 
 @Component({
   selector: 'app-card-lista-usuario',

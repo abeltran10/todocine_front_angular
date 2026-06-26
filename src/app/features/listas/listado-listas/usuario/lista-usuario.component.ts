@@ -4,15 +4,15 @@ import { Observable, BehaviorSubject, of, timer, ReplaySubject } from 'rxjs';
 import { catchError, shareReplay, switchMap, map } from 'rxjs/operators';
 
 import { CardListaUsuarioComponent } from '../card/usuario/lista-card-usuario.component';
-import { PaginatorComponent } from '../../../shared/common/paginator/paginator.component';
-import { User } from '../../../core/models/user.model';
-import { Paginator } from '../../../core/models/paginator.model';
-import { Lista } from '../../../core/models/lista.model';
+import { PaginatorComponent } from '../../../../shared/common/paginator/paginator.component';
+import { User } from '../../../../core/models/user.model';
+import { Paginator } from '../../../../core/models/paginator.model';
+import { Lista } from '../../../../core/models/lista.model';
 
 import { FormsModule } from '@angular/forms';
 
-import { ListaService } from '../../../core/services/lista.service';
-import { UsuarioListaService } from '../../../core/services/usuarioLista.service';
+import { ListaService } from '../../../../core/services/lista.service';
+import { UsuarioListaService } from '../../../../core/services/usuarioLista.service';
 
 @Component({
   selector: 'app-lista-usuario',
