@@ -51,13 +51,15 @@ Reusable resources used across multiple features.
 
 ## Commands
 
-### Development server
+### Install dependencies
 
 First, install dependencies:
 
 ```bash
 npm install
 ```
+
+### Development server
 
 To start a local development server, run:
 
@@ -131,10 +133,6 @@ This will compile your project and store the build artifacts in the `dist/` dire
 ![private lists 2](ui-screenshots/private_lists_2.png)
 
 
-
-### Paginator in List's table of movies
-
-![paginator table movies](ui-screenshots/paginator_lists.png)
 
 ### Users' opinions about a list
 

@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PublicListasComponent } from './publicas/lista-publica.component';
 import { UserListasComponent } from './usuario/lista-usuario.component';
-import { NavigationBarComponent } from '../../shared/layout/navigation-bar/navigation-bar.component';
-import { NotificationComponent } from '../../shared/common/notification/notification.component';
-import { HeaderComponent } from '../../shared/layout/header/header.component';
-import { User } from '../../core/models/user.model';
+import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
+import { NotificationComponent } from '../../../shared/common/notification/notification.component';
+import { HeaderComponent } from '../../../shared/layout/header/header.component';
+import { User } from '../../../core/models/user.model';
 import { BehaviorSubject, timer } from 'rxjs';
 
 @Component({
@@ -26,7 +26,7 @@ import { BehaviorSubject, timer } from 'rxjs';
 export class ListaComponent implements OnInit {
   usuario!: User;
   publica: boolean = true;
-  title: string = 'Listas Públicas';
+  title: string = 'LISTAS PÚBLICAS';
 
   messageSuccessSubject = new BehaviorSubject<string>('');
   messageErrorSubject = new BehaviorSubject<string>('');
@@ -48,7 +48,7 @@ export class ListaComponent implements OnInit {
   }
 
   private updateTitle() {
-    this.title = this.publica ? 'Listas Públicas' : 'Mis Listas';
+    this.title = this.publica ? 'LISTAS PÚBLICAS' : 'MIS LISTAS';
   }
 
   setErrorMessage(message: string) {

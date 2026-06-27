@@ -54,7 +54,7 @@
           <div class="d-flex justify-content-between align-items-center mb-2">
             <div class="d-flex align-items-center gap-2">
               <strong class="text-primary"><i class="fa fa-user me-1"></i>{{ v.username }}</strong>
-              <span class="text-muted small">| {{ v.fecha }}</span>
+              <span class="text-muted small"> | {{ v.fecha | date:'dd/MM/yyyy HH:mm' }}</span>
             </div>
 
             <div class="stars-display text-warning">

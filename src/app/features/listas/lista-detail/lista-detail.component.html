@@ -9,7 +9,7 @@
 </app-notification>
 
 @if (lista$ | async; as lista) {
-  <app-header [title]="lista.nombre"></app-header>
+  <app-header [title]="lista.nombre | uppercase"></app-header>
   
   <div class="container mt-4">
     <div class="row mb-4">
@@ -94,7 +94,7 @@
                       <img [src]="'https://image.tmdb.org/t/p/w92' + movie.poster_path" [alt]="movie.title" class="img-thumbnail" style="width: 60px;">
                     </td>
                     <td><strong>{{ movie.title }}</strong></td>
-                    <td>{{ movie.release_date }}</td>
+                    <td>{{ movie.release_date | date:'dd/MM/yyyy'}}</td>
                   </tr>
                 } @empty {
                   <tr><td colspan="3" class="text-center text-muted py-3">No se encontraron películas.</td></tr>

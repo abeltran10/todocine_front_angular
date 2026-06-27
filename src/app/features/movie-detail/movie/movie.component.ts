@@ -46,11 +46,6 @@ export class MovieComponent {
   return this.sanitizer.bypassSecurityTrustResourceUrl(url);
 }
 
-  get releaseDate(): string {
-    return this.movieDetail.release_date
-      ? `(${this.movieDetail.release_date.split('-')[0]})`
-      : '';
-  }
 
   handleFavoritos() {
     this.addFavoritos.emit(this.movieDetail);

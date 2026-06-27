@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col"></div>
       <div class="col">
-        <h3 class="text-info text-center">{{ movieDetail.title }} {{ releaseDate }}</h3>
+        <h3 class="text-info text-center">{{ movieDetail.title }} ({{ movieDetail.release_date | date:'dd/MM/yyyy' }})</h3>
       </div>
     </div>
 
@@ -48,7 +48,7 @@
 
         <div class="row">
           <div class="container">
-            <span class="fw-bold fst-italic">Géneros:</span> {{ genresText }}
+            <span class="fw-bold fst-italic">Géneros: </span>{{ genresText }}
           </div>
         </div>
 
@@ -70,14 +70,14 @@
 
         <div class="row">
           <div class="container">
-            <span class="fw-bold fst-italic">Total votos Todo Cine:</span>
+            <span class="fw-bold fst-italic">Total votos Todo Cine: </span>
             {{ movieDetail.total_votos_TC }}
           </div>
         </div>
 
         <div class="row">
           <div class="container">
-            <span class="fw-bold fst-italic">Puntuación TC:</span>
+            <span class="fw-bold fst-italic">Puntuación Todo Cine: </span>
             {{ movieDetail.votos_media_TC }}
           </div>
         </div>
@@ -86,14 +86,14 @@
 
         <div class="row">
           <div class="container">
-            <span class="fw-bold fst-italic">Votos totales:</span>
+            <span class="fw-bold fst-italic">Votos totales: </span>
             {{ movieDetail.vote_count }}
           </div>
         </div>
 
         <div class="row">
           <div class="container">
-            <span class="fw-bold fst-italic">Puntuación:</span>
+            <span class="fw-bold fst-italic">Puntuación: </span>
             {{ movieDetail.vote_average }}
           </div>
         </div>

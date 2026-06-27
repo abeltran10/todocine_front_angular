@@ -2,12 +2,12 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CardListaComponent } from '../card/publica/lista-card-publica.component';
-import { PaginatorComponent } from '../../../shared/common/paginator/paginator.component';
-import { User } from '../../../core/models/user.model';
-import { Paginator } from '../../../core/models/paginator.model';
-import { Lista } from '../../../core/models/lista.model';
+import { PaginatorComponent } from '../../../../shared/common/paginator/paginator.component';
+import { User } from '../../../../core/models/user.model';
+import { Paginator } from '../../../../core/models/paginator.model';
+import { Lista } from '../../../../core/models/lista.model';
 import { BehaviorSubject, catchError, Observable, of, ReplaySubject, shareReplay, switchMap, timer } from 'rxjs';
-import { ListaService } from '../../../core/services/lista.service';
+import { ListaService } from '../../../../core/services/lista.service';
 
 
 
