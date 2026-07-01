@@ -19,15 +19,8 @@
             <app-ganador [ganador]="ganador"></app-ganador>
           </div>
         } 
+     
       </div>
-
-      @if (!paginator.results) {
-        <div class="text-center mt-5">
-          <div class="spinner-border text-primary" role="status"></div>
-          <p class="mt-2">Cargando ganadores...</p>
-        </div>
-      }
-
     </div>
 
     <app-paginator
@@ -36,6 +29,11 @@
       (pageChange)="loadPremio($event)">
     </app-paginator>
   }
+} @else {
+    <div class="text-center mt-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2">Cargando ganadores...</p>
+    </div>
 }
 
  
