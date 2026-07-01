@@ -43,7 +43,7 @@ export class FavoritosComponent implements OnInit {
 
   emptyPaginator: Paginator<MovieDetail> = { results: [], page: 1, total_pages: 1, total_results: 0 }
 
-  moviesSubject = new BehaviorSubject<Paginator<MovieDetail>>(this.emptyPaginator);
+  moviesSubject = new BehaviorSubject<Paginator<MovieDetail> | null>(null);
   movies$ =  this.moviesSubject.asObservable();
 
   usuario!: User;

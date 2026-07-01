@@ -45,7 +45,7 @@ export class PremioComponent implements OnInit {
           results: [], page: 1, total_pages: 1, total_results: 0
       }
 
-  ganadoresSubject = new BehaviorSubject<Paginator<Ganador>>(this.emptyPaginator);
+  ganadoresSubject = new BehaviorSubject<Paginator<Ganador> | null>(null);
   ganadores$ = this.ganadoresSubject.asObservable();
 
   constructor(

@@ -21,8 +21,9 @@
               [cines]="cines">
             </app-cartelera-card>
           </div>
-        }
-      </div>
+        } 
+      
+      </div>      
     </div>
 
     <app-paginator
@@ -31,6 +32,11 @@
       (pageChange)="loadCartelera(region, $event)">
     </app-paginator>
   }
+} @else {
+   <div class="text-center mt-5">
+     <div class="spinner-border text-primary" role="status"></div>
+     <p class="mt-2">Cargando cartelera...</p>
+   </div>
 }
 
 <div class="modal fade" id="cineModal" tabindex="-1" aria-labelledby="cineModalLabel" aria-hidden="true">
