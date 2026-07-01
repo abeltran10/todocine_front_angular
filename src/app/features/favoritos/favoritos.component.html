@@ -28,6 +28,11 @@
               [movie]="movie">
             </app-favoritos-card>
           </div>
+        } @empty {
+           <div class="text-center mt-5">
+              <div class="spinner-border text-primary" role="status"></div>
+              <p class="mt-2">Cargando favoritos...</p>
+           </div>
         }
       </div>
     </div>
