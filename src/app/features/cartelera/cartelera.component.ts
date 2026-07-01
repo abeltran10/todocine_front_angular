@@ -43,7 +43,7 @@ export class CarteleraComponent implements OnInit {
       results: [], page: 1, total_pages: 1, total_results: 0
   }
 
-  moviesSubject = new BehaviorSubject<Paginator<Movie>>(this.emptyPaginator);
+  moviesSubject = new BehaviorSubject<Paginator<Movie> | null>(null);
   movies$ = this.moviesSubject.asObservable();
 
   messageErrorSubject = new BehaviorSubject<string>('');
