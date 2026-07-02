@@ -53,6 +53,8 @@ export class HomeComponent implements OnInit {
 
   usuario!: User;
 
+  isLoading = false;
+
   constructor(
     private movieService: MovieService,
     private activatedRoute: ActivatedRoute
@@ -84,11 +86,16 @@ export class HomeComponent implements OnInit {
   }
 
   search(text: string, pagina: number = 1) {
+    this.isLoading = true; // Activar spinner
+
     this.movieService.getByName(text, pagina).subscribe({
-        next: (paginator) => this.moviesSubject.next(paginator),
+        next: (paginator) => {
+          this.moviesSubject.next(paginator);
+          this.isLoading = false; // Desactivar en éxito
+        },
         error: (error) => {
-              this.setErrorMessage(error?.error?.message ?? 'Error cargando la busqueda');
-              
+              this.setErrorMessage(error?.error?.message ?? 'Error cargando la búsqueda');
+              this.isLoading = false; // Desactivar en error
         }
     }); 
     
