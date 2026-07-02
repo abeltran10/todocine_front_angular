@@ -11,6 +11,14 @@
 <app-header [title]="title"></app-header>
 
 
+<app-favoritos-filtros
+    [usuarioId]="usuario.id"
+    [vistaFiltro]="vistaFiltro"
+    [votadaFiltro]="votadaFiltro"
+    [order]="order"
+    (filtersChange)="onFiltersChange($event)">
+</app-favoritos-filtros>
+
 @if (isLoading$ | async) {
     <div class="text-center mt-5">
       <div class="spinner-border text-primary" role="status"></div>
@@ -19,14 +27,7 @@
 } @else {
     @if (movies$ | async; as paginator) {
       @if (paginator) {
-        <app-favoritos-filtros
-          [usuarioId]="usuario.id"
-          [vistaFiltro]="vistaFiltro"
-          [votadaFiltro]="votadaFiltro"
-          [order]="order"
-          (filtersChange)="onFiltersChange($event)">
-        </app-favoritos-filtros>
-
+        
         <div class="container-md mt-5">
           <div class="row row-cols-1 row-cols-md-3 g-4">
             @for (movie of paginator.results; track movie.id) {
