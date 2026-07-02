@@ -10,38 +10,41 @@
 
 <app-header [title]="title"></app-header>
 
-@if (movies$ | async; as paginator) {
-  @if (paginator) {
-    <app-favoritos-filtros
-      [usuarioId]="usuario.id"
-      [vistaFiltro]="vistaFiltro"
-      [votadaFiltro]="votadaFiltro"
-      [order]="order"
-      (filtersChange)="onFiltersChange($event)">
-    </app-favoritos-filtros>
 
-    <div class="container-md mt-5">
-      <div class="row row-cols-1 row-cols-md-3 g-4">
-        @for (movie of paginator.results; track movie.id) {
-          <div class="col">
-            <app-favoritos-card
-              [movie]="movie">
-            </app-favoritos-card>
-          </div>
-        } 
-     
-      </div>     
-    </div>
-
-    <app-paginator
-      [activePage]="paginator.page"
-      [totalPages]="paginator.total_pages"
-      (pageChange)="loadUserFavs($event)">
-    </app-paginator>
-  }
-} @else {
+@if (isLoading$ | async) {
     <div class="text-center mt-5">
       <div class="spinner-border text-primary" role="status"></div>
       <p class="mt-2">Cargando favoritos...</p>
     </div>
+} @else {
+    @if (movies$ | async; as paginator) {
+      @if (paginator) {
+        <app-favoritos-filtros
+          [usuarioId]="usuario.id"
+          [vistaFiltro]="vistaFiltro"
+          [votadaFiltro]="votadaFiltro"
+          [order]="order"
+          (filtersChange)="onFiltersChange($event)">
+        </app-favoritos-filtros>
+
+        <div class="container-md mt-5">
+          <div class="row row-cols-1 row-cols-md-3 g-4">
+            @for (movie of paginator.results; track movie.id) {
+              <div class="col">
+                <app-favoritos-card
+                  [movie]="movie">
+                </app-favoritos-card>
+              </div>
+            } 
+        
+          </div>     
+        </div>
+
+        <app-paginator
+          [activePage]="paginator.page"
+          [totalPages]="paginator.total_pages"
+          (pageChange)="loadUserFavs($event)">
+        </app-paginator>
+      }
+    }
 }

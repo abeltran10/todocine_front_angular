@@ -53,6 +53,9 @@ export class HomeComponent implements OnInit {
 
   usuario!: User;
 
+  isLoadingSubject = new BehaviorSubject<boolean>(false);
+  isLoading$ = this.isLoadingSubject.asObservable();
+
   constructor(
     private movieService: MovieService,
     private activatedRoute: ActivatedRoute
@@ -84,11 +87,17 @@ export class HomeComponent implements OnInit {
   }
 
   search(text: string, pagina: number = 1) {
+    this.isLoadingSubject.next(true);
+
     this.movieService.getByName(text, pagina).subscribe({
-        next: (paginator) => this.moviesSubject.next(paginator),
+        next: (paginator) => {
+          this.isLoadingSubject.next(false);
+          this.moviesSubject.next(paginator);
+        },
         error: (error) => {
               this.setErrorMessage(error?.error?.message ?? 'Error cargando la busqueda');
-              
+              this.isLoadingSubject.next(false);
+              this.moviesSubject.next(this.emptyPaginator);
         }
     }); 
     
