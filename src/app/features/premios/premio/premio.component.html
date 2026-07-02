@@ -10,7 +10,17 @@
 
 <app-header [title]="title"></app-header>
 
-@if (ganadores$ | async; as paginator) {
+<br/>
+<br/>
+
+@if (isLoading) {
+    <div class="text-center mt-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2">Cargando ganadores...</p>
+    </div>
+}
+
+@if (!isLoading && (ganadores$ | async); as paginator) {
   @if (paginator) {
     <div class="container-md">
       <div class="row row-cols-1 row-cols-md-3 g-4">
@@ -29,11 +39,6 @@
       (pageChange)="loadPremio($event)">
     </app-paginator>
   }
-} @else {
-    <div class="text-center mt-5">
-      <div class="spinner-border text-primary" role="status"></div>
-      <p class="mt-2">Cargando ganadores...</p>
-    </div>
 }
 
  

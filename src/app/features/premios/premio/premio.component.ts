@@ -48,6 +48,8 @@ export class PremioComponent implements OnInit {
   ganadoresSubject = new BehaviorSubject<Paginator<Ganador> | null>(null);
   ganadores$ = this.ganadoresSubject.asObservable();
 
+  isLoading = false;
+
   constructor(
     private route: ActivatedRoute,
     private ganadorService: GanadorService,
@@ -86,14 +88,20 @@ export class PremioComponent implements OnInit {
   }
 
   loadPremio(page: number) {
+    this.isLoading = true;
+
     this.ganadorService.getGanadoresByPremioIdAnyo(
         this.premioCod,
         this.premioAnyo,
         page
       ).subscribe({
-          next: (paginator) => this.ganadoresSubject.next(paginator),
+          next: (paginator) => {
+              this.ganadoresSubject.next(paginator);
+              this.isLoading = false;
+          },
           error: (error) => {
-            this.setErrorMessage(error?.error?.message ?? 'Error cargando los premios')
+            this.setErrorMessage(error?.error?.message ?? 'Error cargando los premios');
+            this.isLoading = false;
             this.ganadoresSubject.next(this.emptyPaginator);
           }
       });

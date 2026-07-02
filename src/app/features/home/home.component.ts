@@ -96,6 +96,7 @@ export class HomeComponent implements OnInit {
         error: (error) => {
               this.setErrorMessage(error?.error?.message ?? 'Error cargando la búsqueda');
               this.isLoading = false; // Desactivar en error
+              this.moviesSubject.next(this.emptyPaginator);
         }
     }); 
     

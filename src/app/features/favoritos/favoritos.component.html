@@ -10,7 +10,17 @@
 
 <app-header [title]="title"></app-header>
 
-@if (movies$ | async; as paginator) {
+<br/>
+<br/>
+
+@if (isLoading) {
+  <div class="text-center mt-5">
+      <div class="spinner-border text-primary" role="status"></div>
+      <p class="mt-2">Cargando favoritos...</p>
+  </div>
+}
+
+@if (!isLoading && (movies$ | async); as paginator) {
   @if (paginator) {
     <app-favoritos-filtros
       [usuarioId]="usuario.id"
@@ -39,9 +49,4 @@
       (pageChange)="loadUserFavs($event)">
     </app-paginator>
   }
-} @else {
-    <div class="text-center mt-5">
-      <div class="spinner-border text-primary" role="status"></div>
-      <p class="mt-2">Cargando favoritos...</p>
-    </div>
 }

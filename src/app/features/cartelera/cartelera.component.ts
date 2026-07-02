@@ -51,6 +51,8 @@ export class CarteleraComponent implements OnInit {
 
   selectedCineUrl: string = '';
 
+  isLoading = false;
+
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieService
@@ -77,10 +79,16 @@ export class CarteleraComponent implements OnInit {
   }
 
   loadCartelera(region: string, page: number) {
-     this.movieService.getMoviesPlayingNowByRegion(region, page).subscribe({
-        next: (paginator) => this.moviesSubject.next(paginator),
+    this.isLoading = true;
+     
+    this.movieService.getMoviesPlayingNowByRegion(region, page).subscribe({
+        next: (paginator) => {
+            this.moviesSubject.next(paginator);
+            this.isLoading = false;
+        },
         error: (error) => {
               this.setErrorMessage(error?.error?.message ?? 'Error cargando cartelera');
+              this.isLoading = false;
               this.moviesSubject.next(this.emptyPaginator);
       
         }
