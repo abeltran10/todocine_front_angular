@@ -52,6 +52,9 @@ export class FavoritosComponent implements OnInit {
   votadaFiltro = '';
   order = '';
 
+  isLoadingSubject = new BehaviorSubject<boolean>(false);
+  isLoading$ = this.isLoadingSubject.asObservable();
+
   constructor(
     private usuarioMovieService: UsuarioMovieService,
   ) {}
@@ -67,6 +70,8 @@ export class FavoritosComponent implements OnInit {
 
   
   loadUserFavs(page: number = 1) {
+     this.isLoadingSubject.next(true);
+
      this.usuarioMovieService.getUserMovies(
                this.usuario.id,
                this.vistaFiltro,
@@ -74,8 +79,15 @@ export class FavoritosComponent implements OnInit {
                this.order,
                page
              ).subscribe({
-                next: (paginator) => this.moviesSubject.next(paginator),
-                error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error cargando favoritos')
+                next: (paginator) => {
+                    this.isLoadingSubject.next(false);
+                    this.moviesSubject.next(paginator);
+                },
+                error: (error) => {
+                    this.setErrorMessage(error?.error?.message ?? 'Error cargando favoritos');
+                    this.isLoadingSubject.next(false);
+                    this.moviesSubject.next(this.emptyPaginator);
+                }
              })
   }
 
