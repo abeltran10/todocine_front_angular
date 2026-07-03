@@ -10,36 +10,35 @@
 
 <app-header [title]="title"></app-header>
 
-@if (isLoading$ | async) {
+@if (movies$ | async; as paginator) {
+  @if (paginator) {
+    <div class="container-md">
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        @for (movie of paginator.results; track movie.id) {
+          <div class="col">
+            <app-cartelera-card
+              [movie]="movie"
+              [cines]="cines">
+            </app-cartelera-card>
+          </div>
+        } 
+      
+      </div>      
+    </div>
+
+    <app-paginator
+      [activePage]="paginator.page"
+      [totalPages]="paginator.total_pages"
+      (pageChange)="loadCartelera(region, $event)">
+    </app-paginator>
+  }
+} @else {
     <div class="text-center mt-5">
       <div class="spinner-border text-primary" role="status"></div>
       <p class="mt-2">Cargando cartelera...</p>
     </div>
-} @else {
-    @if (movies$ | async; as paginator) {
-      @if (paginator) {
-        <div class="container-md">
-          <div class="row row-cols-1 row-cols-md-3 g-4">
-            @for (movie of paginator.results; track movie.id) {
-              <div class="col">
-                <app-cartelera-card
-                  [movie]="movie"
-                  [cines]="cines">
-                </app-cartelera-card>
-              </div>
-            } 
-          
-          </div>      
-        </div>
-
-        <app-paginator
-          [activePage]="paginator.page"
-          [totalPages]="paginator.total_pages"
-          (pageChange)="loadCartelera(region, $event)">
-        </app-paginator>
-      }
-    } 
 }
+
 
 
 
