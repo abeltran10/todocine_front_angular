@@ -10,33 +10,32 @@
 
 <app-header [title]="title"></app-header>
 
-@if (isLoading$ | async) {
+
+@if (ganadores$ | async; as paginator) {
+  @if (paginator) {
+    <div class="container-md">
+      <div class="row row-cols-1 row-cols-md-3 g-4">
+        @for (ganador of paginator.results; track ganador.premioId + '-' + ganador.categoriaId + '-' + ganador.anyo + '-' + ganador.movieId) {
+          <div class="col">
+            <app-ganador [ganador]="ganador"></app-ganador>
+          </div>
+        } 
+    
+      </div>
+    </div>
+
+    <app-paginator
+      [activePage]="paginator.page"
+      [totalPages]="paginator.total_pages"
+      (pageChange)="loadPremio($event)">
+    </app-paginator>
+  }
+} @else {
     <div class="text-center mt-5">
       <div class="spinner-border text-primary" role="status"></div>
       <p class="mt-2">Cargando ganadores...</p>
     </div>
-} @else  {
-    @if (ganadores$ | async; as paginator) {
-      @if (paginator) {
-        <div class="container-md">
-          <div class="row row-cols-1 row-cols-md-3 g-4">
-            @for (ganador of paginator.results; track ganador.premioId + '-' + ganador.categoriaId + '-' + ganador.anyo + '-' + ganador.movieId) {
-              <div class="col">
-                <app-ganador [ganador]="ganador"></app-ganador>
-              </div>
-            } 
-        
-          </div>
-        </div>
-
-        <app-paginator
-          [activePage]="paginator.page"
-          [totalPages]="paginator.total_pages"
-          (pageChange)="loadPremio($event)">
-        </app-paginator>
-      }
-    }
-} 
+}
 
  
 
