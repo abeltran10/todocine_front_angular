@@ -6,6 +6,7 @@ import { NotificationComponent } from '../notification/notification.component';
 import { HeaderComponent } from '../header/header.component';
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { HeaderService } from '../../../core/services/header.service';
 
 @Component({
   selector: 'app-layout',
@@ -20,10 +21,11 @@ import { NotificationService } from '../../../core/services/notification.service
   templateUrl: './app-layout.component.html'
 })
 export class AppLayoutComponent {
-  title = 'TODO CINE';
+  
 
   constructor(
     public authService: AuthService,
-    public notificationService: NotificationService
+    public notificationService: NotificationService,
+    public headerService: HeaderService
   ) {}
 }

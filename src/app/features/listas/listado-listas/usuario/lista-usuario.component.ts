@@ -13,6 +13,8 @@ import { FormsModule } from '@angular/forms';
 
 import { ListaService } from '../../../../core/services/lista.service';
 import { UsuarioListaService } from '../../../../core/services/usuarioLista.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { HeaderService } from '../../../../core/services/header.service';
 
 @Component({
   selector: 'app-lista-usuario',
@@ -21,9 +23,8 @@ import { UsuarioListaService } from '../../../../core/services/usuarioLista.serv
   templateUrl: './lista-usuario.component.html'
 })
 export class UserListasComponent implements OnInit {
-  usuario!: User;
-  title: string = 'Mis Listas de Películas';
-
+  usuario!: User | null;
+  
   emptyPaginator: Paginator<Lista> =  {results: [], page: 1, total_pages: 1, total_results: 0};
 
   listasSubject = new BehaviorSubject<Paginator<Lista>>(this.emptyPaginator);
@@ -36,19 +37,22 @@ export class UserListasComponent implements OnInit {
   esEdicion = false;
 
   constructor(private listaService: ListaService,
-              private usuarioListaService: UsuarioListaService    
+              private usuarioListaService: UsuarioListaService,
+              private authService: AuthService,
+              private headerService: HeaderService    
   ) {}
 
   ngOnInit(): void {
-    const loggedUser = localStorage.getItem('loggedUser');
-    if (loggedUser) {
-      this.usuario = JSON.parse(loggedUser);
-    } 
+   this.headerService.setTitle('MIS LISTAS DE PELÍCULAS'); 
 
-    this.loadListas(1); // Carga inicial página 1
+   this.usuario = this.authService.currentUser;
+
+   this.loadListas(1); // Carga inicial página 1
   }
 
   loadListas(pagina: number = 1): void {
+    if (!this.usuario) return;
+
      this.usuarioListaService.getListasUser(this.usuario.id, pagina).subscribe({
         next: (paginator) => this.listasSubject.next(paginator),
         error: (error) => {

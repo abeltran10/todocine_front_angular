@@ -15,6 +15,7 @@ import { MovieDetail } from '../../core/models/movieDetail.model';
 
 import { AuthService } from '../../core/services/auth.service';
 import { NotificationService } from '../../core/services/notification.service';
+import { HeaderService } from '../../core/services/header.service';
 
 
 @Component({
@@ -29,15 +30,6 @@ import { NotificationService } from '../../core/services/notification.service';
   templateUrl: './favoritos.component.html'
 })
 export class FavoritosComponent implements OnInit {
-
-  title = 'FAVORITOS';
-
-  messageSuccessSubject = new BehaviorSubject<string>('');  
-  successMessage$ = this.messageSuccessSubject.asObservable();
-  
-  messageErrorSubject = new BehaviorSubject<string>('');
-  errorMessage$ = this.messageErrorSubject.asObservable();
-
   emptyPaginator: Paginator<MovieDetail> = { results: [], page: 1, total_pages: 1, total_results: 0 }
 
   moviesSubject = new BehaviorSubject<Paginator<MovieDetail> | null>(null);
@@ -52,10 +44,13 @@ export class FavoritosComponent implements OnInit {
   constructor(
     private usuarioMovieService: UsuarioMovieService,
     private authService: AuthService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private headerService: HeaderService
   ) {}
 
   ngOnInit(): void {
+     this.headerService.setTitle('FAVORITOS');
+
      this.usuario = this.authService.currentUser;
 
      this.loadUserFavs(1);

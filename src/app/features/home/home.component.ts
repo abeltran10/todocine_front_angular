@@ -16,6 +16,7 @@ import { User } from '../../core/models/user.model';
 import { SearchFormComponent } from './search/search-form.component';
 import { PaginatorComponent } from '../../shared/common/paginator/paginator.component';
 import { MovieCardComponent } from './movie-card/movie-card.component';
+import { HeaderService } from '../../core/services/header.service';
 
 @Component({
   selector: 'app-home',
@@ -32,11 +33,6 @@ export class HomeComponent implements OnInit {
 
   title = 'TODO CINE';
 
-  messageSuccessSubject = new BehaviorSubject<string>('');
-  messageErrorSubject = new BehaviorSubject<string>('');
-  successMessage$ = this.messageSuccessSubject.asObservable();;
-  errorMessage$ = this.messageErrorSubject.asObservable();;
-
   emptyPaginator: Paginator<Movie> = {
       results: [], page: 1, total_pages: 1, total_results: 0
   }
@@ -51,7 +47,8 @@ export class HomeComponent implements OnInit {
   constructor(
     private movieService: MovieService,
     private activatedRoute: ActivatedRoute,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private headerService: HeaderService
   ) {}
 
   ngOnInit(): void {
@@ -71,6 +68,8 @@ export class HomeComponent implements OnInit {
         window.history.replaceState(cleanState, '', window.location.href);
       }
     });
+
+    this.headerService.setTitle('TODO CINE');
   }
 
   search(text: string, pagina: number = 1) {

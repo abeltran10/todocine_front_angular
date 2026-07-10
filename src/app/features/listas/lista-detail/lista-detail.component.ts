@@ -15,6 +15,7 @@ import { ListaComentariosComponent } from './comentarios/lista-comentarios.compo
 
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
+import { HeaderService } from '../../../core/services/header.service';
 
 @Component({
   selector: 'app-lista-detail',
@@ -42,13 +43,6 @@ export class ListaDetailComponent implements OnInit {
   searchText: string = '';
   listaId!: number;
   list!: Lista;
-  
-    
-  private errorMessageSubject = new BehaviorSubject<string>('');
-  errorMessage$ = this.errorMessageSubject.asObservable();
-
-  messageSuccessSubject = new BehaviorSubject<string>('');  
-  successMessage$ = this.messageSuccessSubject.asObservable();
 
   listaSubject = new BehaviorSubject<Lista | null>(null);
   lista$ = this.listaSubject.asObservable();
@@ -63,10 +57,12 @@ export class ListaDetailComponent implements OnInit {
   private listaService: ListaService,
   private movieService: MovieService,
   private authService: AuthService,
-  private notificationService: NotificationService
+  private notificationService: NotificationService,
+  private headerService: HeaderService
 ) {}
 
   ngOnInit(): void {
+    
     this.usuario = this.authService.currentUser;
 
     this.route.paramMap.subscribe(params => {
@@ -75,6 +71,9 @@ export class ListaDetailComponent implements OnInit {
 
           this.loadLista();
           this.loadMoviesList(1);
+
+          this.headerService.setTitle(this.list?.nombre.toUpperCase());
+
     }); 
 
   }

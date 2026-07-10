@@ -14,6 +14,7 @@ import { PaginatorComponent } from '../../shared/common/paginator/paginator.comp
 
 import { Regions, RegionKey, Region } from '../../core/enum/regions';
 import { Cines } from '../../core/enum/cines';
+import { HeaderService } from '../../core/services/header.service';
 
 @Component({
   selector: 'app-cartelera',
@@ -38,15 +39,13 @@ export class CarteleraComponent implements OnInit {
   moviesSubject = new BehaviorSubject<Paginator<Movie> | null>(null);
   movies$ = this.moviesSubject.asObservable();
 
-  messageErrorSubject = new BehaviorSubject<string>('');
-  errorMessage$ = this.messageErrorSubject.asObservable();
-
   selectedCineUrl: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private headerService: HeaderService
   ) {}
 
   ngOnInit(): void {
@@ -54,7 +53,7 @@ export class CarteleraComponent implements OnInit {
         this.region = String(params.get('region'));
         const regionData: Region = Regions.getRegion(this.region as RegionKey);
 
-        this.title = `CARTELERA ${regionData.name.toUpperCase()}`;
+        this.headerService.setTitle(`CARTELERA ${regionData.name.toUpperCase()}`);
 
         this.loadCartelera(regionData.code, 1);
     });  

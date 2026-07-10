@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { catchError, Observable, BehaviorSubject, of, timer } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import { MovieService } from '../../core/services/movie.service';
 import { UsuarioMovieService } from '../../core/services/usuarioMovie.service';
@@ -13,6 +13,7 @@ import { UsuarioMovie } from '../../core/models/usuarioMovie.model';
 import { NotificationService } from '../../core/services/notification.service';
 import { AuthService } from '../../core/services/auth.service';
 import { User } from '../../core/models/user.model';
+import { HeaderService } from '../../core/services/header.service';
 
 @Component({
   selector: 'app-movie-detail',
@@ -24,28 +25,23 @@ import { User } from '../../core/models/user.model';
   templateUrl: './movie-detail.component.html'
 })
 export class MovieDetailComponent implements OnInit {
-
-  title: string = ''; 
-
   usuario!: User | null;
   
   private movieDetailSubject = new BehaviorSubject<MovieDetail | null>(null);
   movieDetail$ = this.movieDetailSubject.asObservable();
-
-  messageSuccessSubject = new BehaviorSubject<string>('');
-  messageErrorSubject = new BehaviorSubject<string>('');
-  successMessage$ = this.messageSuccessSubject.asObservable();
-  errorMessage$ = this.messageErrorSubject.asObservable();
 
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieService,
     private usuarioMovieService: UsuarioMovieService,
     private notificationService: NotificationService,
-    private authService: AuthService
+    private authService: AuthService,
+    private headerService: HeaderService
   ) {}
 
   ngOnInit(): void {
+    this.headerService.setTitle('');
+
     this.usuario = this.authService.currentUser;
 
     const movieId = Number(this.route.snapshot.paramMap.get('movieId'));
