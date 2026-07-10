@@ -28,7 +28,7 @@
       </app-lista-publica>
     } @else {
       <app-lista-usuario
-        (error)="notificationService.showError($event)($event)"
+        (error)="notificationService.showError($event)"
         (success)="notificationService.showSuccess($event)">
       </app-lista-usuario>
     }

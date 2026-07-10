@@ -1,6 +1,4 @@
-import { Component, OnInit } from '@angular/core';
-import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
-import { NotificationComponent } from '../../../shared/layout/notification/notification.component';
+import { Component } from '@angular/core';
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { CommonModule } from '@angular/common';
 
@@ -15,8 +13,6 @@ import { NotificationService } from '../../../core/services/notification.service
   selector: 'app-ganador-anyadir',
   standalone: true,
   imports: [CommonModule,
-            NavigationBarComponent,
-            NotificationComponent,
             HeaderComponent,
             GanadorFormComponent
   ],

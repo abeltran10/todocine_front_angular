@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { PublicListasComponent } from './publicas/lista-publica.component';
 import { UserListasComponent } from './usuario/lista-usuario.component';
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
+import { NotificationService } from '../../../core/services/notification.service';
 
 
 @Component({
@@ -23,7 +24,7 @@ export class ListaComponent {
   publica: boolean = true;
   title: string = 'LISTAS PÚBLICAS';
 
-  constructor() {}
+  constructor(public notificationService: NotificationService) {}
 
 
   setPublica() {

@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class FavoritosFiltrosComponent {
 
-  @Input() usuarioId!: number;
+  @Input() usuarioId!: number | undefined | null;
   @Input() vistaFiltro = '';
   @Input() votadaFiltro = '';
   @Input() order = '';
@@ -23,6 +23,8 @@ export class FavoritosFiltrosComponent {
   }>();
 
   private emitChanges(): void {
+    if (!this.usuarioId) return;
+
     this.filtersChange.emit({
       usuarioId: this.usuarioId,
       vistaFiltro: this.vistaFiltro,

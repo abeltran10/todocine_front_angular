@@ -5,8 +5,6 @@ import { BehaviorSubject, timer } from 'rxjs';
 import { User } from '../../core/models/user.model';
 import { UserService } from '../../core/services/user.service';
 
-import { NavigationBarComponent } from '../../shared/layout/navigation-bar/navigation-bar.component';
-import { NotificationComponent } from '../../shared/layout/notification/notification.component';
 import { HeaderComponent } from '../../shared/layout/header/header.component';
 import { ProfileFormComponent } from './form/profile-form.component';
 import { AuthService } from '../../core/services/auth.service';
@@ -17,8 +15,6 @@ import { NotificationService } from '../../core/services/notification.service';
   standalone: true,
   imports: [
     CommonModule,
-    NavigationBarComponent,
-    NotificationComponent,
     HeaderComponent,
     ProfileFormComponent
   ],

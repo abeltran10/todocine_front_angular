@@ -58,7 +58,7 @@ export class ListaDetailComponent implements OnInit {
   private listaService: ListaService,
   private movieService: MovieService,
   private authService: AuthService,
-  private notificationService: NotificationService
+  public notificationService: NotificationService
 ) {}
 
   ngOnInit(): void {

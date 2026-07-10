@@ -5,6 +5,8 @@ import { BehaviorSubject, timer } from 'rxjs';
 import { UserService } from '../../core/services/user.service';
 
 import { CreateAccountFormComponent } from './form/create-account-form.component';
+import { HeaderComponent } from '../../shared/layout/header/header.component';
+import { NotificationComponent } from '../../shared/layout/notification/notification.component';
 
 
 @Component({
@@ -12,7 +14,9 @@ import { CreateAccountFormComponent } from './form/create-account-form.component
   standalone: true,
   imports: [
     CommonModule,
-    CreateAccountFormComponent
+    CreateAccountFormComponent,
+    HeaderComponent,
+    NotificationComponent
   ],
   templateUrl: './create-account.component.html'
 })

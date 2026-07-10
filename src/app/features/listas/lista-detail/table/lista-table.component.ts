@@ -21,7 +21,7 @@ import { User } from '../../../../core/models/user.model';
   templateUrl: './lista-table.component.html',
 })
 export class ListaTableComponent implements OnInit, OnChanges {
-  @Input() usuario!: User;
+  @Input() usuario!: User | null;
   @Input() lista!: Lista;
   
   @Input() moviesList!: Paginator<Movie>
