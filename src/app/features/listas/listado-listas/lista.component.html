@@ -1,13 +1,3 @@
-<app-navigation-bar
-  [user]="usuario"
-  (error)="setErrorMessage($event)">
-</app-navigation-bar>
-
-<app-notification
-  [successMessage]="(successMessage$ | async) ?? ''"
-  [errorMessage]="(errorMessage$ | async) ?? ''">
-</app-notification>
-
 <app-header [title]="title"></app-header>
 
 <div class="container-md mt-3">
@@ -33,13 +23,13 @@
   <div class="tab-content mt-4">
     @if (publica) {
       <app-lista-publica
-        (error)="setErrorMessage($event)"
-        (success)="setSuccessMessage($event)">
+        (error)="notificationService.showError($event)"
+        (success)="notificationService.showSuccess($event)">
       </app-lista-publica>
     } @else {
       <app-lista-usuario
-        (error)="setErrorMessage($event)"
-        (success)="setSuccessMessage($event)">
+        (error)="notificationService.showError($event)"
+        (success)="notificationService.showSuccess($event)">
       </app-lista-usuario>
     }
   </div>

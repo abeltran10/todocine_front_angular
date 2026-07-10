@@ -10,6 +10,7 @@ import { User } from '../../../core/models/user.model';
 import { Region, Regions } from '../../../core/enum/regions';
 import { PremioService } from '../../../core/services/premio.service';
 import { Premio } from '../../../core/models/premio.model';
+import { AuthService } from '../../../core/services/auth.service';
 @Component({
   selector: 'app-navigation-bar',
   standalone: true,
@@ -22,7 +23,7 @@ import { Premio } from '../../../core/models/premio.model';
 })
 export class NavigationBarComponent implements OnInit {
 
-  @Input() user!: User;
+  @Input() user!: User | null;
   @Output() error = new EventEmitter<string>();
 
   regions: Region[] = Regions.getValues();
@@ -34,6 +35,7 @@ export class NavigationBarComponent implements OnInit {
   constructor(
     private router: Router,
     private loginService: LoginService,
+    private authService: AuthService,
     private premioService: PremioService
   ) {}
 
@@ -51,8 +53,7 @@ export class NavigationBarComponent implements OnInit {
   logout() {
     this.loginService.logout().subscribe({
       next: () => {
-          localStorage.removeItem('loggedUserToken');
-          localStorage.removeItem('loggedUser');
+          this.authService.logout();
 
           this.router.navigate(['/app']);
       },

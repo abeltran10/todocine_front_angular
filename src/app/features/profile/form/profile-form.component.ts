@@ -11,7 +11,7 @@ import { User } from '../../../core/models/user.model';
 })
 export class ProfileFormComponent {
 
-  @Input() usuario!: User;
+  @Input() usuario!: User | null;
 
   @Output() updateUser = new EventEmitter<{
     username: string;
@@ -23,6 +23,8 @@ export class ProfileFormComponent {
   passConfirm = '';
 
   submit() {
+    if (!this.usuario) return;
+    
     this.updateUser.emit({
       username: this.usuario.username,
       password: this.password,

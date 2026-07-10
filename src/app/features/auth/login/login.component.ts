@@ -4,12 +4,13 @@ import { CommonModule } from '@angular/common';
 import { BehaviorSubject, timer } from 'rxjs';
 
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
-import { NotificationComponent } from '../../../shared/common/notification/notification.component';
+import { NotificationComponent } from '../../../shared/layout/notification/notification.component';
 import { LoginFormComponent } from './form/login-form.component';
 
 import { LoginService } from '../../../core/services/login.service';
 
 import {User} from '../../../core/models/user.model';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -32,7 +33,8 @@ export class LoginComponent {
 
   constructor(
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   async login(event: {username: string; password: string} ) {
@@ -41,15 +43,10 @@ export class LoginComponent {
     try {
       const response = await this.loginService.login({ username, password });
       const user: User = response.body;
-      
-      localStorage.setItem(
-        'loggedUserToken',
-        response.headers.get('Authorization') ?? ''
-      );
-      localStorage.setItem(
-        'loggedUser',
-        JSON.stringify(user)
-      );
+         
+      this.authService.setToken(response.headers.get('Authorization') ?? '');
+
+      this.authService.setUser(user)
 
       this.router.navigate(['/app/home'], {
         state: { successMessage: 'Sesión iniciada con exito' }

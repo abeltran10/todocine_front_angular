@@ -41,14 +41,14 @@
 
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown">
-            Signed as {{ user.username }}
+            Signed as {{ user?.username }}
           </a>
           <ul class="dropdown-menu dropdown-menu-end">
             <li><a class="dropdown-item" [routerLink]="['/app/profile']">Perfil</a></li>
             <li><a class="dropdown-item" [routerLink]="['/app/favoritos']">Favoritos</a></li>
             <li><a class="dropdown-item" [routerLink]="['/app/listas']">Listas</a></li>
             
-            @if (user.rol === 'ADMIN') {
+            @if (user?.rol === 'ADMIN') {
               <li><a class="dropdown-item" [routerLink]="['/app/ganador']">Ganador</a></li>
             }
             

@@ -1,17 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
-import { NotificationComponent } from '../../../shared/common/notification/notification.component';
+import { Component } from '@angular/core';
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { CommonModule } from '@angular/common';
-
-import { BehaviorSubject, timer } from 'rxjs';
-
-
-import { User } from '../../../core/models/user.model';
 
 import { GanadorService } from '../../../core/services/ganador.service';
 
 import { GanadorFormComponent } from './form/ganador-form.component';
+import { NotificationService } from '../../../core/services/notification.service';
 
 
 
@@ -19,36 +13,18 @@ import { GanadorFormComponent } from './form/ganador-form.component';
   selector: 'app-ganador-anyadir',
   standalone: true,
   imports: [CommonModule,
-            NavigationBarComponent,
-            NotificationComponent,
             HeaderComponent,
             GanadorFormComponent
   ],
   templateUrl: './ganador-anyadir.component.html',
 })
 
-export class GanadorAnyadirComponent implements OnInit{
-
+export class GanadorAnyadirComponent {
   title = 'AÑADIR GANADOR';
 
-  usuario!: User;
-
-  messageErrorSubject = new BehaviorSubject<string>('');
-  errorMessage$ = this.messageErrorSubject.asObservable();
-
-  messageSuccessSubject = new BehaviorSubject<string>('');
-  successMessage$ = this.messageSuccessSubject.asObservable();
-
-  constructor(private ganadorService: GanadorService) {}
-
-  ngOnInit(): void {
-      // usuario logueado
-      const loggedUser = localStorage.getItem('loggedUser');
-      if (loggedUser) {
-        this.usuario = JSON.parse(loggedUser);
-      }
-
-  }
+  constructor(private ganadorService: GanadorService,
+              public notificationService: NotificationService
+  ) {}
   
   async onSubmit(ganador: {
         premioId: number | null;
@@ -59,8 +35,8 @@ export class GanadorAnyadirComponent implements OnInit{
     
     if (ganador.premioId && ganador.anyo && ganador.categoriaId && ganador.movieId) {
        this.ganadorService.createGanador(ganador).subscribe({
-            next: () => this.setSuccessMessage("Ganador creado correctamente"),
-            error: (error) =>  this.setErrorMessage(error?.error?.message ?? 'Error guardando el ganador')
+            next: () => this.notificationService.showSuccess("Ganador creado correctamente"),
+            error: (error) =>  this.notificationService.showError(error?.error?.message ?? 'Error guardando el ganador')
           });
                  
     } else {
@@ -68,19 +44,4 @@ export class GanadorAnyadirComponent implements OnInit{
     }
   }
 
-
-
-  setSuccessMessage(message: string) {
-    this.messageSuccessSubject.next(message);
-
-    // Usamos un timer de RxJS que es más compatible con Angular
-    timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
-  }
-
-  setErrorMessage(message: string) {
-      this.messageErrorSubject.next(message);
-  
-      // Usamos un timer de RxJS que es más compatible con Angular
-      timer(5000).subscribe(() => this.messageErrorSubject.next(''));
-  }
 }
