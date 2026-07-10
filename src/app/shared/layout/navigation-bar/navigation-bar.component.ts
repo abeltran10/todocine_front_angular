@@ -23,7 +23,7 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class NavigationBarComponent implements OnInit {
 
-  @Input() user!: User;
+  @Input() user!: User | null;
   @Output() error = new EventEmitter<string>();
 
   regions: Region[] = Regions.getValues();

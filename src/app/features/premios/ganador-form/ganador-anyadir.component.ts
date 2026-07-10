@@ -7,7 +7,6 @@ import { CommonModule } from '@angular/common';
 import { GanadorService } from '../../../core/services/ganador.service';
 
 import { GanadorFormComponent } from './form/ganador-form.component';
-import { HeaderService } from '../../../core/services/header.service';
 import { NotificationService } from '../../../core/services/notification.service';
 
 
@@ -28,7 +27,7 @@ export class GanadorAnyadirComponent {
   title = 'AÑADIR GANADOR';
 
   constructor(private ganadorService: GanadorService,
-              private notificationService: NotificationService
+              public notificationService: NotificationService
   ) {}
   
   async onSubmit(ganador: {

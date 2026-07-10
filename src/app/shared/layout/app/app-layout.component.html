@@ -1,5 +1,5 @@
 <app-navigation-bar 
-      [user]="(authService.user$ | async) ?? null"
+      [user]="(authService.user$ | async)"
       (error)="notificationService.showError($event)">
  </app-navigation-bar>
 

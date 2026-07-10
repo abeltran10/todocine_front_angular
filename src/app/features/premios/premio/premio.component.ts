@@ -14,7 +14,6 @@ import { GanadorComponent } from './card/ganador.component';
 import { Paginator } from '../../../core/models/paginator.model';
 import { Ganador } from '../../../core/models/ganador.model';
 import { PremioService } from '../../../core/services/premio.service';
-import { HeaderService } from '../../../core/services/header.service';
 import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
@@ -48,7 +47,6 @@ export class PremioComponent implements OnInit {
     private route: ActivatedRoute,
     private ganadorService: GanadorService,
     private premioService: PremioService,
-    private headerService: HeaderService,
     private notificationService: NotificationService
   ) {}
 

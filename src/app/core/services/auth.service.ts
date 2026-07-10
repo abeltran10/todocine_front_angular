@@ -7,7 +7,7 @@ import { User } from '../models/user.model'; // Asegura la ruta de tu modelo
 })
 export class AuthService {
   private userSubject: BehaviorSubject<User | null>;
-  public user$: Observable<User | null>;
+  public user$: Observable<User>;
 
   constructor() {
     // Intentamos recuperar al usuario al iniciar el servicio
