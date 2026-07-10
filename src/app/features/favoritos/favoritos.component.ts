@@ -7,14 +7,14 @@ import { UsuarioMovieService } from '../../core/services/usuarioMovie.service';
 import { Paginator } from '../../core/models/paginator.model';
 import { User } from '../../core/models/user.model';
 
-import { NavigationBarComponent } from '../../shared/layout/navigation-bar/navigation-bar.component';
-import { NotificationComponent } from '../../shared/common/notification/notification.component';
-import { HeaderComponent } from '../../shared/layout/header/header.component';
 import { PaginatorComponent } from '../../shared/common/paginator/paginator.component';
 
 import { FavoritosCardComponent } from './card/favoritos-card.component';
 import { FavoritosFiltrosComponent } from './filtros/favoritos-filtros.component';
 import { MovieDetail } from '../../core/models/movieDetail.model';
+
+import { AuthService } from '../../core/services/auth.service';
+import { NotificationService } from '../../core/services/notification.service';
 
 
 @Component({
@@ -22,9 +22,6 @@ import { MovieDetail } from '../../core/models/movieDetail.model';
   standalone: true,
   imports: [
     CommonModule,
-    NavigationBarComponent,
-    NotificationComponent,
-    HeaderComponent,
     FavoritosFiltrosComponent,
     FavoritosCardComponent,
     PaginatorComponent
@@ -46,7 +43,7 @@ export class FavoritosComponent implements OnInit {
   moviesSubject = new BehaviorSubject<Paginator<MovieDetail> | null>(null);
   movies$ =  this.moviesSubject.asObservable();
 
-  usuario!: User;
+  usuario!: User | null;
 
   vistaFiltro = '';
   votadaFiltro = '';
@@ -54,20 +51,21 @@ export class FavoritosComponent implements OnInit {
 
   constructor(
     private usuarioMovieService: UsuarioMovieService,
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
-    const loggedUser = localStorage.getItem('loggedUser');
-    if (loggedUser) {
-      this.usuario = JSON.parse(loggedUser);
+     this.usuario = this.authService.currentUser;
 
-      this.loadUserFavs(1);
-    }
+     this.loadUserFavs(1);
   }
 
   
   loadUserFavs(page: number = 1) {
-     this.usuarioMovieService.getUserMovies(
+    if (!this.usuario) return;
+
+    this.usuarioMovieService.getUserMovies(
                this.usuario.id,
                this.vistaFiltro,
                this.votadaFiltro,
@@ -76,7 +74,7 @@ export class FavoritosComponent implements OnInit {
              ).subscribe({
                 next: (paginator) => this.moviesSubject.next(paginator),
                 error: (error) => {
-                    this.setErrorMessage(error?.error?.message ?? 'Error cargando favoritos');
+                    this.notificationService.showError(error?.error?.message ?? 'Error cargando favoritos');
                     this.moviesSubject.next(this.emptyPaginator);
                 }
              })
@@ -93,19 +91,5 @@ export class FavoritosComponent implements OnInit {
     this.order = filters.order;
 
     this.loadUserFavs(1);
-  }
-
-  setErrorMessage(message: string) {
-    this.messageErrorSubject.next(message);
-
-    // Usamos un timer de RxJS que es más compatible con Angular
-    timer(5000).subscribe(() => this.messageErrorSubject.next(''));
-  }
-
-  setSuccessMessage(message: string) {
-    this.messageSuccessSubject.next(message);
-
-    // Usamos un timer de RxJS que es más compatible con Angular
-    timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
   }
 }

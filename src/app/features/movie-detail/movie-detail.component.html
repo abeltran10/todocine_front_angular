@@ -1,12 +1,3 @@
-<app-navigation-bar
-  [user]="usuario"
-  (error)="setErrorMessage($event)">
-</app-navigation-bar>
-
-<app-notification
-  [successMessage]="(successMessage$ | async) ?? ''"
-  [errorMessage]="(errorMessage$ | async) ?? ''">
-</app-notification>
 
 @if (movieDetail$ | async; as movie) {
   <app-movie

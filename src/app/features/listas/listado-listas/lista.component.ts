@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { PublicListasComponent } from './publicas/lista-publica.component';
 import { UserListasComponent } from './usuario/lista-usuario.component';
 import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
-import { NotificationComponent } from '../../../shared/common/notification/notification.component';
+import { NotificationComponent } from '../../../shared/layout/notification/notification.component';
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { User } from '../../../core/models/user.model';
 import { BehaviorSubject, timer } from 'rxjs';

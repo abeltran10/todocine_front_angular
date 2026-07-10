@@ -4,7 +4,7 @@ import { CommonModule } from '@angular/common';
 import { BehaviorSubject, timer } from 'rxjs';
 
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
-import { NotificationComponent } from '../../../shared/common/notification/notification.component';
+import { NotificationComponent } from '../../../shared/layout/notification/notification.component';
 import { LoginFormComponent } from './form/login-form.component';
 
 import { LoginService } from '../../../core/services/login.service';

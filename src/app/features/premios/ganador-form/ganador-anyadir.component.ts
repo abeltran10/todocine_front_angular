@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
-import { NotificationComponent } from '../../../shared/common/notification/notification.component';
+import { NotificationComponent } from '../../../shared/layout/notification/notification.component';
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { CommonModule } from '@angular/common';
 

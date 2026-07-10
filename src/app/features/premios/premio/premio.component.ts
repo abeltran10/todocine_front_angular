@@ -6,7 +6,7 @@ import { Observable, catchError, of, BehaviorSubject, timer } from 'rxjs';
 import { GanadorService } from '../../../core/services/ganador.service';
 
 import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
-import { NotificationComponent } from '../../../shared/common/notification/notification.component';
+import { NotificationComponent } from '../../../shared/layout/notification/notification.component';
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { PaginatorComponent } from '../../../shared/common/paginator/paginator.component';
 import { GanadorComponent } from './card/ganador.component';

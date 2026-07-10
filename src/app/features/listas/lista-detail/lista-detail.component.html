@@ -1,16 +1,5 @@
-<app-navigation-bar
-  [user]="usuario"
-  (error)="setErrorMessage($event)">
-</app-navigation-bar>
-
-<app-notification
-  [successMessage]="''"
-  [errorMessage]="(errorMessage$ | async) ?? ''">
-</app-notification>
-
 @if (lista$ | async; as lista) {
-  <app-header [title]="lista.nombre | uppercase"></app-header>
-  
+    
   <div class="container mt-4">
     <div class="row mb-4">
       <div class="col">
@@ -39,7 +28,7 @@
         [moviesList]="moviesList"
         [ordenar]="ordenar"
         (handleMoviesList)="handleMoviesList($event)"
-        (errorMessage)="setErrorMessage($event)">
+        (errorMessage)="notificationService.showError($event)">
       </app-lista-table>
     } @else {
       <div class="text-center py-5">
@@ -51,7 +40,7 @@
     <app-lista-comentarios 
       [listaId]="lista.id" 
       [usuario]="usuario"
-      (errorMessage)="setErrorMessage($event)">
+      (errorMessage)="notificationService.showError($event)">
     </app-lista-comentarios>
   </div>
 } @else {

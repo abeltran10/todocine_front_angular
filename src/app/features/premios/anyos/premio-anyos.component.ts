@@ -9,7 +9,7 @@ import { User } from '../../../core/models/user.model';
 import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { AnyosComponent } from './card/anyos.component';
-import { NotificationComponent } from '../../../shared/common/notification/notification.component';
+import { NotificationComponent } from '../../../shared/layout/notification/notification.component';
 
 import { PremioService } from '../../../core/services/premio.service';
 

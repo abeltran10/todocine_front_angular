@@ -7,11 +7,8 @@ import { FormsModule } from '@angular/forms';
 import { MovieService } from '../../core/services/movie.service';
 import { Movie } from '../../core/models/movie.model';
 import { Paginator } from '../../core/models/paginator.model';
-import { User } from '../../core/models/user.model';
+import { NotificationService } from '../../core/services/notification.service';
 
-import { NavigationBarComponent } from '../../shared/layout/navigation-bar/navigation-bar.component';
-import { NotificationComponent } from '../../shared/common/notification/notification.component';
-import { HeaderComponent } from '../../shared/layout/header/header.component';
 import { CarteleraCardComponent } from './card/cartelera-card.component';
 import { PaginatorComponent } from '../../shared/common/paginator/paginator.component';
 
@@ -24,9 +21,6 @@ import { Cines } from '../../core/enum/cines';
   imports: [
     CommonModule,
     FormsModule,
-    NavigationBarComponent,
-    NotificationComponent,
-    HeaderComponent,
     CarteleraCardComponent,
     PaginatorComponent
   ],
@@ -36,8 +30,6 @@ export class CarteleraComponent implements OnInit {
 
   title = '';
   region!: string;
-
-  usuario!: User;
 
   emptyPaginator: Paginator<Movie> = {
       results: [], page: 1, total_pages: 1, total_results: 0
@@ -53,18 +45,11 @@ export class CarteleraComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private movieService: MovieService
+    private movieService: MovieService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
-    // usuario logueado
-    const loggedUser = localStorage.getItem('loggedUser');
-    if (loggedUser) {
-      this.usuario = JSON.parse(loggedUser);
-    }
-
-   
-
     this.route.paramMap.subscribe(params => {
         this.region = String(params.get('region'));
         const regionData: Region = Regions.getRegion(this.region as RegionKey);
@@ -80,7 +65,7 @@ export class CarteleraComponent implements OnInit {
      this.movieService.getMoviesPlayingNowByRegion(region, page).subscribe({
         next: (paginator) => this.moviesSubject.next(paginator),
         error: (error) => {
-              this.setErrorMessage(error?.error?.message ?? 'Error cargando cartelera');
+              this.notificationService.showError(error?.error?.message ?? 'Error cargando cartelera');
               this.moviesSubject.next(this.emptyPaginator);
       
         }
@@ -100,13 +85,6 @@ export class CarteleraComponent implements OnInit {
       alert('Por favor, selecciona un cine primero');
     }
   }
-
-  setErrorMessage(message: string) {
-      this.messageErrorSubject.next(message);
-  
-      // Usamos un timer de RxJS que es más compatible con Angular
-      timer(5000).subscribe(() => this.messageErrorSubject.next(''));
-    } 
 
 }
 

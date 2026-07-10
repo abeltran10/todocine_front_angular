@@ -5,7 +5,7 @@ import { BehaviorSubject, timer } from 'rxjs';
 import { UserService } from '../../core/services/user.service';
 
 import { HeaderComponent } from '../../shared/layout/header/header.component';
-import { NotificationComponent } from '../../shared/common/notification/notification.component';
+import { NotificationComponent } from '../../shared/layout/notification/notification.component';
 import { CreateAccountFormComponent } from './form/create-account-form.component';
 
 @Component({
