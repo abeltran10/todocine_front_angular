@@ -24,9 +24,22 @@ export class AuthService {
     this.userSubject.next(user);
   }
 
+  setToken(token: string) {
+    localStorage.setItem(
+        'loggedUserToken',
+         token 
+    );
+  }
+
+  get token(): string | null {
+    return localStorage.getItem('loggedUserToken');
+  }
+
   // Método para cerrar sesión
   logout(): void {
+    localStorage.removeItem('loggedUserToken');
     localStorage.removeItem('loggedUser');
+
     this.userSubject.next(null);
   }
 

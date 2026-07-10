@@ -5,8 +5,7 @@ import { BehaviorSubject, timer } from 'rxjs';
 import { UserService } from '../../core/services/user.service';
 
 import { CreateAccountFormComponent } from './form/create-account-form.component';
-import { HeaderService } from '../../core/services/header.service';
-import { NotificationService } from '../../core/services/notification.service';
+
 
 @Component({
   selector: 'app-create-account',
@@ -19,19 +18,37 @@ import { NotificationService } from '../../core/services/notification.service';
 })
 export class CreateAccountComponent {
 
-  constructor(private userService: UserService,
-              private headerService: HeaderService,
-              private notificationService: NotificationService
-  ) {
-    this.headerService.setTitle('CREAR CUENTA');
+  title: string = 'TODO CINE'
+
+  messageErrorSubject = new BehaviorSubject<string>('');
+  errorMessage$ = this.messageErrorSubject.asObservable();
+
+  messageSuccessSubject = new BehaviorSubject<string>('');
+  successMessage$ = this.messageSuccessSubject.asObservable();
+
+  constructor(private userService: UserService) {
   }
 
   createUser(username: string, password: string) {
     this.userService.createUser({ username, password }).subscribe({
-      next: () => this.notificationService.showSuccess('Cuenta creada con éxito'),
-      error: (error) => this.notificationService.showError(error?.error?.message ?? 'Error al crear la cuenta')
+      next: () => this.setSuccessMessage('Cuenta creada con éxito'),
+      error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error al crear la cuenta')
       
     });
   }
+
+  setSuccessMessage(message: string) {
+      this.messageSuccessSubject.next(message);
+  
+      // Usamos un timer de RxJS que es más compatible con Angular
+      timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
+    }
+
+  setErrorMessage(message: string) {
+      this.messageErrorSubject.next(message);
+  
+      // Usamos un timer de RxJS que es más compatible con Angular
+      timer(5000).subscribe(() => this.messageErrorSubject.next(''));
+    }
 
 }

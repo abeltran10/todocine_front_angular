@@ -31,8 +31,6 @@ import { HeaderService } from '../../core/services/header.service';
 })
 export class HomeComponent implements OnInit {
 
-  title = 'TODO CINE';
-
   emptyPaginator: Paginator<Movie> = {
       results: [], page: 1, total_pages: 1, total_results: 0
   }

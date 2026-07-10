@@ -15,6 +15,8 @@ import { User } from '../../../core/models/user.model';
 import { Paginator } from '../../../core/models/paginator.model';
 import { Ganador } from '../../../core/models/ganador.model';
 import { PremioService } from '../../../core/services/premio.service';
+import { HeaderService } from '../../../core/services/header.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-premio',
@@ -31,11 +33,6 @@ import { PremioService } from '../../../core/services/premio.service';
 })
 export class PremioComponent implements OnInit {
 
-  usuario!: User;
-
-  messageErrorSubject = new BehaviorSubject<string>('');
-  errorMessage$ = this.messageErrorSubject.asObservable();
-
   premioCod!: number;
   premioAnyo!: number;
 
@@ -51,15 +48,12 @@ export class PremioComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private ganadorService: GanadorService,
-    private premioService: PremioService
+    private premioService: PremioService,
+    private headerService: HeaderService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
-    // usuario logueado
-    const loggedUser = localStorage.getItem('loggedUser');
-    if (loggedUser) {
-      this.usuario = JSON.parse(loggedUser);
-    }
 
     // params
     this.route.paramMap.subscribe(params => {
@@ -72,11 +66,11 @@ export class PremioComponent implements OnInit {
         this.premioService.getPremioById(this.premioCod).subscribe({
            next: (premio) => {
                 if (premio) {
-                  this.title = `${premio.titulo.toUpperCase()} ${this.premioAnyo}`;
+                  this.headerService.setTitle(`${premio.titulo.toUpperCase()} ${this.premioAnyo}`);
                 }
             },
             error: (error) => {
-              this.setErrorMessage(error?.error?.message ?? 'Error cargando el premio');
+              this.notificationService.showError(error?.error?.message ?? 'Error cargando el premio');
             }
         })
      
@@ -93,16 +87,9 @@ export class PremioComponent implements OnInit {
       ).subscribe({
           next: (paginator) => this.ganadoresSubject.next(paginator),
           error: (error) => {
-            this.setErrorMessage(error?.error?.message ?? 'Error cargando los premios');
+            this.notificationService.showError(error?.error?.message ?? 'Error cargando los premios');
             this.ganadoresSubject.next(this.emptyPaginator);
           }
       });
-  }
-
-  setErrorMessage(message: string) {
-      this.messageErrorSubject.next(message);
-  
-      // Usamos un timer de RxJS que es más compatible con Angular
-      timer(5000).subscribe(() => this.messageErrorSubject.next(''));
   }
 }

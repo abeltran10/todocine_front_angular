@@ -9,6 +9,9 @@ import { NavigationBarComponent } from '../../shared/layout/navigation-bar/navig
 import { NotificationComponent } from '../../shared/layout/notification/notification.component';
 import { HeaderComponent } from '../../shared/layout/header/header.component';
 import { ProfileFormComponent } from './form/profile-form.component';
+import { AuthService } from '../../core/services/auth.service';
+import { HeaderService } from '../../core/services/header.service';
+import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,29 +26,26 @@ import { ProfileFormComponent } from './form/profile-form.component';
   templateUrl: './profile.component.html'
 })
 export class ProfileComponent implements OnInit {
+  usuario!: User | null;
 
-  title = 'PERFIL';
 
-  usuario!: User;
-
-   messageSuccessSubject = new BehaviorSubject<string>('');
-    messageErrorSubject = new BehaviorSubject<string>('');
-    successMessage$ = this.messageSuccessSubject.asObservable();
-    errorMessage$ = this.messageErrorSubject.asObservable();
-
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService,
+              private authService: AuthService,
+              private headerService: HeaderService,
+              private notificationService: NotificationService   
+  ) {}
 
   ngOnInit(): void {
-    const storedUser = localStorage.getItem('loggedUser');
-    if (storedUser) {
-      this.usuario = JSON.parse(storedUser);
-    }
+    this.usuario = this.authService.currentUser;
+
+    this.headerService.setTitle('PERFIL');
   }
 
   updateUser(username: string, password: string, passConfirm: string) {
+    if (!this.usuario) return;
 
     if (password !== passConfirm) {
-      this.setErrorMessage('Las password no coinciden');
+      this.notificationService.showError('Las password no coinciden');
       return;
     }
     
@@ -57,26 +57,13 @@ export class ProfileComponent implements OnInit {
 
     this.userService.updateUser(updatedUser).subscribe({
       next: (user) => {
-          localStorage.setItem('loggedUser', JSON.stringify(user));
+          this.authService.setUser(user);
           this.usuario = user;
 
-          this.setSuccessMessage('Usuario actualizado con éxito');
+          this.notificationService.showSuccess('Usuario actualizado con éxito');
       },
-      error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error actualizando usuario')
+      error: (error) => this.notificationService.showError(error?.error?.message ?? 'Error actualizando usuario')
     });
   }    
 
-  setErrorMessage(message: string) {
-        this.messageErrorSubject.next(message);
-    
-        // Usamos un timer de RxJS que es más compatible con Angular
-        timer(5000).subscribe(() => this.messageErrorSubject.next(''));
-  }
-    
-  setSuccessMessage(message: string) {
-        this.messageSuccessSubject.next(message);
-    
-        // Usamos un timer de RxJS que es más compatible con Angular
-        timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
-  } 
 }
