@@ -40,14 +40,14 @@ Contains the functional modules of the app (e.g., Home, User Profile, Favoritos)
 
 Reusable resources used across multiple features.
 
-- /common: Generic components like Notification, Paginator.
+- /common: Generic components Paginator.
 
-- /layout: Global structure components like Navbar.
+- /layout: Global structure components like AppLayout, Navbar, Notification.
 
 
 ## Last release
 
-- [v3.0.3](https://github.com/abeltran10/todocine_front_angular/releases/tag/v3.0.3)
+- [v3.1.0](https://github.com/abeltran10/todocine_front_angular/releases/tag/v3.1.0)
 
 ## Commands
 
