@@ -19,7 +19,8 @@ import { AuthService } from '../../../core/services/auth.service';
     RouterModule
 
   ],
-  templateUrl: './navigation-bar.component.html'
+  templateUrl: './navigation-bar.component.html',
+  styleUrl: '/navigation-bar.component.css'
 })
 export class NavigationBarComponent implements OnInit {
 

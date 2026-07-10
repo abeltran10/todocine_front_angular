@@ -74,6 +74,9 @@ export class HomeComponent implements OnInit {
   search(text: string, pagina: number = 1) {
     this.isLoading = true;
 
+    // Al iniciar la búsqueda/cambio de página, subimos el scroll
+    window.scrollTo(0,0);
+
     this.movieService.getByName(text, pagina).subscribe({
         next: (paginator) => {
           this.isLoading = false;

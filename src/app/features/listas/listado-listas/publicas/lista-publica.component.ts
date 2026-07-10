@@ -36,6 +36,9 @@ export class PublicListasComponent implements OnInit {
   }
 
   loadListas(pagina: number = 1): void {
+    // Al iniciar la búsqueda/cambio de página, subimos el scroll
+    window.scrollTo(0,0);
+
     this.listaService.getListasPublicas(pagina).subscribe({
       next: (paginator) => this.listasSubject.next(paginator),
       error: (error) => {

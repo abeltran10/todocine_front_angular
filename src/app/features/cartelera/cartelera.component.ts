@@ -63,6 +63,9 @@ export class CarteleraComponent implements OnInit {
   }
 
   loadCartelera(region: string, page: number) {
+      // Al iniciar la búsqueda/cambio de página, subimos el scroll
+      window.scrollTo(0,0);
+
      this.movieService.getMoviesPlayingNowByRegion(region, page).subscribe({
         next: (paginator) => this.moviesSubject.next(paginator),
         error: (error) => {
