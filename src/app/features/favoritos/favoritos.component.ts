@@ -61,6 +61,9 @@ export class FavoritosComponent implements OnInit {
   loadUserFavs(page: number = 1) {
     if (!this.usuario) return;
 
+    // Al iniciar la búsqueda/cambio de página, subimos el scroll
+    window.scrollTo(0,0);
+
     this.usuarioMovieService.getUserMovies(
                this.usuario.id,
                this.vistaFiltro,

@@ -73,6 +73,9 @@ export class PremioComponent implements OnInit {
   }
 
   loadPremio(page: number) {
+    // Al iniciar la búsqueda/cambio de página, subimos el scroll
+    window.scrollTo(0,0);
+
     this.ganadorService.getGanadoresByPremioIdAnyo(
         this.premioCod,
         this.premioAnyo,

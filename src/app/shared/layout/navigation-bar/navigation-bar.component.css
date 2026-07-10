@@ -1,0 +1,9 @@
+/* navigation-bar.component.css */
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* Asegura que esté por encima de todo lo demás */
+  background-color: white; /* Importante: si es transparente, el contenido pasará por debajo */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Opcional: un toque de sombra para separar del contenido */
+}

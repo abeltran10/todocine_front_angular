@@ -49,6 +49,9 @@ export class UserListasComponent implements OnInit {
   loadListas(pagina: number = 1): void {
     if (!this.usuario) return;
 
+    // Al iniciar la búsqueda/cambio de página, subimos el scroll
+    window.scrollTo(0,0);
+
      this.usuarioListaService.getListasUser(this.usuario.id, pagina).subscribe({
         next: (paginator) => this.listasSubject.next(paginator),
         error: (error) => {
