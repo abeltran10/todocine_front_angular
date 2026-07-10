@@ -1,22 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject, Observable, catchError, of, timer } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
 import { MovieService } from '../../core/services/movie.service';
 import { Movie } from '../../core/models/movie.model';
 import { Paginator } from '../../core/models/paginator.model';
-import { User } from '../../core/models/user.model';
+import { NotificationService } from '../../core/services/notification.service';
 
-import { NavigationBarComponent } from '../../shared/layout/navigation-bar/navigation-bar.component';
-import { NotificationComponent } from '../../shared/common/notification/notification.component';
-import { HeaderComponent } from '../../shared/layout/header/header.component';
 import { CarteleraCardComponent } from './card/cartelera-card.component';
 import { PaginatorComponent } from '../../shared/common/paginator/paginator.component';
 
 import { Regions, RegionKey, Region } from '../../core/enum/regions';
 import { Cines } from '../../core/enum/cines';
+import { HeaderComponent } from '../../shared/layout/header/header.component';
+
 
 @Component({
   selector: 'app-cartelera',
@@ -24,11 +23,9 @@ import { Cines } from '../../core/enum/cines';
   imports: [
     CommonModule,
     FormsModule,
-    NavigationBarComponent,
-    NotificationComponent,
-    HeaderComponent,
     CarteleraCardComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    HeaderComponent
   ],
   templateUrl: './cartelera.component.html'
 })
@@ -37,8 +34,6 @@ export class CarteleraComponent implements OnInit {
   title = '';
   region!: string;
 
-  usuario!: User;
-
   emptyPaginator: Paginator<Movie> = {
       results: [], page: 1, total_pages: 1, total_results: 0
   }
@@ -46,30 +41,21 @@ export class CarteleraComponent implements OnInit {
   moviesSubject = new BehaviorSubject<Paginator<Movie> | null>(null);
   movies$ = this.moviesSubject.asObservable();
 
-  messageErrorSubject = new BehaviorSubject<string>('');
-  errorMessage$ = this.messageErrorSubject.asObservable();
-
   selectedCineUrl: string = '';
 
   constructor(
     private route: ActivatedRoute,
-    private movieService: MovieService
+    private movieService: MovieService,
+    private notificationService: NotificationService,
+
   ) {}
 
   ngOnInit(): void {
-    // usuario logueado
-    const loggedUser = localStorage.getItem('loggedUser');
-    if (loggedUser) {
-      this.usuario = JSON.parse(loggedUser);
-    }
-
-   
-
     this.route.paramMap.subscribe(params => {
         this.region = String(params.get('region'));
         const regionData: Region = Regions.getRegion(this.region as RegionKey);
 
-        this.title = `CARTELERA ${regionData.name.toUpperCase()}`;
+       this.title = `CARTELERA ${regionData.name.toUpperCase()}`;
 
         this.loadCartelera(regionData.code, 1);
     });  
@@ -80,7 +66,7 @@ export class CarteleraComponent implements OnInit {
      this.movieService.getMoviesPlayingNowByRegion(region, page).subscribe({
         next: (paginator) => this.moviesSubject.next(paginator),
         error: (error) => {
-              this.setErrorMessage(error?.error?.message ?? 'Error cargando cartelera');
+              this.notificationService.showError(error?.error?.message ?? 'Error cargando cartelera');
               this.moviesSubject.next(this.emptyPaginator);
       
         }
@@ -100,13 +86,6 @@ export class CarteleraComponent implements OnInit {
       alert('Por favor, selecciona un cine primero');
     }
   }
-
-  setErrorMessage(message: string) {
-      this.messageErrorSubject.next(message);
-  
-      // Usamos un timer de RxJS que es más compatible con Angular
-      timer(5000).subscribe(() => this.messageErrorSubject.next(''));
-    } 
 
 }
 

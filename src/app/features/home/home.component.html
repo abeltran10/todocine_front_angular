@@ -1,14 +1,5 @@
-<app-navigation-bar
-  [user]="usuario"
-  (error)="setErrorMessage($event)">
-</app-navigation-bar>
-
-<app-notification
-  [successMessage]="(successMessage$ | async) ?? ''"
-  [errorMessage]="(errorMessage$ | async) ?? ''">
-</app-notification>
-
 <app-header [title]="title"></app-header>
+
 
 <app-search-form (search)="search($event.text, $event.page)">
 </app-search-form>

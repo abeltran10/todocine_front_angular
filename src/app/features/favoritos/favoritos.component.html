@@ -1,18 +1,7 @@
-<app-navigation-bar
-  [user]="usuario"
-  (error)="setErrorMessage($event)">
-</app-navigation-bar>
-
-<app-notification
-  [successMessage]="(successMessage$ | async) ?? ''"
-  [errorMessage]="(errorMessage$ | async) ?? ''">
-</app-notification>
-
 <app-header [title]="title"></app-header>
 
-
 <app-favoritos-filtros
-    [usuarioId]="usuario.id"
+    [usuarioId]="usuario?.id"
     [vistaFiltro]="vistaFiltro"
     [votadaFiltro]="votadaFiltro"
     [order]="order"

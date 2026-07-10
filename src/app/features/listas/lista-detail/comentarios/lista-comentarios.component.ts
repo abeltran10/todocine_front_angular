@@ -17,7 +17,7 @@ import { BehaviorSubject, catchError, Observable, of, tap, switchMap, shareRepla
 })
 export class ListaComentariosComponent implements OnInit {
   @Input() listaId: number | null | undefined = null;
-  @Input() usuario!: User;
+  @Input() usuario!: User | null;
 
   @Output() errorMessage = new EventEmitter<string>();
 
@@ -75,10 +75,12 @@ export class ListaComentariosComponent implements OnInit {
 
   guardarValoracion(): void {
     if (!this.listaId || this.nuevaPuntuacion === 0) return;
+    if (!this.usuario) return;
+
 
     const nuevaValoracion: Valoracion = {
       listaId: this.listaId,
-      username: this.usuario?.username,
+      username: this.usuario.username,
       puntuacion: this.nuevaPuntuacion,
       comentario: this.nuevoComentario,
       fecha: ''

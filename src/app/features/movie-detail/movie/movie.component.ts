@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { MovieDetail } from '../../../core/models/movieDetail.model';
-import { User } from '../../../core/models/user.model';
 
 @Component({
   selector: 'app-movie',

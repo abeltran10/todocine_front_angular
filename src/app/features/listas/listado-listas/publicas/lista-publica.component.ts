@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { CardListaComponent } from '../card/publica/lista-card-publica.component';
 import { PaginatorComponent } from '../../../../shared/common/paginator/paginator.component';
-import { User } from '../../../../core/models/user.model';
 import { Paginator } from '../../../../core/models/paginator.model';
 import { Lista } from '../../../../core/models/lista.model';
-import { BehaviorSubject, catchError, Observable, of, ReplaySubject, shareReplay, switchMap, timer } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ListaService } from '../../../../core/services/lista.service';
+
 
 
 
@@ -18,9 +18,7 @@ import { ListaService } from '../../../../core/services/lista.service';
   templateUrl: './lista-publica.component.html'
 })
 export class PublicListasComponent implements OnInit {
-  usuario!: User;
-  title: string = 'Listas Públicas';
-
+  
   emptyPaginator: Paginator<Lista> =  {results: [], page: 1, total_pages: 1, total_results: 0};
 
   listasSubject = new BehaviorSubject<Paginator<Lista>>(this.emptyPaginator);
@@ -30,14 +28,10 @@ export class PublicListasComponent implements OnInit {
  @Output() error = new EventEmitter<string>();
 
 
-  constructor(private listaService: ListaService) {}
+  constructor(private listaService: ListaService){}
 
   ngOnInit(): void {
-    const loggedUser = localStorage.getItem('loggedUser');
-    if (loggedUser) {
-      this.usuario = JSON.parse(loggedUser);
-    } 
-
+    
     this.loadListas(1); // Carga inicial página 1
   }
 

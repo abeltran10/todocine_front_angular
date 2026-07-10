@@ -4,31 +4,34 @@ import { BehaviorSubject, timer } from 'rxjs';
 
 import { UserService } from '../../core/services/user.service';
 
-import { HeaderComponent } from '../../shared/layout/header/header.component';
-import { NotificationComponent } from '../../shared/common/notification/notification.component';
 import { CreateAccountFormComponent } from './form/create-account-form.component';
+import { HeaderComponent } from '../../shared/layout/header/header.component';
+import { NotificationComponent } from '../../shared/layout/notification/notification.component';
+
 
 @Component({
   selector: 'app-create-account',
   standalone: true,
   imports: [
     CommonModule,
+    CreateAccountFormComponent,
     HeaderComponent,
-    NotificationComponent,
-    CreateAccountFormComponent
+    NotificationComponent
   ],
   templateUrl: './create-account.component.html'
 })
 export class CreateAccountComponent {
 
-  title = 'CREAR CUENTA';
+  title: string = 'TODO CINE'
 
-  messageSuccessSubject = new BehaviorSubject<string>('');
   messageErrorSubject = new BehaviorSubject<string>('');
   errorMessage$ = this.messageErrorSubject.asObservable();
+
+  messageSuccessSubject = new BehaviorSubject<string>('');
   successMessage$ = this.messageSuccessSubject.asObservable();
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) {
+  }
 
   createUser(username: string, password: string) {
     this.userService.createUser({ username, password }).subscribe({
@@ -38,17 +41,18 @@ export class CreateAccountComponent {
     });
   }
 
-  setErrorMessage(message: string) {
-    this.messageErrorSubject.next(message);
-
-    // Usamos un timer de RxJS que es más compatible con Angular
-    timer(5000).subscribe(() => this.messageErrorSubject.next(''));
-  }
-
   setSuccessMessage(message: string) {
-    this.messageSuccessSubject.next(message);
+      this.messageSuccessSubject.next(message);
+  
+      // Usamos un timer de RxJS que es más compatible con Angular
+      timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
+    }
 
-    // Usamos un timer de RxJS que es más compatible con Angular
-    timer(5000).subscribe(() => this.messageSuccessSubject.next(''));
-  }
+  setErrorMessage(message: string) {
+      this.messageErrorSubject.next(message);
+  
+      // Usamos un timer de RxJS que es más compatible con Angular
+      timer(5000).subscribe(() => this.messageErrorSubject.next(''));
+    }
+
 }

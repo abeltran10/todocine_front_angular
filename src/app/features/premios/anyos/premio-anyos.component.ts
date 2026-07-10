@@ -6,14 +6,13 @@ import { Observable, catchError, of, BehaviorSubject, timer, filter, map, switch
 
 import { User } from '../../../core/models/user.model';
 
-import { NavigationBarComponent } from '../../../shared/layout/navigation-bar/navigation-bar.component';
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { AnyosComponent } from './card/anyos.component';
-import { NotificationComponent } from '../../../shared/common/notification/notification.component';
 
 import { PremioService } from '../../../core/services/premio.service';
 
 import { Premio } from '../../../core/models/premio.model';
+import { NotificationService } from '../../../core/services/notification.service';
 
 
 @Component({
@@ -21,52 +20,37 @@ import { Premio } from '../../../core/models/premio.model';
   standalone: true,
   imports: [
     CommonModule,
-    NavigationBarComponent,
     HeaderComponent,
-    NotificationComponent,
-    AnyosComponent
+    AnyosComponent,
+    HeaderComponent
   ],
   templateUrl: './premio-anyos.component.html'
 })
 export class PremioAnyosComponent implements OnInit {
-
-  usuario!: User;
-
   awardSubject = new BehaviorSubject<Premio | null>(null);
   award$ = this.awardSubject.asObservable();
 
-  messageErrorSubject = new BehaviorSubject<string>('');
-  errorMessage$ = this.messageErrorSubject.asObservable();
-
   constructor(private route: ActivatedRoute,
-              private premioService: PremioService
+              private premioService: PremioService,
+              private notificationService: NotificationService
   ) {}
 
  ngOnInit() {
-    // Usuario logueado
-    const loggedUser = localStorage.getItem('loggedUser');
-    if (loggedUser) {
-      this.usuario = JSON.parse(loggedUser);
-    }
-
+   
    this.route.paramMap.subscribe(params => {
       const id = Number(params.get('premioId'));
       if (!id) return;
       this.premioService.getPremioById(id).subscribe({
-        next: (premio) => this.awardSubject.next(premio),
+        next: (premio) => {
+           this.awardSubject.next(premio);
+        },
         error: (error) => {
-          this.setErrorMessage(error?.error?.message ?? 'Error al cargar el premio');
+          this.notificationService.showError(error?.error?.message ?? 'Error al cargar el premio');
         }
       });
 
     });
   }
 
-  setErrorMessage(message: string) {
-    this.messageErrorSubject.next(message);
-  
-    // Usamos un timer de RxJS que es más compatible con Angular
-    timer(5000).subscribe(() => this.messageErrorSubject.next(''));
-  }
 }
 
