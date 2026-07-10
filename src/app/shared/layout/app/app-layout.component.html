@@ -8,9 +8,7 @@
       [errorMessage]="(notificationService.errorMessage$ | async) ?? ''">
  </app-notification>
 
- <!-- El Header puede ser dinámico si quieres, pero aquí lo dejamos simple -->
- <app-header [title]="(headerService.title$ | async) ?? ''"></app-header>
-
+ 
 <main class="container mt-4">
     <router-outlet></router-outlet>
 </main>

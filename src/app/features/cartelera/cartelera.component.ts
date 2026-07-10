@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject, Observable, catchError, of, timer } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
 import { MovieService } from '../../core/services/movie.service';
@@ -14,7 +14,8 @@ import { PaginatorComponent } from '../../shared/common/paginator/paginator.comp
 
 import { Regions, RegionKey, Region } from '../../core/enum/regions';
 import { Cines } from '../../core/enum/cines';
-import { HeaderService } from '../../core/services/header.service';
+import { HeaderComponent } from '../../shared/layout/header/header.component';
+
 
 @Component({
   selector: 'app-cartelera',
@@ -23,7 +24,8 @@ import { HeaderService } from '../../core/services/header.service';
     CommonModule,
     FormsModule,
     CarteleraCardComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    HeaderComponent
   ],
   templateUrl: './cartelera.component.html'
 })
@@ -45,7 +47,7 @@ export class CarteleraComponent implements OnInit {
     private route: ActivatedRoute,
     private movieService: MovieService,
     private notificationService: NotificationService,
-    private headerService: HeaderService
+
   ) {}
 
   ngOnInit(): void {
@@ -53,7 +55,7 @@ export class CarteleraComponent implements OnInit {
         this.region = String(params.get('region'));
         const regionData: Region = Regions.getRegion(this.region as RegionKey);
 
-        this.headerService.setTitle(`CARTELERA ${regionData.name.toUpperCase()}`);
+       this.title = `CARTELERA ${regionData.name.toUpperCase()}`;
 
         this.loadCartelera(regionData.code, 1);
     });  

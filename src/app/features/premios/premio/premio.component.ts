@@ -11,7 +11,6 @@ import { HeaderComponent } from '../../../shared/layout/header/header.component'
 import { PaginatorComponent } from '../../../shared/common/paginator/paginator.component';
 import { GanadorComponent } from './card/ganador.component';
 
-import { User } from '../../../core/models/user.model';
 import { Paginator } from '../../../core/models/paginator.model';
 import { Ganador } from '../../../core/models/ganador.model';
 import { PremioService } from '../../../core/services/premio.service';
@@ -66,7 +65,7 @@ export class PremioComponent implements OnInit {
         this.premioService.getPremioById(this.premioCod).subscribe({
            next: (premio) => {
                 if (premio) {
-                  this.headerService.setTitle(`${premio.titulo.toUpperCase()} ${this.premioAnyo}`);
+                  this.title =`${premio.titulo.toUpperCase()} ${this.premioAnyo}`;
                 }
             },
             error: (error) => {

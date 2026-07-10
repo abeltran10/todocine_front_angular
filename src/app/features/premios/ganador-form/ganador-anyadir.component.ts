@@ -4,11 +4,6 @@ import { NotificationComponent } from '../../../shared/layout/notification/notif
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { CommonModule } from '@angular/common';
 
-import { BehaviorSubject, timer } from 'rxjs';
-
-
-import { User } from '../../../core/models/user.model';
-
 import { GanadorService } from '../../../core/services/ganador.service';
 
 import { GanadorFormComponent } from './form/ganador-form.component';
@@ -29,17 +24,12 @@ import { NotificationService } from '../../../core/services/notification.service
   templateUrl: './ganador-anyadir.component.html',
 })
 
-export class GanadorAnyadirComponent implements OnInit{
-
+export class GanadorAnyadirComponent {
+  title = 'AÑADIR GANADOR';
 
   constructor(private ganadorService: GanadorService,
-              private headerService: HeaderService,
               private notificationService: NotificationService
   ) {}
-
-  ngOnInit(): void {
-      this.headerService.setTitle('AÑADIR GANADOR')
-  }
   
   async onSubmit(ganador: {
         premioId: number | null;

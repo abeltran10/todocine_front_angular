@@ -1,3 +1,5 @@
+<app-header [title]="title"></app-header>
+
 <app-profile-form
   [usuario]="usuario"
   (updateUser)="updateUser($event.username, $event.password, $event.passConfirm)">

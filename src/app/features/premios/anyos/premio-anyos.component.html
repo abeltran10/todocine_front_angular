@@ -1,4 +1,6 @@
 @if (award$ | async; as award) {
+  <app-header [title]="award.titulo | upperCase"></app-header> 
+
   <div class="container-md">
     <div class="row row-cols-1 row-cols-md-3 g-4">
       @for (anyo of award.anyos; track anyo) {

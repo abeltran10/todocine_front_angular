@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable, catchError, of, ReplaySubject, switchMap, shareReplay, BehaviorSubject, timer } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import { UsuarioMovieService } from '../../core/services/usuarioMovie.service';
 
@@ -15,7 +15,8 @@ import { MovieDetail } from '../../core/models/movieDetail.model';
 
 import { AuthService } from '../../core/services/auth.service';
 import { NotificationService } from '../../core/services/notification.service';
-import { HeaderService } from '../../core/services/header.service';
+import { HeaderComponent } from '../../shared/layout/header/header.component';
+
 
 
 @Component({
@@ -25,7 +26,8 @@ import { HeaderService } from '../../core/services/header.service';
     CommonModule,
     FavoritosFiltrosComponent,
     FavoritosCardComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    HeaderComponent
   ],
   templateUrl: './favoritos.component.html'
 })
@@ -41,16 +43,15 @@ export class FavoritosComponent implements OnInit {
   votadaFiltro = '';
   order = '';
 
+  title: string = 'FAVORITOS';
+
   constructor(
     private usuarioMovieService: UsuarioMovieService,
     private authService: AuthService,
-    private notificationService: NotificationService,
-    private headerService: HeaderService
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
-     this.headerService.setTitle('FAVORITOS');
-
      this.usuario = this.authService.currentUser;
 
      this.loadUserFavs(1);

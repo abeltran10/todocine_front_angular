@@ -43,7 +43,7 @@ export class AuthService {
     this.userSubject.next(null);
   }
 
-  // Getter útil por si necesitas el valor actual de forma síncrona
+  // Getter valor actual de forma síncrona
   get currentUser(): User | null {
     return this.userSubject.value;
   }

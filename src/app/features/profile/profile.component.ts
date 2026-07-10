@@ -10,7 +10,6 @@ import { NotificationComponent } from '../../shared/layout/notification/notifica
 import { HeaderComponent } from '../../shared/layout/header/header.component';
 import { ProfileFormComponent } from './form/profile-form.component';
 import { AuthService } from '../../core/services/auth.service';
-import { HeaderService } from '../../core/services/header.service';
 import { NotificationService } from '../../core/services/notification.service';
 
 @Component({
@@ -27,18 +26,15 @@ import { NotificationService } from '../../core/services/notification.service';
 })
 export class ProfileComponent implements OnInit {
   usuario!: User | null;
-
+  title = 'PERFIL';
 
   constructor(private userService: UserService,
               private authService: AuthService,
-              private headerService: HeaderService,
               private notificationService: NotificationService   
   ) {}
 
   ngOnInit(): void {
     this.usuario = this.authService.currentUser;
-
-    this.headerService.setTitle('PERFIL');
   }
 
   updateUser(username: string, password: string, passConfirm: string) {

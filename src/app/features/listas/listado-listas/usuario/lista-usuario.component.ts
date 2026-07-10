@@ -14,7 +14,6 @@ import { FormsModule } from '@angular/forms';
 import { ListaService } from '../../../../core/services/lista.service';
 import { UsuarioListaService } from '../../../../core/services/usuarioLista.service';
 import { AuthService } from '../../../../core/services/auth.service';
-import { HeaderService } from '../../../../core/services/header.service';
 
 @Component({
   selector: 'app-lista-usuario',
@@ -38,13 +37,10 @@ export class UserListasComponent implements OnInit {
 
   constructor(private listaService: ListaService,
               private usuarioListaService: UsuarioListaService,
-              private authService: AuthService,
-              private headerService: HeaderService    
+              private authService: AuthService    
   ) {}
 
   ngOnInit(): void {
-   this.headerService.setTitle('MIS LISTAS DE PELÍCULAS'); 
-
    this.usuario = this.authService.currentUser;
 
    this.loadListas(1); // Carga inicial página 1

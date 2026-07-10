@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PublicListasComponent } from './publicas/lista-publica.component';
 import { UserListasComponent } from './usuario/lista-usuario.component';
-import { HeaderService } from '../../../core/services/header.service';
-import { NotificationService } from '../../../core/services/notification.service';
+import { HeaderComponent } from '../../../shared/layout/header/header.component';
+
 
 @Component({
   selector: 'app-lista',
@@ -13,23 +13,18 @@ import { NotificationService } from '../../../core/services/notification.service
     CommonModule, 
     FormsModule, 
     PublicListasComponent,
-    UserListasComponent
+    UserListasComponent,
+    HeaderComponent
   ],
   templateUrl: './lista.component.html'
 })
-export class ListaComponent implements OnInit {
+export class ListaComponent {
  
   publica: boolean = true;
   title: string = 'LISTAS PÚBLICAS';
 
-  constructor(private headerService: HeaderService,
-              private notificationService: NotificationService
-  ) {}
+  constructor() {}
 
-  ngOnInit(): void {
-    this.headerService.setTitle(this.title);
-  
-  }
 
   setPublica() {
    this.publica = !this.publica;
@@ -37,7 +32,7 @@ export class ListaComponent implements OnInit {
   }
 
   private updateTitle() {
-    this.headerService.setTitle(this.publica ? 'LISTAS PÚBLICAS' : 'MIS LISTAS');
+    this.title = this.publica ? 'LISTAS PÚBLICAS' : 'MIS LISTAS';
   }
 
 }

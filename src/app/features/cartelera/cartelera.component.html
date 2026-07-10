@@ -1,3 +1,5 @@
+<app-header [title]="title"></app-header>
+
 @if (movies$ | async; as paginator) {
   @if (paginator) {
     <div class="container-md">

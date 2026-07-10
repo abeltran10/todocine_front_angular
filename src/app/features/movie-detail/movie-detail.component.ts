@@ -13,7 +13,6 @@ import { UsuarioMovie } from '../../core/models/usuarioMovie.model';
 import { NotificationService } from '../../core/services/notification.service';
 import { AuthService } from '../../core/services/auth.service';
 import { User } from '../../core/models/user.model';
-import { HeaderService } from '../../core/services/header.service';
 
 @Component({
   selector: 'app-movie-detail',
@@ -35,13 +34,10 @@ export class MovieDetailComponent implements OnInit {
     private movieService: MovieService,
     private usuarioMovieService: UsuarioMovieService,
     private notificationService: NotificationService,
-    private authService: AuthService,
-    private headerService: HeaderService
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.headerService.setTitle('');
-
     this.usuario = this.authService.currentUser;
 
     const movieId = Number(this.route.snapshot.paramMap.get('movieId'));

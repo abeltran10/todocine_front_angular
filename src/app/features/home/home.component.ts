@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Observable, catchError, of, BehaviorSubject, timer } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
@@ -11,12 +10,13 @@ import { NotificationService } from '../../core/services/notification.service';
 
 import { Movie } from '../../core/models/movie.model';
 import { Paginator } from '../../core/models/paginator.model';
-import { User } from '../../core/models/user.model';
+
 
 import { SearchFormComponent } from './search/search-form.component';
 import { PaginatorComponent } from '../../shared/common/paginator/paginator.component';
 import { MovieCardComponent } from './movie-card/movie-card.component';
-import { HeaderService } from '../../core/services/header.service';
+import { HeaderComponent } from '../../shared/layout/header/header.component';
+
 
 @Component({
   selector: 'app-home',
@@ -25,7 +25,8 @@ import { HeaderService } from '../../core/services/header.service';
     CommonModule,
     SearchFormComponent,
     PaginatorComponent,
-    MovieCardComponent
+    MovieCardComponent,
+    HeaderComponent
   ],
   templateUrl: './home.component.html'
 })
@@ -42,11 +43,12 @@ export class HomeComponent implements OnInit {
 
   isLoading = false;
 
+  title = 'TODO CINE';
+
   constructor(
     private movieService: MovieService,
     private activatedRoute: ActivatedRoute,
-    private notificationService: NotificationService,
-    private headerService: HeaderService
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
@@ -67,7 +69,6 @@ export class HomeComponent implements OnInit {
       }
     });
 
-    this.headerService.setTitle('TODO CINE');
   }
 
   search(text: string, pagina: number = 1) {

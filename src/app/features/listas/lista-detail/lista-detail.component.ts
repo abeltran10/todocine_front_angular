@@ -15,7 +15,8 @@ import { ListaComentariosComponent } from './comentarios/lista-comentarios.compo
 
 import { AuthService } from '../../../core/services/auth.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { HeaderService } from '../../../core/services/header.service';
+import { HeaderComponent } from '../../../shared/layout/header/header.component';
+
 
 @Component({
   selector: 'app-lista-detail',
@@ -24,13 +25,13 @@ import { HeaderService } from '../../../core/services/header.service';
     RouterModule, 
     FormsModule, 
     ListaTableComponent,
-    ListaComentariosComponent
+    ListaComentariosComponent,
+    HeaderComponent
   ],
   templateUrl: './lista-detail.component.html',
 })
 export class ListaDetailComponent implements OnInit {
   usuario!: User | null;
-  
 
   emptyPaginator: Paginator<Movie> = {
       results: [], page: 1, total_pages: 1, total_results: 0
@@ -57,8 +58,7 @@ export class ListaDetailComponent implements OnInit {
   private listaService: ListaService,
   private movieService: MovieService,
   private authService: AuthService,
-  private notificationService: NotificationService,
-  private headerService: HeaderService
+  private notificationService: NotificationService
 ) {}
 
   ngOnInit(): void {
@@ -71,8 +71,6 @@ export class ListaDetailComponent implements OnInit {
 
           this.loadLista();
           this.loadMoviesList(1);
-
-          this.headerService.setTitle(this.list?.nombre.toUpperCase());
 
     }); 
 

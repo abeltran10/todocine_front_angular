@@ -14,7 +14,6 @@ import { NotificationComponent } from '../../../shared/layout/notification/notif
 import { PremioService } from '../../../core/services/premio.service';
 
 import { Premio } from '../../../core/models/premio.model';
-import { HeaderService } from '../../../core/services/header.service';
 import { NotificationService } from '../../../core/services/notification.service';
 
 
@@ -26,7 +25,8 @@ import { NotificationService } from '../../../core/services/notification.service
     NavigationBarComponent,
     HeaderComponent,
     NotificationComponent,
-    AnyosComponent
+    AnyosComponent,
+    HeaderComponent
   ],
   templateUrl: './premio-anyos.component.html'
 })
@@ -36,7 +36,6 @@ export class PremioAnyosComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private premioService: PremioService,
-              private headerService: HeaderService,
               private notificationService: NotificationService
   ) {}
 
@@ -48,7 +47,6 @@ export class PremioAnyosComponent implements OnInit {
       this.premioService.getPremioById(id).subscribe({
         next: (premio) => {
            this.awardSubject.next(premio);
-           this.headerService.setTitle(premio.titulo.toUpperCase()) 
         },
         error: (error) => {
           this.notificationService.showError(error?.error?.message ?? 'Error al cargar el premio');

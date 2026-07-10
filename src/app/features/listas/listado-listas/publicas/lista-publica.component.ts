@@ -3,13 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { CardListaComponent } from '../card/publica/lista-card-publica.component';
 import { PaginatorComponent } from '../../../../shared/common/paginator/paginator.component';
-import { User } from '../../../../core/models/user.model';
 import { Paginator } from '../../../../core/models/paginator.model';
 import { Lista } from '../../../../core/models/lista.model';
-import { BehaviorSubject, catchError, Observable, of, ReplaySubject, shareReplay, switchMap, timer } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { ListaService } from '../../../../core/services/lista.service';
-import { NotificationService } from '../../../../core/services/notification.service';
-import { HeaderService } from '../../../../core/services/header.service';
+
 
 
 
@@ -30,12 +28,10 @@ export class PublicListasComponent implements OnInit {
  @Output() error = new EventEmitter<string>();
 
 
-  constructor(private listaService: ListaService,
-              private headerService: HeaderService
-  ) {}
+  constructor(private listaService: ListaService){}
 
   ngOnInit(): void {
-    this.headerService.setTitle('LISTAS PÚBLICAS');
+    
     this.loadListas(1); // Carga inicial página 1
   }
 
