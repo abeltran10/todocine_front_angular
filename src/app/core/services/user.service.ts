@@ -9,6 +9,7 @@ import {User} from '../models/user.model';
 interface Credentials {
     username: string;
     password: string;
+    captcha: string;
   
 }
 

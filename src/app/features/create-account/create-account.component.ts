@@ -8,6 +8,7 @@ import { CreateAccountFormComponent } from './form/create-account-form.component
 import { HeaderComponent } from '../../shared/layout/header/header.component';
 import { NotificationComponent } from '../../shared/layout/notification/notification.component';
 import { NotificationService } from '../../core/services/notification.service';
+import { CaptchaService } from '../../core/services/captcha.service';
 
 
 @Component({
@@ -26,12 +27,15 @@ export class CreateAccountComponent {
   title: string = 'TODO CINE'
 
   constructor(private userService: UserService,
-              private notificationService: NotificationService
+              private notificationService: NotificationService,
+              private captchaService: CaptchaService
   ) {
   }
 
-  createUser(username: string, password: string) {
-    this.userService.createUser({ username, password }).subscribe({
+  async createUser(username: string, password: string) {
+    const captcha = await this.captchaService.getToken();
+
+    this.userService.createUser({ username, password, captcha }).subscribe({
       next: () => this.notificationService.showSuccess('Cuenta creada con éxito'),
       error: (error) => this.notificationService.showError(error?.error?.message ?? 'Error al crear la cuenta')
       
