@@ -17,7 +17,7 @@ export class NotificationComponent {
   }
 
   get cssClass(): string {
-    return this.successMessage ? 'bg-success' : 'bg-warning';
+    return this.successMessage ? 'bg-success' : 'text-dark bg-warning';
   }
 
   get message(): string {

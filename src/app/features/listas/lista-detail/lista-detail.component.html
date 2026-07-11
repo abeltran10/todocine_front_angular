@@ -30,7 +30,7 @@
         [moviesList]="moviesList"
         [ordenar]="ordenar"
         (handleMoviesList)="handleMoviesList($event)"
-        (errorMessage)="notificationService.showError($event)">
+        (errorMessage)="showError($event)">
       </app-lista-table>
     } @else {
       <div class="text-center py-5">
@@ -42,7 +42,7 @@
     <app-lista-comentarios 
       [listaId]="lista.id" 
       [usuario]="usuario"
-      (errorMessage)="notificationService.showError($event)">
+      (errorMessage)="showError($event)">
     </app-lista-comentarios>
   </div>
 } @else {

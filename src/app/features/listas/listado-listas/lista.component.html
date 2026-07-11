@@ -23,13 +23,13 @@
   <div class="tab-content mt-4">
     @if (publica) {
       <app-lista-publica
-        (error)="notificationService.showError($event)"
-        (success)="notificationService.showSuccess($event)">
+        (error)="showError($event)"
+        (success)="showSuccess($event)">
       </app-lista-publica>
     } @else {
       <app-lista-usuario
-        (error)="notificationService.showError($event)"
-        (success)="notificationService.showSuccess($event)">
+        (error)="showError($event)"
+        (success)="showSuccess($event)">
       </app-lista-usuario>
     }
   </div>

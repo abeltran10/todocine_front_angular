@@ -23,10 +23,10 @@ export class GanadorAnyadirComponent {
   title = 'AÑADIR GANADOR';
 
   constructor(private ganadorService: GanadorService,
-              public notificationService: NotificationService
+              private notificationService: NotificationService
   ) {}
   
-  async onSubmit(ganador: {
+  onSubmit(ganador: {
         premioId: number | null;
         categoriaId: number | null;
         anyo: number | null;
@@ -42,6 +42,10 @@ export class GanadorAnyadirComponent {
     } else {
       alert('Por favor, rellena todos los campos');
     }
+  }
+
+  showError(msg: string) {
+    this.notificationService.showError(msg);
   }
 
 }

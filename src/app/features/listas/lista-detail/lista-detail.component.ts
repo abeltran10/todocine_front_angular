@@ -58,7 +58,7 @@ export class ListaDetailComponent implements OnInit {
   private listaService: ListaService,
   private movieService: MovieService,
   private authService: AuthService,
-  public notificationService: NotificationService
+  private notificationService: NotificationService
 ) {}
 
   ngOnInit(): void {
@@ -138,6 +138,10 @@ export class ListaDetailComponent implements OnInit {
               error: (err) => this.notificationService.showError( err?.error?.message ?? 'No se pudo editar la lista')
             });     
         }       
+    }
+
+    showError(msg: string) {
+      this.notificationService.showError(msg);
     }
 
 }
