@@ -8,7 +8,7 @@ Framework: Angular CLI 21.1.0
 
 Environment: Node.js 24.13.0
 
-Styling: Bootstrap 5 & Font Awesome 6 (Icons)
+Styling: Bootstrap 5 & Font Awesome 4 (Icons)
 
 State Management: Service-based (BehaviorSubjects & Observables)
 
