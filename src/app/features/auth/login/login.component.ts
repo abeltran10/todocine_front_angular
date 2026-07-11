@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject, timer } from 'rxjs';
+import { BehaviorSubject, Observable, timer } from 'rxjs';
 
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { NotificationComponent } from '../../../shared/layout/notification/notification.component';
@@ -11,6 +11,7 @@ import { LoginService } from '../../../core/services/login.service';
 
 import {User} from '../../../core/models/user.model';
 import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -27,14 +28,13 @@ export class LoginComponent {
 
   title = 'TODO CINE';
 
-  messageErrorSubject = new BehaviorSubject<string>('');
-  errorMessage$ = this.messageErrorSubject.asObservable();
   successMessage = '';
 
   constructor(
     private loginService: LoginService,
     private router: Router,
-    private authService: AuthService
+    private authService: AuthService,
+    private notificationService: NotificationService
   ) {}
 
   async login(event: {username: string; password: string} ) {
@@ -53,7 +53,7 @@ export class LoginComponent {
       });
 
     } catch (error) {
-      this.setErrorMessage('Usuario o contraseña incorrectos');
+      this.notificationService.showError('Usuario o contraseña incorrectos');
     }
   }
 
@@ -61,10 +61,8 @@ export class LoginComponent {
     this.router.navigate(['/app/createaccount']);
   }
 
-  setErrorMessage(message: string) {
-      this.messageErrorSubject.next(message);
-  
-      // Usamos un timer de RxJS que es más compatible con Angular
-      timer(5000).subscribe(() => this.messageErrorSubject.next(''));
-    }
+  get errorMessage$(): Observable<string> {
+    return this.notificationService.errorMessage$;
+  }
+
 }

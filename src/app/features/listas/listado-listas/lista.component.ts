@@ -24,7 +24,7 @@ export class ListaComponent {
   publica: boolean = true;
   title: string = 'LISTAS PÚBLICAS';
 
-  constructor(public notificationService: NotificationService) {}
+  constructor(private notificationService: NotificationService) {}
 
 
   setPublica() {
@@ -34,6 +34,14 @@ export class ListaComponent {
 
   private updateTitle() {
     this.title = this.publica ? 'LISTAS PÚBLICAS' : 'MIS LISTAS';
+  }
+
+  showError(msg: string) {
+    this.notificationService.showError(msg);
+  }
+
+  showSuccess(msg: string) {
+    this.notificationService.showSuccess(msg);
   }
 
 }

@@ -30,7 +30,7 @@
         [moviesList]="moviesList"
         [ordenar]="ordenar"
         (handleMoviesList)="handleMoviesList($event)"
-        (errorMessage)="notificationService.showError($event)">
+        (errorMessage)="showError($event)">
       </app-lista-table>
     } @else {
       <div class="text-center py-5">
@@ -42,7 +42,7 @@
     <app-lista-comentarios 
       [listaId]="lista.id" 
       [usuario]="usuario"
-      (errorMessage)="notificationService.showError($event)">
+      (errorMessage)="showError($event)">
     </app-lista-comentarios>
   </div>
 } @else {
@@ -109,7 +109,7 @@
           </div>
         } @else {
           <div class="text-center text-muted py-4">
-            <i class="bi bi-info-circle"></i> Realiza una búsqueda para ver resultados.
+            Realiza una búsqueda para ver resultados.
           </div>
         }
       </div>

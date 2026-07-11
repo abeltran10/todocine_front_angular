@@ -7,7 +7,7 @@
         class="nav-link" 
         [class.active]="publica" 
         (click)="setPublica()">
-        <i class="bi bi-globe"></i> Listas Públicas
+        <i class="fa fa-globe"></i> Listas Públicas
       </button>
     </li>
     <li class="nav-item">
@@ -15,7 +15,7 @@
         class="nav-link" 
         [class.active]="!publica" 
         (click)="setPublica()">
-        <i class="bi bi-person-circle"></i> Mis Listas
+        <i class="fa fa-user-circle"></i> Mis Listas
       </button>
     </li>
   </ul>
@@ -23,13 +23,13 @@
   <div class="tab-content mt-4">
     @if (publica) {
       <app-lista-publica
-        (error)="notificationService.showError($event)"
-        (success)="notificationService.showSuccess($event)">
+        (error)="showError($event)"
+        (success)="showSuccess($event)">
       </app-lista-publica>
     } @else {
       <app-lista-usuario
-        (error)="notificationService.showError($event)"
-        (success)="notificationService.showSuccess($event)">
+        (error)="showError($event)"
+        (success)="showSuccess($event)">
       </app-lista-usuario>
     }
   </div>
