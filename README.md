@@ -1,6 +1,6 @@
 # TODO CINE (Angular)
 
-This is the web client for the [Todo Cine API](https://github.com/abeltran10/todocine_backend), built with Angular 21. The application allows users to browse a vast catalog of movies, manage their favourites, and keep track of award-winning films.
+This is the web client for the [Todo Cine API](https://github.com/abeltran10/todocine_backend), built with Angular 21. The application allows users to browse a vast catalog of movies, manage their favourites, keep track of award-winning films and share lists of movies.
 
 ## Requirements
 
@@ -43,6 +43,11 @@ Reusable resources used across multiple features.
 - /common: Generic components Paginator.
 
 - /layout: Global structure components like AppLayout, Navbar, Notification.
+
+### Captcha
+
+For creating new users it is used Google [reCaptchav3](https://docs.cloud.google.com/recaptcha/docs/overview?hl=en).
+
 
 
 ## Last release
