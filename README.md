@@ -46,7 +46,7 @@ Reusable resources used across multiple features.
 
 ### Captcha
 
-For creating new users it is used Google [reCaptchav3](https://docs.cloud.google.com/recaptcha/docs/overview?hl=en).
+For creating new users it is implemented Google [reCaptchav3](https://docs.cloud.google.com/recaptcha/docs/overview?hl=en).
 
 
 
