@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, output, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -7,48 +7,50 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   templateUrl: './paginator.component.html'
 })
-export class PaginatorComponent implements OnChanges {
+export class PaginatorComponent {
 
-  @Input() activePage = 1;       // página actual
-  @Input() totalPages = 1;       // total de páginas
-  @Output() pageChange = new EventEmitter<number>();
+  activePage = input<number>(1);       // página actual
+  totalPages = input<number>(1);       // total de páginas
+  pageChange = output<number>();
 
-  paginationNumbers: number[] = [];
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.calculatePages();
-  }
-
-  private calculatePages() {
-    this.paginationNumbers = [];
-
+  
+  // Usamos un computed signal para calcular las páginas automáticamente
+  paginationNumbers = computed(() => {
+    const pages: number[] = [];
+    const current = this.activePage();
+    const total = this.totalPages();
     const showMax = 10;
+    
     let startPage = 1;
-    let endPage = this.totalPages;
+    let endPage = total;
 
-    if (this.totalPages > showMax) {
-      startPage = Math.max(this.activePage - Math.floor(showMax / 2), 1);
+    if (total > showMax) {
+      startPage = Math.max(current - Math.floor(showMax / 2), 1);
       endPage = startPage + showMax - 1;
-      if (endPage > this.totalPages) {
-        endPage = this.totalPages;
+      if (endPage > total) {
+        endPage = total;
         startPage = endPage - showMax + 1;
       }
     }
 
     for (let i = startPage; i <= endPage; i++) {
-      this.paginationNumbers.push(i);
+      pages.push(i);
     }
-  }
+
+    return pages;
+  });
 
   goToPage(page: number) {
-    if (page >= 1 && page <= this.totalPages && page !== this.activePage) {
+    const total = this.totalPages();
+    const current = this.activePage();
+
+    if (page >= 1 && page <= total && page !== current) {
       this.pageChange.emit(page);
     }
   }
 
   goFirst() { this.goToPage(1); }
-  goPrev() { this.goToPage(this.activePage - 1); }
-  goNext() { this.goToPage(this.activePage + 1); }
-  goLast() { this.goToPage(this.totalPages); }
-
+  goPrev() { this.goToPage(this.activePage() - 1); }
+  goNext() { this.goToPage(this.activePage() + 1); }
+  goLast() { this.goToPage(this.totalPages()); }
 }

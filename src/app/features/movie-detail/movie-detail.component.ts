@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -26,9 +26,8 @@ import { User } from '../../core/models/user.model';
 export class MovieDetailComponent implements OnInit {
   usuario!: User | null;
   
-  private movieDetailSubject = new BehaviorSubject<MovieDetail | null>(null);
-  movieDetail$ = this.movieDetailSubject.asObservable();
-
+  movieDetail = signal<MovieDetail | null>(null);
+  
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieService,
@@ -47,7 +46,7 @@ export class MovieDetailComponent implements OnInit {
    loadMovieDetail(movieId: number) {
        this.movieService.getDetailMovieById(movieId)
          .subscribe({
-            next: (movie) => this.movieDetailSubject.next(movie),
+            next: (movie) => this.movieDetail.set(movie),
             error: (error) => this.notificationService.showError(error?.error?.message ?? 'Error cargando la película')
          });         
     }
@@ -77,7 +76,7 @@ export class MovieDetailComponent implements OnInit {
                 movie.id,
                 usuarioMovie
               ).subscribe({
-                next: (movie) => this.movieDetailSubject.next(movie),
+                next: (movie) => this.movieDetail.set(movie),
                 error: (error) => this.notificationService.showError(error?.error?.message ?? 'Error cargando la película')
               });
     }
@@ -104,7 +103,7 @@ export class MovieDetailComponent implements OnInit {
           usuarioMovie
     ).subscribe({
                   next: (movie) => {
-                    this.movieDetailSubject.next(movie);
+                    this.movieDetail.set(movie);
                     this.notificationService.showSuccess(favoritos ? "Añadida película a favoritos" : "Eliminada película de favoritos");
                   },
                   error: (error) => this.notificationService.showError(error?.error?.message ?? 'Error gestionando favoritos')
@@ -132,7 +131,7 @@ export class MovieDetailComponent implements OnInit {
                 usuarioMovie
               ).subscribe({
                     next: (movie) => {
-                      this.movieDetailSubject.next(movie);
+                      this.movieDetail.set(movie);
                       this.notificationService.showSuccess(isVista ? "Película vista" : "Película no vista");
                     },
                     error: (error) => this.notificationService.showError(error?.error?.message ?? 'Error gestionando vista')  

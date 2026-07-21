@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
@@ -15,10 +15,10 @@ export class MovieComponent {
 
   @Input() movieDetail!: MovieDetail;
  
-  @Output() addFavoritos = new EventEmitter<MovieDetail>();
-  @Output() removeFavoritos = new EventEmitter<MovieDetail>();
-  @Output() addVote = new EventEmitter<{ movie: MovieDetail; rating: number }>();
-  @Output() updateVista = new EventEmitter<{movie: MovieDetail, isVista: boolean}>();
+  addFavoritos = output<MovieDetail>();
+  removeFavoritos = output<MovieDetail>();
+  addVote = output<{ movie: MovieDetail; rating: number }>();
+  updateVista = output<{movie: MovieDetail, isVista: boolean}>();
 
   hoverPuntuacion = 0;
   

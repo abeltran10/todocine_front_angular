@@ -10,7 +10,7 @@ Environment: Node.js 24.13.0
 
 Styling: Bootstrap 5 & Font Awesome 4 (Icons)
 
-State Management: Service-based (BehaviorSubjects & Observables)
+State Management: Service-based (signals)
 
 Authentication: JWT (JSON Web Tokens) with automated interceptors
 
@@ -52,7 +52,7 @@ For creating new users it is implemented Google [reCaptchav3](https://docs.cloud
 
 ## Last release
 
-- [v3.2.0](https://github.com/abeltran10/todocine_front_angular/releases/tag/v3.2.0)
+- [v4.0.0](https://github.com/abeltran10/todocine_front_angular/releases/tag/v4.0.0)
 
 ## Commands
 

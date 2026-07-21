@@ -50,7 +50,7 @@ export class ProfileComponent implements OnInit {
     this.userService.updateUser(updatedUser).subscribe({
       next: (user) => {
           this.authService.setUser(user);
-          this.usuario = user;
+          this.usuario = this.authService.currentUser;
 
           this.notificationService.showSuccess('Usuario actualizado con éxito');
       },

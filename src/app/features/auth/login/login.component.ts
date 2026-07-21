@@ -61,8 +61,8 @@ export class LoginComponent {
     this.router.navigate(['/app/createaccount']);
   }
 
-  get errorMessage$(): Observable<string> {
-    return this.notificationService.errorMessage$;
+  get errorMessage(): string {
+    return this.notificationService.errorMessage();
   }
 
 }

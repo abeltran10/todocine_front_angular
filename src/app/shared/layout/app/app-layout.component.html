@@ -1,14 +1,13 @@
 <app-navigation-bar 
-      [user]="(authService.user$ | async)"
+      [user]="authService.user()"
       (error)="notificationService.showError($event)">
  </app-navigation-bar>
 
  <app-notification
-      [successMessage]="(notificationService.success$ | async) ?? ''"
-      [errorMessage]="(notificationService.errorMessage$ | async) ?? ''">
+      [successMessage]="notificationService.success()"
+      [errorMessage]="notificationService.errorMessage()">
  </app-notification>
 
- 
 <main class="container mt-4">
     <router-outlet></router-outlet>
 </main>

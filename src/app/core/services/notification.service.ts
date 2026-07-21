@@ -1,21 +1,23 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject } from "rxjs";
+import { Injectable, signal } from "@angular/core";
+
 
 @Injectable({ providedIn: 'root' })
 export class NotificationService {
-  private successSubject = new BehaviorSubject<string>('');
-  private errorSubject = new BehaviorSubject<string>('');
-  
-  success$ = this.successSubject.asObservable();
-  errorMessage$ = this.errorSubject.asObservable();
+  // Signals para los mensajes
+  private successSignal = signal<string>('');
+  private errorSignal = signal<string>('');
+
+  // Los exponemos como de solo lectura
+  readonly success = this.successSignal.asReadonly();
+  readonly errorMessage = this.errorSignal.asReadonly();
 
   showSuccess(msg: string) {
-    this.successSubject.next(msg);
-    setTimeout(() => this.successSubject.next(''), 5000);
+    this.successSignal.set(msg);
+    setTimeout(() => this.successSignal.set(''), 5000);
   }
 
   showError(msg: string) {
-    this.errorSubject.next(msg);
-    setTimeout(() => this.errorSubject.next(''), 5000);
+    this.errorSignal.set(msg);
+    setTimeout(() => this.errorSignal.set(''), 5000);
   }
 }

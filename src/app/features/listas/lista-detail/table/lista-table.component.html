@@ -60,7 +60,7 @@
         <app-paginator
             [activePage]="moviesList.page"
             [totalPages]="moviesList.total_pages"
-            (pageChange)="loadMoviesList(ordenar, $event)">
+            (pageChange)="loadMoviesList(ordenar(), $event)">
         </app-paginator>
     </div>
 }

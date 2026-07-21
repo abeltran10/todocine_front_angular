@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 import { User } from '../../../core/models/user.model';
@@ -13,7 +13,7 @@ export class ProfileFormComponent {
 
   @Input() usuario!: User | null;
 
-  @Output() updateUser = new EventEmitter<{
+  updateUser = output<{
     username: string;
     password: string;
     passConfirm: string;

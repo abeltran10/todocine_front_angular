@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, SimpleChanges, OnChanges, output, signal, effect, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -20,77 +20,73 @@ import { User } from '../../../../core/models/user.model';
   ],
   templateUrl: './lista-table.component.html',
 })
-export class ListaTableComponent implements OnInit, OnChanges {
+export class ListaTableComponent {
   @Input() usuario!: User | null;
   @Input() lista!: Lista;
-  
   @Input() moviesList!: Paginator<Movie>
 
-  @Output() errorMessage = new EventEmitter<string>();
-  @Output() handleMoviesList = new EventEmitter<{ordenar: any, page: number}>();
+  ordenar = input.required<{ orderBy: string; direction: string }>();  
 
-  @Input() ordenar!: any;
-  
-  columnaOrden!: string;
-  ordenAscendente!: boolean;
+  errorMessage = output<string>();
+  handleMoviesList = output<{ ordenar: any; page: number }>();
 
+  columnaOrden = signal<string>('');
+  ordenAscendente = signal<boolean>(true);
   
   constructor(
-  private listaService: ListaService,
-  private router: Router
-) {}
-
- ngOnInit(): void {
-   this.columnaOrden = this.ordenar.orderBy;
-   this.ordenAscendente = this.ordenar.direction !== 'desc' ? true : false;
- }
-
- ngOnChanges(changes: SimpleChanges) {
-  if (changes['ordenar']) {
-    // Esto se ejecuta cada vez que el padre cambia el valor del Input
-    this.columnaOrden = this.ordenar.orderBy;
-    this.ordenAscendente = this.ordenar.direction !== 'desc' ? true : false;
+        private listaService: ListaService,
+        private router: Router
+  ) {
+  
+    // Sincronizamos automáticamente el estado local cuando cambia el input 'ordenar'
+    // sin necesidad de usar ngOnChanges.
+    effect(() => {
+      const currentOrder = this.ordenar();
+      this.columnaOrden.set(currentOrder.orderBy);
+      this.ordenAscendente.set(currentOrder.direction !== 'desc');
+    });
   }
-}
+
 
  loadMoviesList(ordenar: any, page: number) {    
-    this.handleMoviesList.emit({ordenar, page});
+    this.handleMoviesList.emit({ ordenar, page });
   }
 
   eliminarPelicula(movieId: number) {
     if (!this.lista || !this.lista.id) return;
+    
     this.listaService.deleteMovieFromList(movieId, this.lista.id).subscribe({
        next: () => {
-          const ordenar = {orderBy: '', direction: ''};
-          this.loadMoviesList(ordenar, 1);
-          
+          const ordenarReset = { orderBy: '', direction: '' };
+          this.loadMoviesList(ordenarReset, 1);
        },
        error: (error) => this.setErrorMessage(error?.error?.message ?? 'Error al eliminar la película de la lista')
-    })
+    });
   }
 
-    handleLoadMovieDetail(movieId: number): void {
-      this.router.navigate(['/app/moviedetail', movieId]);
-    }
-
+  handleLoadMovieDetail(movieId: number): void {
+    this.router.navigate(['/app/moviedetail', movieId]);
+  }
 
   ordenarPor(columna: string) {
-      // Si clicamos en la misma columna, cambiamos el sentido
-      if (this.columnaOrden === columna) {
-        this.ordenAscendente = !this.ordenAscendente;
+      if (this.columnaOrden() === columna) {
+        this.ordenAscendente.update(val => !val);
       } else {
-        this.columnaOrden = columna;
-        this.ordenAscendente = true;
+        this.columnaOrden.set(columna);
+        this.ordenAscendente.set(true);
       }
 
-      const ordenar = {orderBy: this.columnaOrden, direction: this.ordenAscendente ? "asc" : "desc"};
+      const ordenar = { 
+        orderBy: this.columnaOrden(), 
+        direction: this.ordenAscendente() ? 'asc' : 'desc' 
+      };
 
       this.loadMoviesList(ordenar, 1);
   }
 
   getIcono(columna: string): string {
-    if (this.columnaOrden !== columna) return 'fa-sort'; // Icono neutro
-    return this.ordenAscendente ? 'fa-sort-up' : 'fa-sort-down';
+    if (this.columnaOrden() !== columna) return 'fa-sort'; 
+    return this.ordenAscendente() ? 'fa-sort-up' : 'fa-sort-down';
   }
 
   setErrorMessage(msg: string) {
