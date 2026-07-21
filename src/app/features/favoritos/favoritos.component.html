@@ -10,7 +10,7 @@
 
   
 
-@if (movies$ | async; as paginator) {
+@if (movies(); as paginator) {
   @if (paginator) {
     
     <div class="container-md mt-5">

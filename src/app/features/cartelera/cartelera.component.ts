@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
 import { MovieService } from '../../core/services/movie.service';
@@ -31,64 +30,62 @@ import { HeaderComponent } from '../../shared/layout/header/header.component';
 })
 export class CarteleraComponent implements OnInit {
 
-  title = '';
-  region!: string;
+  title = signal('');
+  region = signal('');
 
   emptyPaginator: Paginator<Movie> = {
       results: [], page: 1, total_pages: 1, total_results: 0
-  }
+  };
 
-  moviesSubject = new BehaviorSubject<Paginator<Movie> | null>(null);
-  movies$ = this.moviesSubject.asObservable();
+  // Signal para las películas de la cartelera
+  movies = signal<Paginator<Movie> | null>(null);
 
-  selectedCineUrl: string = '';
+  selectedCineUrl = signal('');
+
+  // Computed signal para los cines basado en la región actual
+  cines = computed(() => {
+    const currentRegion = this.region();
+    return currentRegion ? Cines.getCinesByRegion(currentRegion) : [];
+  });
 
   constructor(
     private route: ActivatedRoute,
     private movieService: MovieService,
-    private notificationService: NotificationService,
-
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-        this.region = String(params.get('region'));
-        const regionData: Region = Regions.getRegion(this.region as RegionKey);
-
-       this.title = `CARTELERA ${regionData.name.toUpperCase()}`;
+        const regionParam = String(params.get('region'));
+        this.region.set(regionParam);
+        
+        const regionData: Region = Regions.getRegion(regionParam as RegionKey);
+        this.title.set(`CARTELERA ${regionData.name.toUpperCase()}`);
 
         this.loadCartelera(regionData.code, 1);
     });  
-    
   }
 
-  loadCartelera(region: string, page: number) {
-      // Al iniciar la búsqueda/cambio de página, subimos el scroll
-      window.scrollTo(0,0);
+  loadCartelera(regionCode: string, page: number) {
+      window.scrollTo(0, 0);
 
-     this.movieService.getMoviesPlayingNowByRegion(region, page).subscribe({
-        next: (paginator) => this.moviesSubject.next(paginator),
+      this.movieService.getMoviesPlayingNowByRegion(regionCode, page).subscribe({
+        next: (paginator) => this.movies.set(paginator),
         error: (error) => {
               this.notificationService.showError(error?.error?.message ?? 'Error cargando cartelera');
-              this.moviesSubject.next(this.emptyPaginator);
-      
+              this.movies.set(this.emptyPaginator);
         }
       });
   }
 
-
-  get cines() {
-    return Cines.getCinesByRegion(this.region);
-  }
-
   goToCine(): void {
-    if (this.selectedCineUrl) {
-      window.open(this.selectedCineUrl, '_blank');
-      this.selectedCineUrl = ''
+    const url = this.selectedCineUrl();
+    if (url) {
+      window.open(url, '_blank');
+      this.selectedCineUrl.set('');
     } else {
       alert('Por favor, selecciona un cine primero');
     }
   }
-
 }
 

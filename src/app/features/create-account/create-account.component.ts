@@ -42,12 +42,12 @@ export class CreateAccountComponent {
     });
   }
 
-  get successMessage$(): Observable<string> {
-      return this.notificationService.success$;
+  get successMessage(): string {
+      return this.notificationService.success();
   }
 
-  get errorMessage$(): Observable<string> {
-      return this.notificationService.errorMessage$;
+  get errorMessage(): string {
+      return this.notificationService.errorMessage();
   }
 
 }

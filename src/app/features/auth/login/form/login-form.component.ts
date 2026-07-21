@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, output, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -12,8 +12,8 @@ export class LoginFormComponent {
   username = '';
   password = '';
 
-  @Output() login = new EventEmitter<{ username: string; password: string }>();
-  @Output() crearCuenta = new EventEmitter<void>();
+  login = output<{ username: string; password: string }>();
+  crearCuenta = output<void>();
 
   handleLogin() {
     this.login.emit({

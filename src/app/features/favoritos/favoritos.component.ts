@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject } from 'rxjs';
 
@@ -34,9 +34,8 @@ import { HeaderComponent } from '../../shared/layout/header/header.component';
 export class FavoritosComponent implements OnInit {
   emptyPaginator: Paginator<MovieDetail> = { results: [], page: 1, total_pages: 1, total_results: 0 }
 
-  moviesSubject = new BehaviorSubject<Paginator<MovieDetail> | null>(null);
-  movies$ =  this.moviesSubject.asObservable();
-
+  movies = signal<Paginator<MovieDetail> | null>(null);
+  
   usuario!: User | null;
 
   vistaFiltro = '';
@@ -71,10 +70,10 @@ export class FavoritosComponent implements OnInit {
                this.order,
                page
              ).subscribe({
-                next: (paginator) => this.moviesSubject.next(paginator),
+                next: (paginator) => this.movies.set(paginator),
                 error: (error) => {
                     this.notificationService.showError(error?.error?.message ?? 'Error cargando favoritos');
-                    this.moviesSubject.next(this.emptyPaginator);
+                    this.movies.set(this.emptyPaginator);
                 }
              })
   }

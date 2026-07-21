@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -15,7 +15,7 @@ export class FavoritosFiltrosComponent {
   @Input() votadaFiltro = '';
   @Input() order = '';
 
-  @Output() filtersChange = new EventEmitter<{
+  filtersChange = output<{
     usuarioId: number;
     vistaFiltro: string;
     votadaFiltro: string;
