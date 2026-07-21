@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Lista } from '../../../../../core/models/lista.model';
 
@@ -8,11 +8,11 @@ import { Lista } from '../../../../../core/models/lista.model';
   templateUrl: './lista-card-usuario.component.html'
 })
 export class CardListaUsuarioComponent {
-  @Input() lista: Lista | null = null;
+  @Input() lista!: Lista;
 
-  @Output() onDeleteLista = new EventEmitter<number>();
+  onDeleteLista = output<number>();
 
-  @Output() onEditLista = new EventEmitter<Lista>();
+  onEditLista = output<Lista>();
   
   constructor(private router: Router) {}
 

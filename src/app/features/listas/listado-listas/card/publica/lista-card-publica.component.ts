@@ -8,7 +8,7 @@ import { Lista } from '../../../../../core/models/lista.model';
   templateUrl: './lista-card-publica.component.html'
 })
 export class CardListaComponent {
-  @Input() lista: Lista | null = null;
+  @Input() lista!: Lista;
   
   constructor(private router: Router) {}
 

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, output, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CardListaComponent } from '../card/publica/lista-card-publica.component';
@@ -21,11 +21,10 @@ export class PublicListasComponent implements OnInit {
   
   emptyPaginator: Paginator<Lista> =  {results: [], page: 1, total_pages: 1, total_results: 0};
 
-  listasSubject = new BehaviorSubject<Paginator<Lista>>(this.emptyPaginator);
-  listas$ =  this.listasSubject.asObservable();
-  
- @Output() success = new EventEmitter<string>();
- @Output() error = new EventEmitter<string>();
+  listas = signal<Paginator<Lista>>(this.emptyPaginator);
+    
+  success = output<string>();
+  error = output<string>();
 
 
   constructor(private listaService: ListaService){}
@@ -40,10 +39,10 @@ export class PublicListasComponent implements OnInit {
     window.scrollTo(0,0);
 
     this.listaService.getListasPublicas(pagina).subscribe({
-      next: (paginator) => this.listasSubject.next(paginator),
+      next: (paginator) => this.listas.set(paginator),
       error: (error) => {
         this.setErrorMessage(error?.error?.message ?? 'Error cargando las listas');
-        this.listasSubject.next(this.emptyPaginator);
+        this.listas.set(this.emptyPaginator);
       }
     }) 
   }

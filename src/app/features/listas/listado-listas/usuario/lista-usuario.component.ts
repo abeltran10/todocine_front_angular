@@ -1,7 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, output, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable, BehaviorSubject, of, timer, ReplaySubject } from 'rxjs';
-import { catchError, shareReplay, switchMap, map } from 'rxjs/operators';
 
 import { CardListaUsuarioComponent } from '../card/usuario/lista-card-usuario.component';
 import { PaginatorComponent } from '../../../../shared/common/paginator/paginator.component';
@@ -26,11 +24,10 @@ export class UserListasComponent implements OnInit {
   
   emptyPaginator: Paginator<Lista> =  {results: [], page: 1, total_pages: 1, total_results: 0};
 
-  listasSubject = new BehaviorSubject<Paginator<Lista>>(this.emptyPaginator);
-  listas$ = this.listasSubject.asObservable();
-  
-  @Output() success = new EventEmitter<string>();
-  @Output() error = new EventEmitter<string>();
+  listas = signal<Paginator<Lista>>(this.emptyPaginator);
+    
+  success = output<string>();
+  error = output<string>();
 
   listaActual = { id: null, nombre: '', descripcion: '' };
   esEdicion = false;
@@ -53,10 +50,10 @@ export class UserListasComponent implements OnInit {
     window.scrollTo(0,0);
 
      this.usuarioListaService.getListasUser(this.usuario.id, pagina).subscribe({
-        next: (paginator) => this.listasSubject.next(paginator),
+        next: (paginator) => this.listas.set(paginator),
         error: (error) => {
           this.setErrorMessage(error?.error?.message ?? 'Error cargando las listas');
-          this.listasSubject.next(this.emptyPaginator);
+          this.listas.set(this.emptyPaginator);
         }
      })
   }
@@ -74,8 +71,7 @@ export class UserListasComponent implements OnInit {
         next: () => {
           this.setSuccessMessage('Lista creada con éxito');
           
-          // Limpiamos el objeto para la próxima vez
-          this.listaActual = { id: null, nombre: '', descripcion: '' };
+          this.limpiarFormulario();
           
           // Recargamos la primera página
           this.loadListas(1);
@@ -85,7 +81,6 @@ export class UserListasComponent implements OnInit {
     }
   }
 
-  // Llamado desde el botón "Editar" (el que ya tenías en tu card)
   prepareLista(lista: any) {
     this.esEdicion = true;
     // Clonamos el objeto para no modificar la card directamente hasta guardar
@@ -99,8 +94,7 @@ export class UserListasComponent implements OnInit {
         next: () => {
           this.setSuccessMessage('Lista editada con éxito');
         
-           // Limpiamos el objeto para la próxima vez
-          this.listaActual = { id: null, nombre: '', descripcion: ''};
+          this.limpiarFormulario();
           
           // Recargamos la primera página
           this.loadListas(1);

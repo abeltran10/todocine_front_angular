@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PublicListasComponent } from './publicas/lista-publica.component';
@@ -21,19 +21,21 @@ import { NotificationService } from '../../../core/services/notification.service
 })
 export class ListaComponent {
  
-  publica: boolean = true;
-  title: string = 'LISTAS PÚBLICAS';
+  publica = signal<boolean>(true);
+  title = signal<string>('LISTAS PÚBLICAS');
 
   constructor(private notificationService: NotificationService) {}
 
-
   setPublica() {
-   this.publica = !this.publica;
-   this.updateTitle();
+    // Usamos .update() para invertir el valor booleano actual del signal
+    this.publica.update(value => !value);
+    this.updateTitle();
   }
 
   private updateTitle() {
-    this.title = this.publica ? 'LISTAS PÚBLICAS' : 'MIS LISTAS';
+    const esPublica = this.publica();
+    
+    this.title.set(esPublica ? 'LISTAS PÚBLICAS' : 'MIS LISTAS');
   }
 
   showError(msg: string) {
@@ -43,5 +45,4 @@ export class ListaComponent {
   showSuccess(msg: string) {
     this.notificationService.showSuccess(msg);
   }
-
 }

@@ -1,20 +1,19 @@
-@if (lista$ | async; as lista) {
-  <app-header [title]="lista.nombre | uppercase"></app-header>  
-
+@if (lista(); as listData) {
+  <app-header [title]="listData.nombre | uppercase"></app-header>  
 
   <div class="container mt-4">
     <div class="row mb-4">
       <div class="col">
-        <h3 class="text-muted">{{ lista.descripcion }}</h3>
-        <p class="small text-secondary">Creada por: {{ lista.username }}</p>
+        <h3 class="text-muted">{{ listData.descripcion }}</h3>
+        <p class="small text-secondary">Creada por: {{ listData.username }}</p>
       </div>
     </div>
 
-    @if (lista.username === usuario?.username) {
+    @if (listData.username === usuario?.username) {
       <div class="d-flex justify-content-end mt-auto gap-2">
-        <button class="btn btn-secondary" type="button" (click)="onEditar(!lista.publica)">
-          <i class="fa" [ngClass]="lista.publica ? 'fa-ban me-1' : 'fa-share me-1'"></i>
-          {{ lista.publica ? 'Dejar de compartir' : 'Compartir lista' }}
+        <button class="btn btn-secondary" type="button" (click)="onEditar(!listData.publica)">
+          <i class="fa" [ngClass]="listData.publica ? 'fa-ban me-1' : 'fa-share me-1'"></i>
+          {{ listData.publica ? 'Dejar de compartir' : 'Compartir lista' }}
         </button>
         <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#movieModal">
           <i class="fa fa-plus"></i> Añadir película
@@ -23,11 +22,11 @@
       <br/><br/>
     }
 
-    @if (moviesList$ | async; as moviesList) {
+    @if (moviesList(); as moviesListVal) {
       <app-lista-table
-        [lista]="lista"
+        [lista]="listData"
         [usuario]="usuario"
-        [moviesList]="moviesList"
+        [moviesList]="moviesListVal"
         [ordenar]="ordenar"
         (handleMoviesList)="handleMoviesList($event)"
         (errorMessage)="showError($event)">
@@ -40,7 +39,7 @@
     }
     
     <app-lista-comentarios 
-      [listaId]="lista.id" 
+      [listaId]="listData.id" 
       [usuario]="usuario"
       (errorMessage)="showError($event)">
     </app-lista-comentarios>
@@ -68,7 +67,7 @@
           <button class="btn btn-primary" (click)="searchMovies(searchText)">Buscar</button>
         </div>
 
-        @if (movies$ | async; as paginator) {
+        @if (movies(); as paginator) {
           <div class="table-responsive" style="max-height: 350px;">
             <table class="table table-hover border">
               <thead class="table-light">
