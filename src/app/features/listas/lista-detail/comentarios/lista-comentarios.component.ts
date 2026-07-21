@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, output, Output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Valoracion } from '../../../../core/models/valoracion.model';
@@ -16,21 +16,18 @@ import { BehaviorSubject, catchError, Observable, of, tap, switchMap, shareRepla
   templateUrl: './lista-comentarios.component.html',
 })
 export class ListaComentariosComponent implements OnInit {
-  @Input() listaId: number | null | undefined = null;
+  @Input() listaId!: number | null | undefined;
   @Input() usuario!: User | null;
 
-  @Output() errorMessage = new EventEmitter<string>();
+  errorMessage = output<string>();
 
-  valoracionesSubject = new BehaviorSubject<Valoracion[]>([]);
-  valoraciones$ = this.valoracionesSubject.asObservable();
-  
-  reviews: Valoracion[] = [];
+  valoraciones = signal<Valoracion[]>([]);
 
-  // Estado para el nuevo comentario
-  mostrarFormulario = false;
-  nuevaPuntuacion = 0;
-  nuevoComentario = '';
-  hoverPuntuacion = 0; // Para el efecto visual de las estrellas
+  // Estado del formulario modernizado con signals
+  mostrarFormulario = signal<boolean>(false);
+  nuevaPuntuacion = signal<number>(0);
+  nuevoComentario = signal<string>('');
+  hoverPuntuacion = signal<number>(0); // Para el efecto visual de las estrellas
 
   constructor(private listaService: ListaService) {}
 
@@ -39,57 +36,58 @@ export class ListaComentariosComponent implements OnInit {
   }
 
   loadValoraciones(): void {
-      if (!this.listaId) return;
-      this.listaService.getValoraciones(this.listaId).subscribe({
-          next: (valoraciones) => this.valoracionesSubject.next(valoraciones),
+      const id = this.listaId;
+      if (!id) return;
+      
+      this.listaService.getValoraciones(id).subscribe({
+          next: (valoraciones) => this.valoraciones.set(valoraciones),
           error: (error) => {
             this.errorMessage.emit(error?.error?.message ?? 'Error cargando las valoraciones');
-            this.valoracionesSubject.next([]);
+            this.valoraciones.set([]);
           }
-      })
-            
+      });
   }
 
   setRating(rating: number): void {
-    this.nuevaPuntuacion = rating;
+    this.nuevaPuntuacion.set(rating);
   }
 
   toggleFormulario(): void {
-    this.mostrarFormulario = !this.mostrarFormulario;
+    this.mostrarFormulario.update(value => !value);
 
-    if (this.mostrarFormulario) {
-      const reviewPrevia = this.reviews.find(r => r.username === this.usuario?.username);
+    if (this.mostrarFormulario()) {
+      const currentUser = this.usuario;
+      const reviewPrevia = this.valoraciones().find(v => v.username === currentUser?.username);
 
       if (reviewPrevia) {
-        this.nuevaPuntuacion = reviewPrevia.puntuacion;
-        this.nuevoComentario = reviewPrevia.comentario;
+        this.nuevaPuntuacion.set(reviewPrevia.puntuacion);
+        this.nuevoComentario.set(reviewPrevia.comentario);
       } else {
-        this.nuevaPuntuacion = 0;
-        this.nuevoComentario = '';
+        this.nuevaPuntuacion.set(0);
+        this.nuevoComentario.set('');
       }
     } else {
-      this.nuevaPuntuacion = 0;
-      this.nuevoComentario = '';
+      this.nuevaPuntuacion.set(0);
+      this.nuevoComentario.set('');
     }
   }
 
   guardarValoracion(): void {
-    if (!this.listaId || this.nuevaPuntuacion === 0) return;
-    if (!this.usuario) return;
+    const id = this.listaId;
 
+    if (!id || this.nuevaPuntuacion() === 0 || !this.usuario) return;
 
     const nuevaValoracion: Valoracion = {
-      listaId: this.listaId,
+      listaId: id,
       username: this.usuario.username,
-      puntuacion: this.nuevaPuntuacion,
-      comentario: this.nuevoComentario,
+      puntuacion: this.nuevaPuntuacion(),
+      comentario: this.nuevoComentario(),
       fecha: ''
     };
-
     
-    this.listaService.putValoracion(this.listaId, nuevaValoracion).subscribe({
+    this.listaService.putValoracion(id, nuevaValoracion).subscribe({
         next: () => this.loadValoraciones(),
-        error: (error) =>  this.errorMessage.emit(error?.error?.message ?? 'Error guardando la valoración')
+        error: (error) => this.errorMessage.emit(error?.error?.message ?? 'Error guardando la valoración')
     });
     
     // Resetear formulario
