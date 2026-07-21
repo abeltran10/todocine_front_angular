@@ -10,7 +10,7 @@ Environment: Node.js 24.13.0
 
 Styling: Bootstrap 5 & Font Awesome 4 (Icons)
 
-State Management: Service-based (signals)
+State Management: Service-based (Signals & Observables)
 
 Authentication: JWT (JSON Web Tokens) with automated interceptors
 
