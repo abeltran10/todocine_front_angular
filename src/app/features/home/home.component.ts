@@ -38,7 +38,7 @@ export class HomeComponent implements OnInit {
   // Convertimos el subject en un Signal reactivo
   movies = signal<Paginator<Movie> | null>(null);
   
-  paramSearch = signal<string>('');
+  paramSearch = '';
   isLoading = signal<boolean>(false);
 
   title = 'TODO CINE';
@@ -80,6 +80,6 @@ export class HomeComponent implements OnInit {
         }
     }); 
     
-    this.paramSearch.set(text); 
+    this.paramSearch = text; 
   }
 }

@@ -28,7 +28,7 @@
   <app-paginator
     [activePage]="paginator.page"
     [totalPages]="paginator.total_pages"
-    (pageChange)="search(paramSearch(), $event)">
+    (pageChange)="search(paramSearch, $event)">
   </app-paginator>
 }
 

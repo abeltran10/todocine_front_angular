@@ -25,9 +25,9 @@ export class ListaComentariosComponent implements OnInit {
 
   // Estado del formulario modernizado con signals
   mostrarFormulario = signal<boolean>(false);
-  nuevaPuntuacion = signal<number>(0);
-  nuevoComentario = signal<string>('');
-  hoverPuntuacion = signal<number>(0); // Para el efecto visual de las estrellas
+  nuevaPuntuacion = 0;
+  nuevoComentario = '';
+  hoverPuntuacion = 0; // Para el efecto visual de las estrellas
 
   constructor(private listaService: ListaService) {}
 
@@ -49,7 +49,7 @@ export class ListaComentariosComponent implements OnInit {
   }
 
   setRating(rating: number): void {
-    this.nuevaPuntuacion.set(rating);
+    this.nuevaPuntuacion = rating;
   }
 
   toggleFormulario(): void {
@@ -60,28 +60,28 @@ export class ListaComentariosComponent implements OnInit {
       const reviewPrevia = this.valoraciones().find(v => v.username === currentUser?.username);
 
       if (reviewPrevia) {
-        this.nuevaPuntuacion.set(reviewPrevia.puntuacion);
-        this.nuevoComentario.set(reviewPrevia.comentario);
+        this.nuevaPuntuacion = reviewPrevia.puntuacion;
+        this.nuevoComentario = reviewPrevia.comentario;
       } else {
-        this.nuevaPuntuacion.set(0);
-        this.nuevoComentario.set('');
+        this.nuevaPuntuacion = 0;
+        this.nuevoComentario = '';
       }
     } else {
-      this.nuevaPuntuacion.set(0);
-      this.nuevoComentario.set('');
+      this.nuevaPuntuacion = 0;
+      this.nuevoComentario = '';
     }
   }
 
   guardarValoracion(): void {
     const id = this.listaId;
 
-    if (!id || this.nuevaPuntuacion() === 0 || !this.usuario) return;
+    if (!id || this.nuevaPuntuacion === 0 || !this.usuario) return;
 
     const nuevaValoracion: Valoracion = {
       listaId: id,
       username: this.usuario.username,
-      puntuacion: this.nuevaPuntuacion(),
-      comentario: this.nuevoComentario(),
+      puntuacion: this.nuevaPuntuacion,
+      comentario: this.nuevoComentario,
       fecha: ''
     };
     

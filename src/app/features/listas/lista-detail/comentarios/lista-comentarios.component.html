@@ -19,28 +19,27 @@
           <div class="stars-selector fs-4">
             @for (star of [1,2,3,4,5]; track star) {
               <i class="fa fa-star cursor-pointer me-1 transition-all"
-                 [ngClass]="(hoverPuntuacion() || nuevaPuntuacion()) >= star ? 'text-warning' : 'text-muted'"
+                 [ngClass]="(hoverPuntuacion || nuevaPuntuacion) >= star ? 'text-warning' : 'text-muted'"
                  (click)="setRating(star)"
-                 (mouseenter)="hoverPuntuacion.set(star)"
-                 (mouseleave)="hoverPuntuacion.set(0)">
+                 (mouseenter)="hoverPuntuacion=star"
+                 (mouseleave)="hoverPuntuacion=0">
               </i>
             }
           </div>
           <span class="ms-2 text-muted small">
-            {{ nuevaPuntuacion() > 0 ? nuevaPuntuacion() + ' / 5 estrellas' : 'Sin puntuar (0)' }}
+            {{ nuevaPuntuacion > 0 ? nuevaPuntuacion + ' / 5 estrellas' : 'Sin puntuar (0)' }}
           </span>
         </div>
 
         <div class="mb-3">
           <label class="form-label">Comentario</label>
           <textarea class="form-control" rows="3" 
-                    [ngModel]="nuevoComentario()" 
-                    (ngModelChange)="nuevoComentario.set($event)"
+                    [ngModel]="nuevoComentario" 
                     placeholder="Escribe tu opinión sobre esta lista..."></textarea>
         </div>
 
         <div class="d-flex justify-content-end">
-          <button class="btn btn-success" [disabled]="nuevaPuntuacion() === 0" (click)="guardarValoracion()">
+          <button class="btn btn-success" [disabled]="nuevaPuntuacion === 0" (click)="guardarValoracion()">
             <i class="fa fa-paper-plane me-1"></i> Publicar opinión
           </button>
         </div>
