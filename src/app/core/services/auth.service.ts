@@ -1,50 +1,39 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, signal } from '@angular/core';
 import { User } from '../models/user.model'; // Asegura la ruta de tu modelo
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private userSubject: BehaviorSubject<User | null>;
-  public user$: Observable<User | null>;
+  
+  private userSignal = signal<User | null>(this.getInitialUser());
+  public user = this.userSignal.asReadonly();
 
-  constructor() {
-    // Intentamos recuperar al usuario al iniciar el servicio
+  private getInitialUser(): User | null {
     const loggedUser = localStorage.getItem('loggedUser');
-    const initialUser = loggedUser ? JSON.parse(loggedUser) : null;
-    
-    this.userSubject = new BehaviorSubject<User | null>(initialUser);
-    this.user$ = this.userSubject.asObservable();
+    return loggedUser ? JSON.parse(loggedUser) : null;
   }
 
-  // Método para actualizar el usuario (usado tras el login)
   setUser(user: User): void {
     localStorage.setItem('loggedUser', JSON.stringify(user));
-    this.userSubject.next(user);
+    this.userSignal.set(user); 
   }
 
   setToken(token: string) {
-    localStorage.setItem(
-        'loggedUserToken',
-         token 
-    );
+    localStorage.setItem('loggedUserToken', token);
   }
 
   get token(): string | null {
     return localStorage.getItem('loggedUserToken');
   }
 
-  // Método para cerrar sesión
   logout(): void {
     localStorage.removeItem('loggedUserToken');
     localStorage.removeItem('loggedUser');
-
-    this.userSubject.next(null);
+    this.userSignal.set(null); 
   }
 
-  // Getter valor actual de forma síncrona
   get currentUser(): User | null {
-    return this.userSubject.value;
+    return this.userSignal(); 
   }
 }

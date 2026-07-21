@@ -1,7 +1,7 @@
-@if (show) {
+@if (show()) {
   <div class="card mb-3" [ngClass]="cssClass">
     <div class="card-body">
-      {{ message }}
+      {{ message() }}
     </div>
   </div>
 }

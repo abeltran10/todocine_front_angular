@@ -1,39 +1,35 @@
 <app-header [title]="title"></app-header>
 
-
 <app-search-form (search)="search($event.text, $event.page)">
 </app-search-form>
 
 <br/>
 <br/>
 
-@if (isLoading) {
+@if (isLoading()) {
     <div class="text-center mt-5">
       <div class="spinner-border text-primary" role="status"></div>
       <p class="mt-2">Cargando la búsqueda...</p>
     </div>
 } 
 
-@if (!isLoading && (movies$ | async); as paginator) {
-  @if (paginator) {
-    <div class="container-md">
-      <div class="row row-cols-1 row-cols-md-3 g-4">
-        @for (movie of paginator.results; track movie.id) {
-          <div class="col">
-            <app-movie-card [movie]="movie">
-            </app-movie-card>
-          </div>
-        } 
-      
-      </div>
+@if (!isLoading() && movies(); as paginator) {
+  <div class="container-md">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      @for (movie of paginator.results; track movie.id) {
+        <div class="col">
+          <app-movie-card [movie]="movie">
+          </app-movie-card>
+        </div>
+      } 
     </div>
+  </div>
 
-    <app-paginator
-      [activePage]="paginator.page"
-      [totalPages]="paginator.total_pages"
-      (pageChange)="search(paramSearch, $event)">
-    </app-paginator>
-  }
+  <app-paginator
+    [activePage]="paginator.page"
+    [totalPages]="paginator.total_pages"
+    (pageChange)="search(paramSearch(), $event)">
+  </app-paginator>
 }
 
 

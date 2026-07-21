@@ -1,4 +1,4 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 
@@ -12,7 +12,7 @@ export class SearchFormComponent {
 
   text = '';
 
-  @Output() search = new EventEmitter<{text: string, page: number}>();
+  search = output<{text: string, page: number}>();
 
   onSearch() {
     if (!this.text.trim()) return;
