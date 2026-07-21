@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, signal, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
@@ -25,20 +25,18 @@ import { Premio } from '../../../../core/models/premio.model';
 
 export class GanadorFormComponent implements OnInit {
 
-  categoriasSubject = new BehaviorSubject<Categoria[] | null>(null);
-  categorias$ = this.categoriasSubject.asObservable();
-
-  awardsSubject = new BehaviorSubject<Premio[]>([]);
-  awards$ = this.awardsSubject.asObservable();
-  
-  @Output() enviar = new EventEmitter<{
+  categorias = signal<Categoria[] | null>(null);
+ 
+  awards = signal<Premio[]>([]);
+    
+  enviar = output<{
     premioId: number | null;
     categoriaId: number | null;
     anyo: number | null;
     movieId: number | null;
   }>();
 
-  @Output() error = new EventEmitter<string>();
+  error = output<string>();
 
   premioId: number | null = null;
   categoriaId: number | null = null;
@@ -49,13 +47,12 @@ export class GanadorFormComponent implements OnInit {
         results: [], page: 1, total_pages: 1, total_results: 0
     }
   
-    moviesSubject = new BehaviorSubject<Paginator<Movie>>(this.emptyPaginator);
-    movies$ = this.moviesSubject.asObservable();
+  movies = signal<Paginator<Movie>>(this.emptyPaginator);
     
-
   searchText: string = '';
   paramSearch: string = '';
-  selectedMovieText: string = '';
+
+  selectedMovieText = signal<string>('');
 
   constructor(private movieService: MovieService,
               private premioService:PremioService
@@ -63,10 +60,10 @@ export class GanadorFormComponent implements OnInit {
 
   ngOnInit(): void {
      this.premioService.getPremios().subscribe({
-        next: (premios) => this.awardsSubject.next(premios),
+        next: (premios) => this.awards.set(premios),
         error: (error) => {
               this.error.emit(error?.error?.message ?? 'Error cargando los premios');
-              this.awardsSubject.next([]);
+              this.awards.set([]);
         }
      })    
   }
@@ -75,31 +72,29 @@ export class GanadorFormComponent implements OnInit {
     this.premioService
     .getCategorias(premioCod)
     .subscribe({
-      next: (categorias) => this.categoriasSubject.next(categorias),
+      next: (categorias) => this.categorias.set(categorias),
       error: (error) => {
           this.error.emit(error?.error?.message ?? 'Error cargando las categorias');
-          this.categoriasSubject.next([])
+          this.categorias.set([])
       }
     });
   }
 
   searchMovies(text: string, pagina: number = 1) {
     this.movieService.getByName(text, pagina).subscribe({
-        next: (paginator) => this.moviesSubject.next(paginator),
+        next: (paginator) => this.movies.set(paginator),
         error: (error) => {
               this.error.emit(error?.error?.message ?? 'Error cargando la busqueda');
-              this.moviesSubject.next(this.emptyPaginator);
+              this.movies.set(this.emptyPaginator);
         }
     }); 
       this.paramSearch = text;
   }
 
   selectMovie(movie: Movie) {
-    this.selectedMovieText = `${movie.title} (${movie.release_date.split('-')[0]})`;
+    this.selectedMovieText.set(`${movie.title} (${movie.release_date.split('-')[0]})`);
     this.movieId = movie.id;
-
-    this.moviesSubject.next(this.emptyPaginator);
-
+    this.movies.set(this.emptyPaginator);
     this.searchText = '';
 
   }
@@ -118,7 +113,7 @@ export class GanadorFormComponent implements OnInit {
             movieId: this.movieId
           });
 
-          this.selectedMovieText = '';
+          this.selectedMovieText.set('');
           this.premioId = null;
           this.categoriaId = null;
           this.anyo = null;

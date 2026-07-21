@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, output, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -14,7 +14,7 @@ export class CreateAccountFormComponent {
   password = '';
   passConfirm = '';
 
-  @Output() createUser = new EventEmitter<{
+  createUser = output<{
     username: string;
     password: string;
   }>();

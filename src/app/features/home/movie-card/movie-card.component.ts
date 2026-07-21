@@ -14,7 +14,7 @@ import { Movie } from '../../../core/models/movie.model';
 })
 export class MovieCardComponent {
 
-  @Input() movie: Movie | null = null;
+  @Input() movie!: Movie;
 
 
   constructor(private router: Router) {}

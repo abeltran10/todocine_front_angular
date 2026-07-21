@@ -5,7 +5,7 @@
         <label class="form-label">Premio</label>
         <select class="form-select" name="awardId" [(ngModel)]="premioId" (ngModelChange)="handleAward($event)" required>
           <option value="" selected disabled>Selecciona un premio...</option>
-          @for (premio of (awards$ | async); track premio.id) {
+          @for (premio of awards(); track premio.id) {
             <option [value]="premio.id">{{ premio.titulo }}</option>
           }
         </select>
@@ -20,7 +20,7 @@
         <label class="form-label">Categoría</label>
         <select class="form-select" name="categoriaId" [(ngModel)]="categoriaId" required>
           <option value="" selected disabled>Selecciona categoría...</option>
-          @for (cat of (categorias$ | async); track cat.id) {
+          @for (cat of categorias(); track cat.id) {
             <option [value]="cat.id">{{ cat.nombre }}</option>
           }
         </select>
@@ -29,7 +29,7 @@
       <div class="col-md-4">
         <label class="form-label">Película seleccionada</label>
         <div class="input-group">
-          <input type="text" class="form-control" readonly [value]="selectedMovieText" placeholder="Ninguna película seleccionada">
+          <input type="text" class="form-control" readonly [value]="selectedMovieText()" placeholder="Ninguna película seleccionada">
           <input type="hidden" name="movieId" [(ngModel)]="movieId" required>
           <button class="btn btn-outline-primary" type="button" data-bs-toggle="modal" data-bs-target="#movieModal">
              Buscar
@@ -62,7 +62,7 @@
           <button class="btn btn-primary" (click)="searchMovies(searchText)">Buscar</button>
         </div>
 
-        @if (movies$ | async; as paginator) {
+        @if (movies(); as paginator) {
           <div class="table-responsive" style="max-height: 350px;">
             <table class="table table-hover border">
               <thead class="table-light">

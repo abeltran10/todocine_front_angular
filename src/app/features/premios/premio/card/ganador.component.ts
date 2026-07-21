@@ -13,7 +13,7 @@ import { Ganador } from '../../../../core/models/ganador.model';
 })
 export class GanadorComponent {
 
-  @Input({ required: true }) ganador!: Ganador;
+  @Input() ganador!: Ganador;
 
   constructor(private router: Router) {}
 

@@ -1,11 +1,11 @@
-<app-header [title]="title"></app-header>
+<app-header [title]="title()"></app-header>
 
 <div class="container-md mt-3">
   <ul class="nav nav-tabs">
     <li class="nav-item">
       <button 
         class="nav-link" 
-        [class.active]="publica" 
+        [class.active]="publica()" 
         (click)="setPublica()">
         <i class="fa fa-globe"></i> Listas Públicas
       </button>
@@ -13,7 +13,7 @@
     <li class="nav-item">
       <button 
         class="nav-link" 
-        [class.active]="!publica" 
+        [class.active]="!publica()" 
         (click)="setPublica()">
         <i class="fa fa-user-circle"></i> Mis Listas
       </button>
@@ -21,7 +21,7 @@
   </ul>
 
   <div class="tab-content mt-4">
-    @if (publica) {
+    @if (publica()) {
       <app-lista-publica
         (error)="showError($event)"
         (success)="showSuccess($event)">

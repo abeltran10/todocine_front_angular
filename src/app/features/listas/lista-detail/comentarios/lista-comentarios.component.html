@@ -4,12 +4,12 @@
       <i class="fa fa-comments text-primary me-2"></i>Valoraciones y Comentarios
     </h4>
     
-    <button class="btn" [ngClass]="mostrarFormulario ? 'btn-outline-secondary' : 'btn-primary'" (click)="toggleFormulario()">
-      {{ mostrarFormulario ? 'Cancelar' : 'Añadir comentario' }}
+    <button class="btn" [ngClass]="mostrarFormulario() ? 'btn-outline-secondary' : 'btn-primary'" (click)="toggleFormulario()">
+      {{ mostrarFormulario() ? 'Cancelar' : 'Añadir comentario' }}
     </button>
   </div>
 
-  @if (mostrarFormulario) {
+  @if (mostrarFormulario()) {
     <div class="card bg-dark shadow-sm mb-4 border-0">
       <div class="card-body">
         <h5 class="card-title text-secondary mb-3">Tu valoración</h5>
@@ -33,7 +33,8 @@
 
         <div class="mb-3">
           <label class="form-label">Comentario</label>
-          <textarea class="form-control" rows="3" [(ngModel)]="nuevoComentario" 
+          <textarea class="form-control" rows="3" 
+                    [(ngModel)]="nuevoComentario" 
                     placeholder="Escribe tu opinión sobre esta lista..."></textarea>
         </div>
 
@@ -47,7 +48,7 @@
   }
 
   <div>
-    @for (v of (valoraciones$ | async); track v.listaId + '-' + v.username) {
+    @for (v of valoraciones(); track v.listaId + '-' + v.username) {
       <div class="card mb-3 shadow-sm border-start border-4" 
            [ngClass]="v.puntuacion > 0 ? 'border-primary' : 'border-secondary'">
         <div class="card-body py-3">

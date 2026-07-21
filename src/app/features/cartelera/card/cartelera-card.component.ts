@@ -14,8 +14,8 @@ import { Cine } from '../../../core/enum/cines';
 })
 export class CarteleraCardComponent {
 
-  @Input() movie: Movie | null = null;
-  @Input() cines: Cine[] | null = null;
+  @Input() movie!: Movie;
+  @Input() cines!: Cine[];
 
 
   constructor(private router: Router) {}

@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject } from 'rxjs';
 
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs/operators';
@@ -34,14 +33,13 @@ export class HomeComponent implements OnInit {
 
   emptyPaginator: Paginator<Movie> = {
       results: [], page: 1, total_pages: 1, total_results: 0
-  }
+  };
 
-  moviesSubject = new BehaviorSubject<Paginator<Movie> | null>(null);
-  movies$ = this.moviesSubject.asObservable();
-
+  // Convertimos el subject en un Signal reactivo
+  movies = signal<Paginator<Movie> | null>(null);
+  
   paramSearch = '';
-
-  isLoading = false;
+  isLoading = signal<boolean>(false);
 
   title = 'TODO CINE';
 
@@ -55,41 +53,33 @@ export class HomeComponent implements OnInit {
     this.activatedRoute.paramMap
     .pipe(map(() => window.history.state))
     .subscribe(state => {
-      // Verificamos si existe el mensaje
       if (state && state.successMessage) {
         this.notificationService.showSuccess(state.successMessage);
 
-        // Limpiamos el estado del historial
-        // El primer parámetro es el nuevo estado, el segundo es el título (opcional), 
-        // y el tercero es la URL actual (null para mantenerla igual).
         const cleanState = { ...window.history.state };
         delete cleanState.successMessage;
         
         window.history.replaceState(cleanState, '', window.location.href);
       }
     });
-
   }
 
   search(text: string, pagina: number = 1) {
-    this.isLoading = true;
-
-    // Al iniciar la búsqueda/cambio de página, subimos el scroll
-    window.scrollTo(0,0);
+    this.isLoading.set(true);
+    window.scrollTo(0, 0);
 
     this.movieService.getByName(text, pagina).subscribe({
         next: (paginator) => {
-          this.isLoading = false;
-          this.moviesSubject.next(paginator);
+          this.isLoading.set(false);
+          this.movies.set(paginator); // Actualizamos el signal con los datos
         },
         error: (error) => {
-              this.notificationService.showError(error?.error?.message ?? 'Error cargando la busqueda');
-              this.isLoading = false;
-              this.moviesSubject.next(this.emptyPaginator);
+          this.notificationService.showError(error?.error?.message ?? 'Error cargando la busqueda');
+          this.isLoading.set(false);
+          this.movies.set(this.emptyPaginator);
         }
     }); 
     
-    this.paramSearch = text;
+    this.paramSearch = text; 
   }
-
 }

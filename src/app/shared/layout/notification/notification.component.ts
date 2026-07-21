@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, computed, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,18 +9,18 @@ import { CommonModule } from '@angular/common';
 })
 export class NotificationComponent {
 
-  @Input() successMessage = '';
-  @Input() errorMessage = '';
+  // Signal Inputs modernos
+  successMessage = input<string>('');
+  errorMessage = input<string>('');
 
-  get show(): boolean {
-    return !!this.successMessage || !!this.errorMessage;
-  }
+  // Propiedades reactivas calculadas automáticamente
+  show = computed(() => !!this.successMessage() || !!this.errorMessage());
 
-  get cssClass(): string {
-    return this.successMessage ? 'text-white bg-success' : 'text-dark bg-warning';
-  }
+  cssClass = computed(() => 
+    this.successMessage() ? 'text-white bg-success' : 'text-dark bg-warning'
+  );
 
-  get message(): string {
-    return this.successMessage || this.errorMessage;
-  }
+  message = computed(() => 
+    this.successMessage() || this.errorMessage()
+  );
 }

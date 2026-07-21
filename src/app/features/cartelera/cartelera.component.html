@@ -1,36 +1,30 @@
-<app-header [title]="title"></app-header>
+<app-header [title]="title()"></app-header>
 
-@if (movies$ | async; as paginator) {
-  @if (paginator) {
-    <div class="container-md">
-      <div class="row row-cols-1 row-cols-md-3 g-4">
-        @for (movie of paginator.results; track movie.id) {
-          <div class="col">
-            <app-cartelera-card
-              [movie]="movie"
-              [cines]="cines">
-            </app-cartelera-card>
-          </div>
-        } 
-      
-      </div>      
-    </div>
+@if (movies(); as paginator) {
+  <div class="container-md">
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+      @for (movie of paginator.results; track movie.id) {
+        <div class="col">
+          <app-cartelera-card
+            [movie]="movie"
+            [cines]="cines()">
+          </app-cartelera-card>
+        </div>
+      } 
+    </div>      
+  </div>
 
-    <app-paginator
-      [activePage]="paginator.page"
-      [totalPages]="paginator.total_pages"
-      (pageChange)="loadCartelera(region, $event)">
-    </app-paginator>
-  }
+  <app-paginator
+    [activePage]="paginator.page"
+    [totalPages]="paginator.total_pages"
+    (pageChange)="loadCartelera(region(), $event)">
+  </app-paginator>
 } @else {
     <div class="text-center mt-5">
       <div class="spinner-border text-primary" role="status"></div>
       <p class="mt-2">Cargando cartelera...</p>
     </div>
 }
-
-
-
 
 <div class="modal fade" id="cineModal" tabindex="-1" aria-labelledby="cineModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
@@ -42,9 +36,9 @@
       <div class="modal-body">
         <p>Selecciona una cadena de cine para ver horarios:</p>
         
-        <select class="form-select" [(ngModel)]="selectedCineUrl">
+        <select class="form-select" [ngModel]="selectedCineUrl()" (ngModelChange)="selectedCineUrl.set($event)">
           <option value="" disabled selected>Selecciona un cine...</option>
-          @for (cine of cines; track cine.id) {
+          @for (cine of cines(); track cine.id) {
             <option [value]="cine.url">
               {{ cine.name }}
             </option>
@@ -53,17 +47,18 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="selectedCineUrl=''">Cerrar</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="selectedCineUrl.set('')">Cerrar</button>
         
         <button 
           type="button" 
           class="btn"
           style="background-color: #6f42c1; border-color: #6f42c1;" 
           (click)="goToCine()" 
-          [disabled]="!selectedCineUrl">
+          [disabled]="!selectedCineUrl()">
           Ir al cine
           <i class="fa fa-external-link-alt"></i>
         </button>
       </div>
+    </div>
   </div>
 </div>

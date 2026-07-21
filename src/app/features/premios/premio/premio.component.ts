@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Observable, catchError, of, BehaviorSubject, timer } from 'rxjs';
@@ -30,15 +30,14 @@ export class PremioComponent implements OnInit {
   premioCod!: number;
   premioAnyo!: number;
 
-  title = '';
+  title = signal<string>('');
 
   emptyPaginator: Paginator<Ganador> = {
           results: [], page: 1, total_pages: 1, total_results: 0
       }
 
-  ganadoresSubject = new BehaviorSubject<Paginator<Ganador> | null>(null);
-  ganadores$ = this.ganadoresSubject.asObservable();
-
+  ganadores = signal<Paginator<Ganador> | null>(null);
+  
   constructor(
     private route: ActivatedRoute,
     private ganadorService: GanadorService,
@@ -59,7 +58,7 @@ export class PremioComponent implements OnInit {
         this.premioService.getPremioById(this.premioCod).subscribe({
            next: (premio) => {
                 if (premio) {
-                  this.title =`${premio.titulo.toUpperCase()} ${this.premioAnyo}`;
+                  this.title.set(`${premio.titulo.toUpperCase()} ${this.premioAnyo}`);
                 }
             },
             error: (error) => {
@@ -81,10 +80,10 @@ export class PremioComponent implements OnInit {
         this.premioAnyo,
         page
       ).subscribe({
-          next: (paginator) => this.ganadoresSubject.next(paginator),
+          next: (paginator) => this.ganadores.set(paginator),
           error: (error) => {
             this.notificationService.showError(error?.error?.message ?? 'Error cargando los premios');
-            this.ganadoresSubject.next(this.emptyPaginator);
+            this.ganadores.set(this.emptyPaginator);
           }
       });
   }
