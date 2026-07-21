@@ -61,10 +61,10 @@
       
       <div class="modal-body">
         <div class="input-group mb-3">
-          <input type="text" class="form-control" [(ngModel)]="searchText"
+          <input type="text" class="form-control" [(ngModel)]="searchText()" (ngModelChange)="searchText.set($event)"
                 placeholder="Escribe el nombre de la película..."
-                (keyup.enter)="searchMovies(searchText)">
-          <button class="btn btn-primary" (click)="searchMovies(searchText)">Buscar</button>
+                (keyup.enter)="searchMovies(searchText())">
+          <button class="btn btn-primary" (click)="searchMovies(searchText())">Buscar</button>
         </div>
 
         @if (movies(); as paginator) {
@@ -98,10 +98,10 @@
             <nav>
               <ul class="pagination pagination-sm mb-0">
                 <li class="page-item" [class.disabled]="paginator.page === 1">
-                  <button class="btn btn-sm btn-outline-secondary me-1" (click)="searchMovies(paramSearch, paginator.page - 1)" [disabled]="paginator.page === 1">Anterior</button>
+                  <button class="btn btn-sm btn-outline-secondary me-1" (click)="searchMovies(paramSearch(), paginator.page - 1)" [disabled]="paginator.page === 1">Anterior</button>
                 </li>
                 <li class="page-item" [class.disabled]="paginator.page === paginator.total_pages">
-                  <button class="btn btn-sm btn-outline-secondary" (click)="searchMovies(paramSearch, paginator.page + 1)" [disabled]="paginator.page === paginator.total_pages">Siguiente</button>
+                  <button class="btn btn-sm btn-outline-secondary" (click)="searchMovies(paramSearch(), paginator.page + 1)" [disabled]="paginator.page === paginator.total_pages">Siguiente</button>
                 </li>
               </ul>
             </nav>

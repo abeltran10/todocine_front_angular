@@ -42,8 +42,9 @@ export class ListaDetailComponent implements OnInit {
   lista = signal<Lista | null>(null);
   moviesList = signal<Paginator<Movie> | null>(null);
   
-  paramSearch: string = '';
-  searchText: string = '';
+  paramSearch = signal<string>('');
+  searchText = signal<string>('');
+
   listaId!: number;
 
   ordenar = {orderBy: '', direction: ''};
@@ -103,13 +104,13 @@ export class ListaDetailComponent implements OnInit {
             this.movies.set(this.emptyPaginator);
       }
     }); 
-    this.paramSearch = text;
+    this.paramSearch.set(text);
   }
   
   selectMovie(movie: Movie) {
     this.listaService.addMovieToList(this.listaId, movie.id).subscribe({
       next: () => {
-          this.searchText = '';
+          this.searchText.set('');
           this.movies.set(this.emptyPaginator);
           this.handleMoviesList({ordenar: {orderBy: '', direction: ''}, page: 1});
       },
