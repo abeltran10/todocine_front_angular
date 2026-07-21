@@ -38,11 +38,11 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{{ esEdicion ? 'Editar Lista' : 'Nueva Lista' }}</h5>
+        <h5 class="modal-title">{{ esEdicion() ? 'Editar Lista' : 'Nueva Lista' }}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       
-      <form #listaForm="ngForm" (ngSubmit)="esEdicion ? onSubmitEditar() : onSubmitCrear()">
+      <form #listaForm="ngForm" (ngSubmit)="esEdicion() ? onSubmitEditar() : onSubmitCrear()">
         <div class="modal-body">
           <div class="mb-3">
             <label class="form-label">Nombre</label>
@@ -57,7 +57,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" (click)="limpiarFormulario()" data-bs-dismiss="modal">Cancelar</button>
           <button type="submit" class="btn btn-primary" [disabled]="!listaForm.form.valid" data-bs-dismiss="modal">
-            {{ esEdicion ? 'Guardar cambios' : 'Crear lista' }}
+            {{ esEdicion() ? 'Guardar cambios' : 'Crear lista' }}
           </button>
         </div>
       </form>

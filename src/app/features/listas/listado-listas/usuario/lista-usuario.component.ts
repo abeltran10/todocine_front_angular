@@ -30,7 +30,7 @@ export class UserListasComponent implements OnInit {
   error = output<string>();
 
   listaActual = { id: null, nombre: '', descripcion: '' };
-  esEdicion = false;
+  esEdicion = signal<boolean>(false);
 
   constructor(private listaService: ListaService,
               private usuarioListaService: UsuarioListaService,
@@ -60,7 +60,7 @@ export class UserListasComponent implements OnInit {
 
   // Llamado desde el botón "Crear"
   prepararCreacion() {
-    this.esEdicion = false;
+    this.esEdicion.set(false);
     this.limpiarFormulario();
   }
 
@@ -82,7 +82,7 @@ export class UserListasComponent implements OnInit {
   }
 
   prepareLista(lista: any) {
-    this.esEdicion = true;
+    this.esEdicion.set(true);
     // Clonamos el objeto para no modificar la card directamente hasta guardar
     this.listaActual = { ...lista }; 
   }
