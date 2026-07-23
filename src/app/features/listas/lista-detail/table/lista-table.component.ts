@@ -1,10 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit, SimpleChanges, OnChanges, output, signal, effect, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-import { PaginatorComponent } from '../../../../shared/common/paginator/paginator.component';
 import { Paginator } from '../../../../core/models/paginator.model';
 import { Movie } from '../../../../core/models/movie.model';
 
@@ -15,9 +12,7 @@ import { User } from '../../../../core/models/user.model';
 @Component({
   selector: 'app-lista-table',
   standalone: true,
-  imports: [CommonModule, 
-            PaginatorComponent
-  ],
+  imports: [CommonModule],
   templateUrl: './lista-table.component.html',
 })
 export class ListaTableComponent {
