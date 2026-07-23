@@ -3,10 +3,10 @@
     <div class="col">
       <ul class="pagination justify-content-center">
         <li class="page-item">
-          <button class="page-link" (click)="goFirst()" [disabled]="activePage() === 1">Primero</button>
+          <button class="page-link" (click)="goFirst()" [disabled]="activePage() === 1" title="Primera página"><i class="fa fa-angle-double-left"></i></button>
         </li>
         <li class="page-item">
-          <button class="page-link" (click)="goPrev()" [disabled]="activePage() === 1">Anterior</button>
+          <button class="page-link" (click)="goPrev()" [disabled]="activePage() === 1" title="Página anterior"><i class="fa fa-angle-left"></i></button>
         </li>
 
         @for (page of paginationNumbers(); track page) {
@@ -21,10 +21,10 @@
         }
 
         <li class="page-item">
-          <button class="page-link" (click)="goNext()" [disabled]="activePage() === totalPages()">Siguiente</button>
+          <button class="page-link" (click)="goNext()" [disabled]="activePage() === totalPages()" title="Página siguiente"><i class="fa fa-angle-right"></i></button>
         </li>
         <li class="page-item">
-          <button class="page-link" (click)="goLast()" [disabled]="activePage() === totalPages()">Último</button>
+          <button class="page-link" (click)="goLast()" [disabled]="activePage() === totalPages()" title="Última página"><i class="fa fa-angle-double-right"></i></button>
         </li>
       </ul>
     </div>

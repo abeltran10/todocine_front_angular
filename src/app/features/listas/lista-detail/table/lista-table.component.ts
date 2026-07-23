@@ -99,7 +99,6 @@ export class ListaTableComponent {
     // Si no es un número válido, no hacemos nada
     if (isNaN(page)) return;
 
-    // Validación de límites solicitada
     if (page < 1) {
       page = 1;
     } else if (page > totalPages) {
