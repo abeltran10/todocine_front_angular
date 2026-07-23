@@ -51,16 +51,66 @@
                     </tr>
                 }
             </tbody>
+
+            <!-- PIE DE TABLA CON EL PAGINADOR INTEGRADO -->
+            @if (moviesList.total_pages > 0) {
+                <tfoot class="table-dark">
+                    <tr>
+                        <td colspan="4">
+                            <div class="d-flex justify-content-between align-items-center py-2 px-1">
+                                <span class="text-muted small">
+                                    Total de películas: <strong>{{ moviesList.total_results }}</strong>
+                                </span>
+                                
+                                <div class="d-flex align-items-center gap-2">
+                                    <!-- Botón Primera Página -->
+                                    <button class="btn btn-sm btn-outline-secondary" 
+                                            [disabled]="moviesList.page === 1" 
+                                            (click)="loadMoviesList(ordenar(), 1)"
+                                            title="Primera página">
+                                        <i class="fa fa-angle-double-left"></i>
+                                    </button>
+
+                                    <!-- Botón Página Anterior -->
+                                    <button class="btn btn-sm btn-outline-secondary" 
+                                            [disabled]="moviesList.page === 1" 
+                                            (click)="loadMoviesList(ordenar(), moviesList.page - 1)"
+                                            title="Página anterior">
+                                        <i class="fa fa-angle-left"></i>
+                                    </button>
+
+                                    <!-- Input de página y barra divisoria -->
+                                    <div class="d-flex align-items-center gap-1">
+                                        <input type="number" 
+                                               class="form-control form-control-sm text-center" 
+                                               style="width: 60px;"
+                                               [value]="moviesList.page"
+                                               (keyup.enter)="onPageInputChange($any($event.target).value, moviesList.total_pages)"
+                                               (blur)="onPageInputChange($any($event.target).value, moviesList.total_pages)" />
+                                        <span class="text-muted">/ {{ moviesList.total_pages }}</span>
+                                    </div>
+
+                                    <!-- Botón Página Siguiente -->
+                                    <button class="btn btn-sm btn-outline-secondary" 
+                                            [disabled]="moviesList.page === moviesList.total_pages" 
+                                            (click)="loadMoviesList(ordenar(), moviesList.page + 1)"
+                                            title="Página siguiente">
+                                        <i class="fa fa-angle-right"></i>
+                                    </button>
+
+                                    <!-- Botón Última Página -->
+                                    <button class="btn btn-sm btn-outline-secondary" 
+                                            [disabled]="moviesList.page === moviesList.total_pages" 
+                                            (click)="loadMoviesList(ordenar(), moviesList.total_pages)"
+                                            title="Última página">
+                                        <i class="fa fa-angle-double-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+            }
         </table>
     </div>
 </div>
-
-@if (moviesList.total_pages > 0) {
-    <div class="mt-3">
-        <app-paginator
-            [activePage]="moviesList.page"
-            [totalPages]="moviesList.total_pages"
-            (pageChange)="loadMoviesList(ordenar(), $event)">
-        </app-paginator>
-    </div>
-}

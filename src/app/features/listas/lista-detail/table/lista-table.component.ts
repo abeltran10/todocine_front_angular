@@ -30,8 +30,8 @@ export class ListaTableComponent {
   errorMessage = output<string>();
   handleMoviesList = output<{ ordenar: any; page: number }>();
 
-  columnaOrden = signal<string>('');
-  ordenAscendente = signal<boolean>(true);
+  columnaOrden = '';
+  ordenAscendente = true;
   
   constructor(
         private listaService: ListaService,
@@ -42,8 +42,8 @@ export class ListaTableComponent {
     // sin necesidad de usar ngOnChanges.
     effect(() => {
       const currentOrder = this.ordenar();
-      this.columnaOrden.set(currentOrder.orderBy);
-      this.ordenAscendente.set(currentOrder.direction !== 'desc');
+      this.columnaOrden = currentOrder.orderBy;
+      this.ordenAscendente = currentOrder.direction !== 'desc';
     });
   }
 
@@ -69,27 +69,45 @@ export class ListaTableComponent {
   }
 
   ordenarPor(columna: string) {
-      if (this.columnaOrden() === columna) {
-        this.ordenAscendente.update(val => !val);
+      if (this.columnaOrden === columna) {
+        this.ordenAscendente = !this.ordenAscendente;
       } else {
-        this.columnaOrden.set(columna);
-        this.ordenAscendente.set(true);
+        this.columnaOrden = columna;
+        this.ordenAscendente = true;
       }
 
       const ordenar = { 
-        orderBy: this.columnaOrden(), 
-        direction: this.ordenAscendente() ? 'asc' : 'desc' 
+        orderBy: this.columnaOrden, 
+        direction: this.ordenAscendente ? 'asc' : 'desc' 
       };
 
       this.loadMoviesList(ordenar, 1);
   }
 
   getIcono(columna: string): string {
-    if (this.columnaOrden() !== columna) return 'fa-sort'; 
-    return this.ordenAscendente() ? 'fa-sort-up' : 'fa-sort-down';
+    if (this.columnaOrden !== columna) return 'fa-sort'; 
+    return this.ordenAscendente ? 'fa-sort-up' : 'fa-sort-down';
   }
 
   setErrorMessage(msg: string) {
       this.errorMessage.emit(msg);
+  }
+
+  onPageInputChange(value: string, totalPages: number) {
+    let page = parseInt(value, 10);
+    
+    // Si no es un número válido, no hacemos nada
+    if (isNaN(page)) return;
+
+    if (page < 1) {
+      page = 1;
+    } else if (page > totalPages) {
+      page = totalPages;
+    }
+
+    // Solo recargamos si la página resultante es distinta a la actual
+    if (page !== this.moviesList.page) {
+      this.loadMoviesList(this.ordenar(), page);
+    }
   }
 }
