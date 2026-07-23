@@ -92,4 +92,23 @@ export class ListaTableComponent {
   setErrorMessage(msg: string) {
       this.errorMessage.emit(msg);
   }
+
+  onPageInputChange(value: string, totalPages: number) {
+    let page = parseInt(value, 10);
+    
+    // Si no es un número válido, no hacemos nada
+    if (isNaN(page)) return;
+
+    // Validación de límites solicitada
+    if (page < 1) {
+      page = 1;
+    } else if (page > totalPages) {
+      page = totalPages;
+    }
+
+    // Solo recargamos si la página resultante es distinta a la actual
+    if (page !== this.moviesList.page) {
+      this.loadMoviesList(this.ordenar(), page);
+    }
+  }
 }
