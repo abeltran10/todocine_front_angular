@@ -43,10 +43,7 @@ export class NavigationBarComponent implements OnInit {
   ngOnInit(): void {
     this.premioService.getPremios().subscribe({
       next: (premios) => this.awards.set(premios),
-      error: (error) => {
-        this.error.emit(error?.error?.message ?? 'Error recuperando los premios');
-        this.awards.set([]);  
-      }
+      error: () => this.awards.set([])
     }); 
   }
 
