@@ -52,7 +52,7 @@ For creating new users it is implemented Google [reCaptchav3](https://docs.cloud
 
 ## Last release
 
-- [v4.0.1](https://github.com/abeltran10/todocine_front_angular/releases/tag/v4.0.1)
+- [v4.0.2](https://github.com/abeltran10/todocine_front_angular/releases/tag/v4.0.2)
 
 ## Commands
 
