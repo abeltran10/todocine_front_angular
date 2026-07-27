@@ -1,4 +1,4 @@
-import { Component, output, computed, input } from '@angular/core';
+import { Component, output, computed, input, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,16 +9,16 @@ import { CommonModule } from '@angular/common';
 })
 export class PaginatorComponent {
 
-  activePage = input<number>(1);       // página actual
-  totalPages = input<number>(1);       // total de páginas
+  @Input() activePage!: number;       // página actual
+  @Input() totalPages!: number;       // total de páginas
   pageChange = output<number>();
 
   
   // Usamos un computed signal para calcular las páginas automáticamente
-  paginationNumbers = computed(() => {
+  paginationNumbers(): number[] {
     const pages: number[] = [];
-    const current = this.activePage();
-    const total = this.totalPages();
+    const current = this.activePage;
+    const total = this.totalPages;
     const showMax = 10;
     
     let startPage = 1;
@@ -38,11 +38,11 @@ export class PaginatorComponent {
     }
 
     return pages;
-  });
+  };
 
   goToPage(page: number) {
-    const total = this.totalPages();
-    const current = this.activePage();
+    const total = this.totalPages;
+    const current = this.activePage;
 
     if (page >= 1 && page <= total && page !== current) {
       this.pageChange.emit(page);
@@ -50,7 +50,7 @@ export class PaginatorComponent {
   }
 
   goFirst() { this.goToPage(1); }
-  goPrev() { this.goToPage(this.activePage() - 1); }
-  goNext() { this.goToPage(this.activePage() + 1); }
-  goLast() { this.goToPage(this.totalPages()); }
+  goPrev() { this.goToPage(this.activePage - 1); }
+  goNext() { this.goToPage(this.activePage + 1); }
+  goLast() { this.goToPage(this.totalPages); }
 }

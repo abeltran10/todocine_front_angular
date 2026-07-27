@@ -25,8 +25,8 @@ export class ListaTableComponent {
   errorMessage = output<string>();
   handleMoviesList = output<{ ordenar: any; page: number }>();
   
-  columnaOrden = this.ordenar().orderBy;
-  ordenAscendente = this.ordenar().direction !== 'desc';
+  columnaOrden = '';
+  ordenAscendente = true;
 
   constructor(
         private listaService: ListaService,
