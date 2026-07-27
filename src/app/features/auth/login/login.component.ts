@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject, Observable, timer } from 'rxjs';
 
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { NotificationComponent } from '../../../shared/layout/notification/notification.component';

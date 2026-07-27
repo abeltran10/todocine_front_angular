@@ -2,10 +2,6 @@ import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
-import { Observable, catchError, of, BehaviorSubject, timer, filter, map, switchMap, tap } from 'rxjs';
-
-import { User } from '../../../core/models/user.model';
-
 import { HeaderComponent } from '../../../shared/layout/header/header.component';
 import { AnyosComponent } from './card/anyos.component';
 

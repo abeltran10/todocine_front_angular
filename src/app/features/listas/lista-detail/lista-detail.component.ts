@@ -1,9 +1,9 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+
 import { ListaService } from '../../../core/services/lista.service';
 import { MovieService } from '../../../core/services/movie.service';
-import { BehaviorSubject, timer } from 'rxjs';
 import { User } from '../../../core/models/user.model';
 import { Lista } from '../../../core/models/lista.model';
 import { Movie } from '../../../core/models/movie.model';

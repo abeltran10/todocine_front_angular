@@ -1,8 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit, signal, output } from '@angular/core';
+import { Component, OnInit, signal, output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
-import { BehaviorSubject, Observable, catchError, of } from 'rxjs';
 
 import { Categoria } from '../../../../core/models/categoria.model';
 import { Movie } from '../../../../core/models/movie.model';

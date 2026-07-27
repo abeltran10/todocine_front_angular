@@ -1,7 +1,6 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { Observable, catchError, of, BehaviorSubject, timer } from 'rxjs';
 
 import { GanadorService } from '../../../core/services/ganador.service';
 
