@@ -24,10 +24,10 @@ export class ListaTableComponent {
 
   errorMessage = output<string>();
   handleMoviesList = output<{ ordenar: any; page: number }>();
-
-  columnaOrden = '';
-  ordenAscendente = true;
   
+  columnaOrden = this.ordenar().orderBy;
+  ordenAscendente = this.ordenar().direction !== 'desc';
+
   constructor(
         private listaService: ListaService,
         private router: Router
