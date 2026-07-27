@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, output, Output, signal } from '@angular/core';
+import { Component, OnInit, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { CardListaComponent } from '../card/publica/lista-card-publica.component';

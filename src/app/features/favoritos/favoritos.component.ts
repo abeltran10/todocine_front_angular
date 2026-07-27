@@ -1,6 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject } from 'rxjs';
 
 import { UsuarioMovieService } from '../../core/services/usuarioMovie.service';
 

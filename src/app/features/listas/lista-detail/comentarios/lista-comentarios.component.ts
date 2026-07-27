@@ -5,8 +5,6 @@ import { Valoracion } from '../../../../core/models/valoracion.model';
 import { User } from '../../../../core/models/user.model';
 
 import { ListaService } from '../../../../core/services/lista.service';
-import { BehaviorSubject, catchError, Observable, of, tap, switchMap, shareReplay } from 'rxjs';
-
 
 
 @Component({

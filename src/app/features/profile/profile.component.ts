@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject, timer } from 'rxjs';
 
 import { User } from '../../core/models/user.model';
 import { UserService } from '../../core/services/user.service';
