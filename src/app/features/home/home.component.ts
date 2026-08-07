@@ -1,8 +1,5 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs/operators';
 
 import { MovieService } from '../../core/services/movie.service';
 import { NotificationService } from '../../core/services/notification.service';
@@ -29,7 +26,7 @@ import { HeaderComponent } from '../../shared/layout/header/header.component';
   ],
   templateUrl: './home.component.html'
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
 
   emptyPaginator: Paginator<Movie> = {
       results: [], page: 1, total_pages: 1, total_results: 0
@@ -45,24 +42,9 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private movieService: MovieService,
-    private activatedRoute: ActivatedRoute,
     private notificationService: NotificationService
   ) {}
 
-  ngOnInit(): void {
-    this.activatedRoute.paramMap
-    .pipe(map(() => window.history.state))
-    .subscribe(state => {
-      if (state && state.successMessage) {
-        this.notificationService.showSuccess(state.successMessage);
-
-        const cleanState = { ...window.history.state };
-        delete cleanState.successMessage;
-        
-        window.history.replaceState(cleanState, '', window.location.href);
-      }
-    });
-  }
 
   search(text: string, pagina: number = 1) {
     this.isLoading.set(true);
