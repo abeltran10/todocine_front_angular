@@ -6,11 +6,13 @@ import { Paginator } from '../models/paginator.model';
 import { Movie } from '../models/movie.model';
 import { Valoracion } from '../models/valoracion.model';
 
+import { environment } from '../../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class ListaService {
-    private baseUrl = '/api/listas';
+    private baseUrl = `${environment.apiUrl}/listas`;
 
   constructor(private http: HttpClient) {}
 

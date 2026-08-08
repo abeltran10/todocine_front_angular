@@ -6,6 +6,8 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { Ganador } from '../models/ganador.model';
 import { Paginator } from '../models/paginator.model';
 
+import { environment } from '../../../environments/environment';
+
 interface GanadorPK {
     premioId: number | null;
     categoriaId: number | null;
@@ -18,7 +20,7 @@ interface GanadorPK {
 })
 export class GanadorService {
 
-  private readonly baseUrl = '/api/ganadores';
+  private readonly baseUrl = `${environment.apiUrl}/ganadores`;
 
   constructor(private http: HttpClient) {}
 
