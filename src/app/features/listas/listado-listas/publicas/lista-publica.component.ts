@@ -21,7 +21,7 @@ export class PublicListasComponent implements OnInit {
   
   emptyPaginator: Paginator<Lista> =  {results: [], page: 1, total_pages: 1, total_results: 0};
 
-  listas = signal<Paginator<Lista>>(this.emptyPaginator);
+  listas = signal<Paginator<Lista> | null>(null);
     
   success = output<string>();
   error = output<string>();

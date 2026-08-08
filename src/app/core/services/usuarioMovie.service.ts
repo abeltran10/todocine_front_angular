@@ -6,12 +6,14 @@ import { UsuarioMovie } from '../models/usuarioMovie.model';
 import { MovieDetail } from '../models/movieDetail.model';
 import { Paginator } from '../models/paginator.model';
 
+import { environment } from '../../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioMovieService {
 
-  private readonly baseUrl = '/api/usuarios';
+  private readonly baseUrl = `${environment.apiUrl}/usuarios`;
 
   constructor(private http: HttpClient) {}
 

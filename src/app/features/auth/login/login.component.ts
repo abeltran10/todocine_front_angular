@@ -27,8 +27,7 @@ export class LoginComponent {
 
   title = 'TODO CINE';
 
-  successMessage = '';
-
+  
   constructor(
     private loginService: LoginService,
     private router: Router,
@@ -45,11 +44,11 @@ export class LoginComponent {
          
       this.authService.setToken(response.headers.get('Authorization') ?? '');
 
-      this.authService.setUser(user)
+      this.authService.setUser(user);
 
-      this.router.navigate(['/app/home'], {
-        state: { successMessage: 'Sesión iniciada con exito' }
-      });
+      this.router.navigate(['/app/home'])
+
+      this.notificationService.showSuccess('Sesión iniciada con exito');
 
     } catch (error) {
       this.notificationService.showError('Usuario o contraseña incorrectos');

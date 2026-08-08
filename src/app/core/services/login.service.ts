@@ -4,6 +4,8 @@ import { firstValueFrom } from 'rxjs';
 
 import { catchError, throwError } from 'rxjs';
 
+import { environment } from '../../../environments/environment';
+
 export interface LoginCredentials {
   username: string;
   password: string;
@@ -12,7 +14,7 @@ export interface LoginCredentials {
 @Injectable({ providedIn: 'root' })
 export class LoginService {
 
-  private baseUrl = '/api/login';
+  private baseUrl = `${environment.apiUrl}/login`;
 
   constructor(private http: HttpClient) {}
 

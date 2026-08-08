@@ -5,6 +5,8 @@ import { Observable, catchError, throwError } from 'rxjs';
 
 import {User} from '../models/user.model';
 
+import { environment } from '../../../environments/environment';
+
 
 interface Credentials {
     username: string;
@@ -16,7 +18,7 @@ interface Credentials {
 @Injectable({ providedIn: 'root' })
 export class UserService {
 
-  private baseUrl = '/api/usuarios';
+  private baseUrl = `${environment.apiUrl}/usuarios`;
 
   constructor(private http: HttpClient) {}
 

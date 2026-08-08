@@ -4,11 +4,13 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { Lista } from '../models/lista.model';
 import { Paginator } from '../models/paginator.model';
 
+import { environment } from '../../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UsuarioListaService {
-    private baseUrl = '/api/usuarios';
+    private baseUrl = `${environment.apiUrl}/usuarios`;
 
   constructor(private http: HttpClient) {}
 

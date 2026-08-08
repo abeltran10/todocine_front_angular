@@ -5,13 +5,15 @@ import { Observable, catchError, throwError, shareReplay } from 'rxjs';
 import { Categoria } from '../models/categoria.model';
 import { Premio } from '../models/premio.model';
 
+import { environment } from '../../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class PremioService {
 
-  private baseUrl = '/api/premios';
+  private baseUrl = `${environment.apiUrl}/premios`;
 
   constructor(private http: HttpClient) {}
 
