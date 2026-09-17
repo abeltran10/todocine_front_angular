@@ -34,7 +34,7 @@ export class LoginService {
 
   // Logout
   logout() {
-     return this.http.post<any>('/api/logout', null).pipe(
+     return this.http.post<any>(`${environment.apiUrl}/logout`, null).pipe(
           catchError(err => {
             // Puedes loguear o transformar el error aquí
             return throwError(() => err);
