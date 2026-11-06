@@ -78,7 +78,7 @@ export class FavoritosComponent implements OnInit {
   }
 
   onFiltersChange(filters: {
-    usuarioId: number;
+    username: string;
     vistaFiltro: string;
     votadaFiltro: string;
     order: string;
