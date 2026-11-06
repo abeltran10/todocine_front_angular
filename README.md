@@ -52,7 +52,7 @@ For creating new users it is implemented Google [reCaptchav3](https://docs.cloud
 
 ## Last release
 
-- [v4.1.2](https://github.com/abeltran10/todocine_front_angular/releases/tag/v4.1.2)
+- [v5.0.0](https://github.com/abeltran10/todocine_front_angular/releases/tag/v5.0.0)
 
 ## Commands
 
@@ -77,11 +77,16 @@ Once the server is running, open your browser and navigate to `http://localhost:
 
 ### Building
 
-To build the project run:
+- To build the project run:
 
 ```bash
 npm run build
 ```
+- To build for production:
+```bash
+ng build --configuration production
+```
+
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
 
