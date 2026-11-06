@@ -63,7 +63,7 @@ export class FavoritosComponent implements OnInit {
     window.scrollTo(0,0);
 
     this.usuarioMovieService.getUserMovies(
-               this.usuario.id,
+               this.usuario.username,
                this.vistaFiltro,
                this.votadaFiltro,
                this.order,
