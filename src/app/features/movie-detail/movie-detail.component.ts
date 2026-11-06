@@ -63,7 +63,7 @@ export class MovieDetailComponent implements OnInit {
       if (!this.usuario) return;
 
       const usuarioMovie: UsuarioMovie = {
-        usuarioId: this.usuario.id,
+        username: this.usuario.username,
         movieId: movie.id,
         vista: movie.vista,
         favoritos: movie.favoritos,
@@ -71,7 +71,7 @@ export class MovieDetailComponent implements OnInit {
       };
       
       this.usuarioMovieService.updateUsuarioMovie(
-                this.usuario.id,
+                this.usuario.username,
                 movie.id,
                 usuarioMovie
               ).subscribe({
@@ -88,7 +88,7 @@ export class MovieDetailComponent implements OnInit {
     if (!this.usuario) return;
 
     const usuarioMovie: UsuarioMovie = {
-        usuarioId: this.usuario.id,
+        username: this.usuario.username,
         movieId: movie.id,
         vista: false,
         favoritos,
@@ -97,7 +97,7 @@ export class MovieDetailComponent implements OnInit {
 
      
     this.usuarioMovieService.updateUsuarioMovie(
-          this.usuario.id,
+          this.usuario.username,
           movie.id,
           usuarioMovie
     ).subscribe({
@@ -117,7 +117,7 @@ export class MovieDetailComponent implements OnInit {
        if (!this.usuario) return;
 
        const usuarioMovie: UsuarioMovie = {
-        usuarioId: this.usuario.id,
+        username: this.usuario.username,
         movieId: movie.id,
         vista: isVista,
         favoritos: movie.favoritos,
@@ -125,7 +125,7 @@ export class MovieDetailComponent implements OnInit {
       };
       
       this.usuarioMovieService.updateUsuarioMovie(
-                this.usuario.id,
+                this.usuario.username,
                 movie.id,
                 usuarioMovie
               ).subscribe({

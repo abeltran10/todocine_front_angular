@@ -1,5 +1,5 @@
 export interface UsuarioMovie {
-  usuarioId: number;
+  username: string;
   movieId: number;
   vista: boolean;
   favoritos: boolean;

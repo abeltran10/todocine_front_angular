@@ -14,9 +14,9 @@ export class UsuarioListaService {
 
   constructor(private http: HttpClient) {}
 
-  getListasUser(userId: number, page: number): Observable<Paginator<Lista>> {
+  getListasUser(username: string, page: number): Observable<Paginator<Lista>> {
     return this.http.get<Paginator<Lista>>(
-          `${this.baseUrl}/${userId}/listas?page=${page}`
+          `${this.baseUrl}/${username}/listas?page=${page}`
           ).pipe( catchError(err => {
                   // Puedes loguear o transformar el error aquí
                   return throwError(() => err);

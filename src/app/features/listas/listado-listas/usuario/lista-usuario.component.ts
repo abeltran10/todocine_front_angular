@@ -49,7 +49,7 @@ export class UserListasComponent implements OnInit {
     // Al iniciar la búsqueda/cambio de página, subimos el scroll
     window.scrollTo(0,0);
 
-     this.usuarioListaService.getListasUser(this.usuario.id, pagina).subscribe({
+     this.usuarioListaService.getListasUser(this.usuario.username, pagina).subscribe({
         next: (paginator) => this.listas.set(paginator),
         error: (error) => {
           this.setErrorMessage(error?.error?.message ?? 'Error cargando las listas');

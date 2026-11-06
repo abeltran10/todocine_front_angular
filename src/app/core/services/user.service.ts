@@ -35,7 +35,7 @@ export class UserService {
 
   // Actualizar usuario
   updateUser(user: User):Observable<User> {
-    return this.http.put<User>(`${this.baseUrl}/${user.id}`, user).pipe(
+    return this.http.put<User>(`${this.baseUrl}/${user.username}`, user).pipe(
       catchError(err => {
         // Puedes loguear o transformar el error aquí
         return throwError(() => err);

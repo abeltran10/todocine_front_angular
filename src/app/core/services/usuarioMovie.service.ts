@@ -18,13 +18,13 @@ export class UsuarioMovieService {
   constructor(private http: HttpClient) {}
 
   updateUsuarioMovie(
-    userId: number,
+    username: string,
     movieId: number,
     usuarioMovie: UsuarioMovie
   ): Observable<MovieDetail> {
 
     return this.http.put<MovieDetail>(
-        `${this.baseUrl}/${userId}/movies/${movieId}`,
+        `${this.baseUrl}/${username}/movies/${movieId}`,
         usuarioMovie
       ).pipe(
         catchError(err => {
@@ -35,13 +35,13 @@ export class UsuarioMovieService {
 
   // Obtener películas del usuario
   getUserMovies(
-    userId: number,
+    username: string,
     vista: string,
     votada: string,
     order: string,
     pagina: number
   ): Observable<Paginator<MovieDetail>> {
-    const url = `${this.baseUrl}/${userId}/movies?vista=${vista}&votada=${votada}&orderBy=${order}&page=${pagina}`;
+    const url = `${this.baseUrl}/${username}/movies?vista=${vista}&votada=${votada}&orderBy=${order}&page=${pagina}`;
     return this.http.get<Paginator<MovieDetail>>(url).pipe(
         catchError(err => {
         // Puedes loguear o transformar el error aquí
