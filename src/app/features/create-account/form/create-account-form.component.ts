@@ -20,7 +20,14 @@ export class CreateAccountFormComponent {
   }>();
 
   submit() {
-    if (this.password === this.passConfirm) {
+    const sinEspaciosNiVacido = (valor: string) => /^\S+$/.test(valor);
+
+    if (
+      sinEspaciosNiVacido(this.username) && 
+      sinEspaciosNiVacido(this.password) && 
+      this.password === this.passConfirm
+    ) {
+
       this.createUser.emit({
         username: this.username,
         password: this.password
