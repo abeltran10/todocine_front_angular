@@ -1,6 +1,7 @@
 import { Component, EventEmitter, output, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NotificationService } from '../../../core/services/notification.service';
 
 @Component({
   selector: 'app-create-account-form',
@@ -19,8 +20,17 @@ export class CreateAccountFormComponent {
     password: string;
   }>();
 
+  constructor(public notificationService: NotificationService) {}
+
   submit() {
-    if (this.password === this.passConfirm) {
+    const sinEspaciosNiVacido = (valor: string) => /^\S+$/.test(valor);
+
+    if (
+      sinEspaciosNiVacido(this.username) && 
+      sinEspaciosNiVacido(this.password) && 
+      this.password === this.passConfirm
+    ) {
+
       this.createUser.emit({
         username: this.username,
         password: this.password
@@ -29,6 +39,8 @@ export class CreateAccountFormComponent {
       this.username = '';
       this.password = '';
       this.passConfirm = '';
+    } else {
+        this.notificationService.showError('Username o password contienen espacios en blanco');
     }
   }
 
@@ -38,4 +50,6 @@ export class CreateAccountFormComponent {
       this.password !== this.passConfirm
     );
   }
+
+  
 }

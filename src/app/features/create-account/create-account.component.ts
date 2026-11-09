@@ -26,7 +26,7 @@ export class CreateAccountComponent {
   title: string = 'TODO CINE'
 
   constructor(private userService: UserService,
-              private notificationService: NotificationService,
+              public notificationService: NotificationService,
               private captchaService: CaptchaService
   ) {
   }
@@ -39,14 +39,6 @@ export class CreateAccountComponent {
       error: (error) => this.notificationService.showError(error?.error?.message ?? 'Error al crear la cuenta')
       
     });
-  }
-
-  get successMessage(): string {
-      return this.notificationService.success();
-  }
-
-  get errorMessage(): string {
-      return this.notificationService.errorMessage();
   }
 
 }
