@@ -33,8 +33,15 @@ export class ProfileComponent implements OnInit {
   }
 
   updateUser(username: string, password: string, passConfirm: string) {
+    const sinEspaciosNiVacido = (valor: string) => /^\S+$/.test(valor);
+    
     if (!this.usuario) return;
 
+    if (!sinEspaciosNiVacido(username) || !sinEspaciosNiVacido(password)) {
+      this.notificationService.showError('El username o la password no pueden contener espacios en blanco');
+      return;
+    }
+      
     if (password !== passConfirm) {
       this.notificationService.showError('Las password no coinciden');
       return;
